@@ -2,7 +2,6 @@
 #define RIDES
 
 
-
 typedef struct rides{
     char *id;
     char *date;
@@ -14,7 +13,7 @@ typedef struct rides{
     int score_driver;
     double tip;
     char *comment;  
-}Rides;
+}*Rides;
 
 Rides init_ride(const char *str);
 char* get_date(Rides r);

@@ -1,7 +1,6 @@
 #ifndef WORKSHOP
 #define WORKSHOP
 
-typedef struct workshop *Workshop;
 
 typedef struct drivers{
     char *id;
@@ -11,7 +10,7 @@ typedef struct drivers{
     char *car_class;
     char *license_plate;
     char *acount_creation;  
-}Drivers; 
+}*Drivers; 
 
 Drivers init_car(const char *str);
 char* get_plate(Drivers d);
