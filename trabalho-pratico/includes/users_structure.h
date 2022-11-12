@@ -1,21 +1,11 @@
-#define TABLE_SIZE 100000
+#include <stdbool.h>
+#define MAX_INFO 50
+#define N_LINHAS 100000
 
-typedef struct hash_table{
-    char *username;
-    Users user;
-    struct table *next;
-}hash_table;
 
-typedef struct users{
-    char *username;
-    char *name;
-    char *birth_day;
-    char *account_creation; 
-    char *pay_method;
-    char *account_status;
-}Users;
-
-hash_table *create_hash(void);
-hash_table new_user();
-hash_table insert_user(hash_table t, char *username, char *name, char *birth_day, char *account_creation, char *pay_method, char *account_status);
-void write_user(Users u);
+unsigned int hash_users(char *username);
+void init_hash_table();
+bool insert_hash_users(users *u);
+users *procura_hash_users(char *username);
+void write_user(users u);
+void insert_user_hash(char *username, char *name, char *birth_day, char *account_creation, char *pay_method, char *account_status);

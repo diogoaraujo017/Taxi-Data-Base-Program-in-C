@@ -20,11 +20,11 @@ typedef struct{
 } rides;
 
 //Inicia a hash_table
-rides *hash_table[N_LINHAS];
+rides *hash_table_rides[N_LINHAS];
 
 
 //Associa um número da hash a cada linha
-unsigned int hash(char *user){
+unsigned int hash_user_rides(char *user){
     int comp = strnlen(user,MAX_INFO);
     unsigned int num_hash = 0;
     for (int i = 0; i < comp; i++)
@@ -39,33 +39,33 @@ unsigned int hash(char *user){
 void init_hash_table(){
     for (int i = 0; i < N_LINHAS; i++)
     {
-        hash_table[i] = NULL;
+        hash_table_rides[i] = NULL;
     }   
 }
 
 //Insere linhas na hash_table se essa linhas não estiver ocupada (Se return for true)
-bool insert_hash_table(rides *r){
+bool insert_hash_rides(rides *r){
     if (r==NULL) return false;
-    int aux = hash(r->user);
+    int aux = hash_user_rides(r->user);
     for (int i=0;i < N_LINHAS;i++){
         int next_position = (i + aux) % N_LINHAS;
     
-        if (hash_table[next_position] == NULL){
-            hash_table[next_position] = r;
+        if (hash_table_rides[next_position] == NULL){
+            hash_table_rides[next_position] = r;
             return true;
         }
     }
     return false;
 }
 
-//Procura o username na hash table
-rides *procura_hash_table (char *user){
-    int aux = hash(user);
+//Procura o user na hash table
+rides *procura_hash_user_rides(char *user){
+    int aux = hash_user_rides(user);
     for (int i = 0; i < N_LINHAS; i++){
         int next_position = (i + aux) % N_LINHAS;
-        if (hash_table[next_position] == NULL) return false;
-        if (hash_table[next_position] != NULL && strncmp(hash_table[aux]->user, user, MAX_INFO)==0){
-            return hash_table[aux];
+        if (hash_table_rides[next_position] == NULL) return false;
+        if (hash_table_rides[next_position] != NULL && strncmp(hash_table_rides[aux]->user, user, MAX_INFO)==0){
+            return hash_table_rides[aux];
         }
     }
     return NULL;
