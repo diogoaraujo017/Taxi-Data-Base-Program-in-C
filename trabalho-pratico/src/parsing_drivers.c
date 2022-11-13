@@ -17,7 +17,7 @@ typedef struct{
 void drivers_file_open(){
     FILE *drivers;
     char line[150];
-    init_hash_table();
+    init_hash_table_drivers();
     drivers = fopen("drivers.scv", "r");
 
     if(drivers == NULL) return 1;
@@ -25,7 +25,7 @@ void drivers_file_open(){
     fgets(line, 150, drivers);
 
     while (fgets(line, 150, drivers)){
-        analisa_linha(line);
+        analisa_linha_drivers(line);
     }
 }
 

@@ -20,7 +20,7 @@ typedef struct{
 void rides_file_open(){
     FILE *rides;
     char line[150];
-    init_hash_table();
+    init_hash_table_rides();
     rides = fopen("rides.scv", "r");
 
     if(rides == NULL) return 1;
@@ -66,6 +66,9 @@ void analisa_linha_rides(char line[150]){
                 break;
             case 8:    
                 strcpy(a8,a);
+                if (a[i+1]=='\0'){
+                    a9[0]='\0';
+                }
                 break;
             case 9:    
                 strcpy(a9,a);
@@ -85,10 +88,10 @@ void analisa_linha_rides(char line[150]){
                  .driver=convertToString(a3,50/sizeof(char)),
                  .user=convertToString(a4,50/sizeof(char)),
                  .city=convertToString(a5,50/sizeof(char)),
-                 .distance=a6[0],
-                 .score_user=a7[0],
-                 .score_driver=a8[0],
-                 .tip=a9[0],
+                 .distance=(int)a6[0],
+                 .score_user=(int)a7[0],
+                 .score_driver=(int)a8[0],
+                 .tip=(double)a9[0],
                  .comment=convertToString(a,50/sizeof(char))
                  };
 

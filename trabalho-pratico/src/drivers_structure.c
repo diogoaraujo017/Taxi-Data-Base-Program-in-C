@@ -6,15 +6,6 @@
 #include <stdbool.h>
 
 
-typedef struct{
-    char id[MAX_INFO];
-    char name[MAX_INFO];
-    char birth_day[MAX_INFO];
-    char gender;
-    char car_class[MAX_INFO];
-    char license_plate[MAX_INFO];
-    char acount_creation[MAX_INFO];  
-} drivers;
 
 //Inicia a hash_table
 drivers *hash_table_drivers[N_LINHAS];
@@ -33,7 +24,7 @@ unsigned int hash_drivers(char *id){
 }
 
 //Inicia a hash_table colocando todas as linhas a NULL
-void init_hash_table(){
+void init_hash_table_drivers(){
     for (int i = 0; i < N_LINHAS; i++)
     {
         hash_table_drivers[i] = NULL;
@@ -67,10 +58,3 @@ drivers *procura_hash_drivers(char *id){
     }
     return NULL;
 }
-
-
-
-    // init_hash_table();
-
-    // rides test = {.user="TEST"};
-    // insert_hash_table(&test);

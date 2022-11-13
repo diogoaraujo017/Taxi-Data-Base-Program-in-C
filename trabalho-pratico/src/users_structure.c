@@ -3,14 +3,6 @@
 #include <stdlib.h>
 #include "users_structure.h"
 
-typedef struct{
-    char username[MAX_INFO];
-    char name[MAX_INFO];
-    char birth_day[MAX_INFO];
-    char account_creation[MAX_INFO]; 
-    char pay_method[MAX_INFO];
-    char account_status[MAX_INFO];
-}users;
 
 //Inicia a hash_table
 users *hash_table_users[N_LINHAS];
@@ -29,7 +21,7 @@ unsigned int hash_users(char *username){
 }
 
 //Inicia a hash_table colocando todas as linhas a NULL
-void init_hash_table(){
+void init_hash_table_users(){
     for (int i = 0; i < N_LINHAS; i++)
     {
         hash_table_users[i] = NULL;

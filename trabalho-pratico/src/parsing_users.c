@@ -16,7 +16,7 @@ typedef struct{
 void users_file_open(){
     FILE *users;
     char line[150];
-    init_hash_table();
+    init_hash_table_users();
     users = fopen("drivers.scv", "r");
 
     if(users == NULL) return 1;

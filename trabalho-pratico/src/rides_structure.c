@@ -6,18 +6,7 @@
 #include <stdbool.h>
 
 
-typedef struct{
-    char id[MAX_INFO];
-    char date[MAX_INFO];
-    char driver[MAX_INFO];
-    char user[MAX_INFO];
-    char city[MAX_INFO];
-    int distance;
-    int score_user;
-    int score_driver;
-    double tip;
-    char comment[MAX_INFO];  
-} rides;
+
 
 //Inicia a hash_table
 rides *hash_table_rides[N_LINHAS];
@@ -36,7 +25,7 @@ unsigned int hash_user_rides(char *user){
 }
 
 //Inicia a hash_table colocando todas as linhas a NULL
-void init_hash_table(){
+void init_hash_table_rides(){
     for (int i = 0; i < N_LINHAS; i++)
     {
         hash_table_rides[i] = NULL;
