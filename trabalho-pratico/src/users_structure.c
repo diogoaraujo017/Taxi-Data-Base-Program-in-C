@@ -65,4 +65,4 @@ users *procura_hash_users(char *username){
 }
 
 void write_user_Q1(users u);
-void insert_user_hash(char *username, char *name, char *birth_day, char *account_creation, char *pay_method, char *account_status);
+users create_user(char *username, char *name, char *birth_day, char *account_creation, char *pay_method, char *account_status);

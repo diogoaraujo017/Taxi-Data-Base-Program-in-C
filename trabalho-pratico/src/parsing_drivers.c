@@ -26,11 +26,10 @@ void drivers_file_open(){
 
     while (fgets(line, 150, drivers)){
         analisa_linha(line);
-        // func(analisa linha)
     }
 }
 
-void analisa_linha(char line[150]){
+void analisa_linha_drivers(char line[150]){
     char a[50], a1[50],a2[50],a3[50],a4[50],a5[50],a6[50];
     int i,j;
     int aux=1;
