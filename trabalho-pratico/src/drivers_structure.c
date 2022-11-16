@@ -37,7 +37,6 @@ bool insert_hash_drivers(drivers *d){
     int aux = hash(d->id);
     for (int i=0;i < N_LINHAS;i++){
         int next_position = (i + aux) % N_LINHAS;
-    
         if (hash_table_drivers[next_position] == NULL){
             hash_table_drivers[next_position] = d;
             return true;
@@ -48,12 +47,12 @@ bool insert_hash_drivers(drivers *d){
 
 //Procura o id na hash table
 drivers *procura_hash_drivers(char *id){
-    int aux = hash(id);
+    int index = hash(id);
     for (int i = 0; i < N_LINHAS; i++){
-        int next_position = (i + aux) % N_LINHAS;
+        int next_position = (i + index) % N_LINHAS;
         if (hash_table_drivers[next_position] == NULL) return false;
-        if (hash_table_drivers[next_position] != NULL && strncmp(hash_table_drivers[aux]->id, id, MAX_INFO)==0){
-            return hash_table_drivers[aux];
+        if (hash_table_drivers[next_position] != NULL && strncmp(hash_table_drivers[next_position]->id, id, MAX_INFO)==0){
+            return hash_table_drivers[next_position];
         }
     }
     return NULL;

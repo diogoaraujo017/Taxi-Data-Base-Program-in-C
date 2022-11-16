@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "parsing_drivers.h"
 #include <string.h>
+#include <dirent.h>
 
 
 typedef struct{
@@ -11,10 +12,11 @@ typedef struct{
     char gender;
     char car_class[MAX_INFO];
     char license_plate[MAX_INFO];
-    char acount_creation[MAX_INFO];  
+    char account_creation[MAX_INFO];  
+    char account_status[MAX_INFO];
 } drivers;
 
-void drivers_file_open(){
+void read_store_drivers(){
     FILE *drivers;
     char line[150];
     init_hash_table_drivers();
@@ -27,10 +29,11 @@ void drivers_file_open(){
     while (fgets(line, 150, drivers)){
         analisa_linha_drivers(line);
     }
+    fclose(drivers);
 }
 
 void analisa_linha_drivers(char line[150]){
-    char a[50], a1[50],a2[50],a3[50],a4[50],a5[50],a6[50];
+    char a[50], a1[50],a2[50],a3[50],a4[50],a5[50],a6[50],a7[50];
     int i,j;
     int aux=1;
     for(i=0,j=0;i<=line[i]!='\0';i++,j++){
@@ -58,6 +61,9 @@ void analisa_linha_drivers(char line[150]){
             case 6:    
                 strcpy(a6,a);
                 break;
+            case 7:    
+                strcpy(a7,a);
+                break;    
             default:
                 break;
             }
@@ -68,13 +74,17 @@ void analisa_linha_drivers(char line[150]){
         a[j]=line[i];
 
     }
-    drivers d = {.id=convertToString(a1,50/sizeof(char)),
+    drivers d = {
+                
+                 .id=convertToString(a1,50/sizeof(char)),
                  .name=convertToString(a2,50/sizeof(char)),
                  .birth_day=convertToString(a3,50/sizeof(char)),
                  .gender=a4[0],
                  .car_class=convertToString(a5,50/sizeof(char)),
                  .license_plate=convertToString(a6,50/sizeof(char)),
-                 .acount_creation=convertToString(a,50/sizeof(char))
+                 .account_creation=convertToString(a7,50/sizeof(char)),
+                 .account_status=convertToString(a,50/sizeof(char))
+                 
                  };
 
     insert_hash_drivers(&d);

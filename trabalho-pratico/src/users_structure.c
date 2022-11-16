@@ -49,12 +49,10 @@ users *procura_hash_users(char *username){
     for (int i = 0; i < N_LINHAS; i++){
         int next_position = (i + aux) % N_LINHAS;
         if (hash_table_users[next_position] == NULL) return false;
-        if (hash_table_users[next_position] != NULL && strncmp(hash_table_users[aux]->username, username, MAX_INFO)==0){
-            return hash_table_users[aux];
+        if (hash_table_users[next_position] != NULL && strncmp(hash_table_users[next_position]->username, username, MAX_INFO)==0){
+            return hash_table_users[next_position];
         }
     }
     return NULL;
 }
 
-void write_user_Q1(users u);
-users create_user(char *username, char *name, char *birth_day, char *account_creation, char *pay_method, char *account_status);

@@ -9,7 +9,8 @@ typedef struct{
     char gender;
     char car_class[MAX_INFO];
     char license_plate[MAX_INFO];
-    char acount_creation[MAX_INFO];  
+    char account_creation[MAX_INFO];  
+    char account_status[MAX_INFO];
 } drivers;
 
 

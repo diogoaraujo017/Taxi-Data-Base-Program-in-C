@@ -13,7 +13,7 @@ typedef struct{
     char account_status[MAX_INFO];
 }users;
 
-void users_file_open(){
+void read_store_users(){
     FILE *users;
     char line[150];
     init_hash_table_users();
@@ -26,9 +26,10 @@ void users_file_open(){
     while (fgets(line, 150, users)){
         analisa_linha(line);
        }
+    fclose(users);
 }
 
-void analisa_linha(char line[150]){
+void analisa_linha_users(char line[150]){
     char a[50], a1[50],a2[50],a3[50],a4[50],a5[50];
     int i,j;
     int aux=1;
