@@ -13,9 +13,10 @@
 
 int main(int argc, char const *argv[]){
     
-    init_hash_table_drivers();
-    init_hash_table_users();
-    init_hash_table_rides();
+    init_hash_drivers();
+    init_hash_users();
+    init_hash_drivers_rides();
+    init_hash_users_rides();
 
     DIR* dir = opendir(argv[1]);
     if (dir == NULL) {
