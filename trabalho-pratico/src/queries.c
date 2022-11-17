@@ -11,13 +11,13 @@ void querie1(char line[100]){
     
     if(line[0]=='0') {        
         d = procura_hash_drivers(line);
-        if(d!=NULL && d->account_status=="active") {
+        if(d!=NULL && strcmp(d->account_status,"active")) {
 
         }
     }
     else {                      
         u = procura_hash_users(line);
-        if(u!=NULL && u->account_status=="active") {
+        if(u!=NULL && strcmp(u->account_status,"active")) {
 
         }
     }                      
@@ -41,7 +41,7 @@ void read_exe_queries(char const *argv){
     
     querie = line[0];
     
-    for(i=2;line[i]!='/0';i++){
+    for(i=2;line[i]!='\0';i++){
         line2[i-2] = line[i];
     }
     line2[i] = '\0';

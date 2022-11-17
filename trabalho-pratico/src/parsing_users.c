@@ -7,7 +7,6 @@
 void read_store_users(){
     FILE *usersF;
     char line[150];
-    init_hash_table_users();
     usersF = fopen("users.scv", "r");
 
     fgets(line, 150, usersF);
@@ -54,12 +53,12 @@ void analisa_linha_users(char line[150]){
         a[j]=line[i];
 
     }
-    users u = {.username=*a1,
-               .name=*a2,
-               .birth_day=*a3,
-               .account_creation=*a4,
-               .pay_method=*a5,
-               .account_status=*a
+    users u = {.username={*a1},
+               .name={*a2},
+               .birth_day={*a3},
+               .account_creation={*a4},
+               .pay_method={*a5},
+               .account_status={*a}
               };
 
     insert_hash_users(&u);

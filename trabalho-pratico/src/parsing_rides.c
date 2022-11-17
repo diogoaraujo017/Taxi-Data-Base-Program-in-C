@@ -1,6 +1,6 @@
 #include "rides_structure.h"
-#include <stdio.h>
 #include "parsing_rides.h"
+#include <stdio.h>
 #include <string.h>
 #include <dirent.h>
 
@@ -8,7 +8,6 @@
 void read_store_rides(){
     FILE *ridesF;
     char line[150];
-    init_hash_table_rides();
     ridesF = fopen("rides.scv", "r");
 
     fgets(line, 150, ridesF);
@@ -70,16 +69,16 @@ void analisa_linha_rides(char line[150]){
         a[j]=line[i];
 
     }
-    rides r = {  .id=*a1,
-                 .date=*a2,
-                 .driver=*a3,
-                 .user=*a4,
-                 .city=*a5,
+    rides r = {  .id={*a1},
+                 .date={*a2},
+                 .driver={*a3},
+                 .user={*a4},
+                 .city={*a5},
                  .distance=(int)a6[0],
                  .score_user=(int)a7[0],
                  .score_driver=(int)a8[0],
                  .tip=(double)a9[0],
-                 .comment=*a
+                 .comment={*a}
                  };
 
     insert_hash_rides(&r);

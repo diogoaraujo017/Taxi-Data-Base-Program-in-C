@@ -8,7 +8,6 @@
 void read_store_drivers(){
     FILE *driversF;
     char line[150];
-    init_hash_table_drivers();
     driversF = fopen("drivers.scv", "r");
 
     fgets(line, 150, driversF);
@@ -61,14 +60,14 @@ void analisa_linha_drivers(char line[150]){
         a[j]=line[i];
 
     }
-    drivers d = {.id=*a1,
-                 .name=*a2,
-                 .birth_day=*a3,
+    drivers d = {.id={*a1},
+                 .name={*a2},
+                 .birth_day={*a3},
                  .gender=a4[0],
-                 .car_class=*a5,
-                 .license_plate=*a6,
-                 .account_creation=*a7,
-                 .account_status=*a
+                 .car_class={*a5},
+                 .license_plate={*a6},
+                 .account_creation={*a7},
+                 .account_status={*a}
                  };
 
     insert_hash_drivers(&d);

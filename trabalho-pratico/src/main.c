@@ -5,16 +5,16 @@
 #include "drivers_structure.h"
 #include "rides_structure.h"
 #include "users_structure.h"
-#include "parsing_rides.h"
+#include "parsing_drivers.h"
 #include "parsing_rides.h"
 #include "parsing_users.h"
-
 
 
 int main(int argc, char const *argv[]){
     
     init_hash_table_drivers();
     init_hash_table_users();
+    init_hash_table_rides();
     //init_hash_drivers_rides();
     //init_hash_users_rides();
 
@@ -36,4 +36,3 @@ int main(int argc, char const *argv[]){
      
     return 0;
 }
-

@@ -53,8 +53,8 @@ rides *procura_hash_user_rides(char *user){
     for (int i = 0; i < N_LINHAS; i++){
         int next_position = (i + aux) % N_LINHAS;
         if (hash_table_rides[next_position] == NULL) return false;
-        if (hash_table_rides[next_position] != NULL && strncmp(hash_table_rides[aux]->user, user, MAX_INFO)==0){
-            return hash_table_rides[aux];
+        if (hash_table_rides[next_position] != NULL && strncmp(hash_table_rides[next_position]->user, user, MAX_INFO)==0){
+            return hash_table_rides[next_position];
         }
     }
     return NULL;

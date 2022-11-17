@@ -17,7 +17,7 @@ typedef struct{
     char comment[MAX_INFO];  
 } rides;
 
-void read_store_drivers();
+void read_store_rides();
 void analisa_linha_rides(char line[150]);
 
 #endif
