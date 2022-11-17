@@ -32,7 +32,7 @@ void querie3(char line[100])
   
 }
 
-void read_exe_queries(char *argv){
+void read_exe_queries(char const *argv){
 
     char line[100],line2[100];
     int querie,i;

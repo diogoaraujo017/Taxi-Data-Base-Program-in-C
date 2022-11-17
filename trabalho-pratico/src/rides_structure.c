@@ -2,9 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include "rides_structure.h"
+#include "parsing_rides.h"
 #include <stdint.h>
 #include <stdbool.h>
-
 
 
 

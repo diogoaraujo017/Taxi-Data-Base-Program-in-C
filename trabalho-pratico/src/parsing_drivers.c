@@ -5,38 +5,25 @@
 #include <dirent.h>
 
 
-typedef struct{
-    char id[MAX_INFO];
-    char name[MAX_INFO];
-    char birth_day[MAX_INFO];
-    char gender;
-    char car_class[MAX_INFO];
-    char license_plate[MAX_INFO];
-    char account_creation[MAX_INFO];  
-    char account_status[MAX_INFO];
-} drivers;
-
 void read_store_drivers(){
-    FILE *drivers;
+    FILE *driversF;
     char line[150];
     init_hash_table_drivers();
-    drivers = fopen("drivers.scv", "r");
+    driversF = fopen("drivers.scv", "r");
 
-    if(drivers == NULL) return 1;
+    fgets(line, 150, driversF);
 
-    fgets(line, 150, drivers);
-
-    while (fgets(line, 150, drivers)){
+    while (fgets(line, 150, driversF)){
         analisa_linha_drivers(line);
     }
-    fclose(drivers);
+    fclose(driversF);
 }
 
 void analisa_linha_drivers(char line[150]){
     char a[50], a1[50],a2[50],a3[50],a4[50],a5[50],a6[50],a7[50];
     int i,j;
     int aux=1;
-    for(i=0,j=0;i<=line[i]!='\0';i++,j++){
+    for(i=0,j=0;(i<=line[i])!='\0';i++,j++){
         if (line[i]==';'){
 
             a[j]='\0';
@@ -74,21 +61,19 @@ void analisa_linha_drivers(char line[150]){
         a[j]=line[i];
 
     }
-    drivers d = {
-                
-                 .id=convertToString(a1,50/sizeof(char)),
-                 .name=convertToString(a2,50/sizeof(char)),
-                 .birth_day=convertToString(a3,50/sizeof(char)),
+    drivers d = {.id=*a1,
+                 .name=*a2,
+                 .birth_day=*a3,
                  .gender=a4[0],
-                 .car_class=convertToString(a5,50/sizeof(char)),
-                 .license_plate=convertToString(a6,50/sizeof(char)),
-                 .account_creation=convertToString(a7,50/sizeof(char)),
-                 .account_status=convertToString(a,50/sizeof(char))
-                 
+                 .car_class=*a5,
+                 .license_plate=*a6,
+                 .account_creation=*a7,
+                 .account_status=*a
                  };
 
     insert_hash_drivers(&d);
 
 }
+
 
 

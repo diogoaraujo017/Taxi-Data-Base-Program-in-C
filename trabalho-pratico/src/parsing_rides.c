@@ -2,41 +2,28 @@
 #include <stdio.h>
 #include "parsing_rides.h"
 #include <string.h>
+#include <dirent.h>
 
 
-typedef struct{
-    char id[MAX_INFO];
-    char date[MAX_INFO];
-    char driver[MAX_INFO];
-    char user[MAX_INFO];
-    char city[MAX_INFO];
-    int distance;
-    int score_user;
-    int score_driver;
-    double tip;
-    char comment[MAX_INFO];  
-} rides;
-
-void rides_file_open(){
-    FILE *rides;
+void read_store_rides(){
+    FILE *ridesF;
     char line[150];
     init_hash_table_rides();
-    rides = fopen("rides.scv", "r");
+    ridesF = fopen("rides.scv", "r");
 
-    if(rides == NULL) return 1;
+    fgets(line, 150, ridesF);
 
-    fgets(line, 150, rides);
-
-    while (fgets(line, 150, rides)){
-        analisa_linha(line);
+    while (fgets(line, 150, ridesF)){
+        analisa_linha_rides(line);
     }
+    fclose(ridesF);
 }
 
 void analisa_linha_rides(char line[150]){
     char a[100], a1[50],a2[50],a3[50],a4[50],a5[50],a6[50],a7[50],a8[50],a9[50];
     int i,j;
     int aux=1;
-    for(i=0,j=0;i<=line[i]!='\0';i++,j++){
+    for(i=0,j=0;(i<=line[i])!='\0';i++,j++){
         if (line[i]==';'){
 
             a[j]='\0';
@@ -83,21 +70,32 @@ void analisa_linha_rides(char line[150]){
         a[j]=line[i];
 
     }
-    rides r = {.id=convertToString(a1,50/sizeof(char)),
-                 .date=convertToString(a2,50/sizeof(char)),
-                 .driver=convertToString(a3,50/sizeof(char)),
-                 .user=convertToString(a4,50/sizeof(char)),
-                 .city=convertToString(a5,50/sizeof(char)),
+    rides r = {  .id=*a1,
+                 .date=*a2,
+                 .driver=*a3,
+                 .user=*a4,
+                 .city=*a5,
                  .distance=(int)a6[0],
                  .score_user=(int)a7[0],
                  .score_driver=(int)a8[0],
                  .tip=(double)a9[0],
-                 .comment=convertToString(a,50/sizeof(char))
+                 .comment=*a
                  };
 
-    insert_hash_drivers(&r);
+    insert_hash_rides(&r);
 
 }
 
 
+    // rides r = {.id=convertToString(a1,50/sizeof(char)),
+    //              .date=convertToString(a2,50/sizeof(char)),
+    //              .driver=convertToString(a3,50/sizeof(char)),
+    //              .user=convertToString(a4,50/sizeof(char)),
+    //              .city=convertToString(a5,50/sizeof(char)),
+    //              .distance=(int)a6[0],
+    //              .score_user=(int)a7[0],
+    //              .score_driver=(int)a8[0],
+    //              .tip=(double)a9[0],
+    //              .comment=convertToString(a,50/sizeof(char))
+    //              };
 
