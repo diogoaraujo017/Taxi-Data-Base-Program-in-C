@@ -11,26 +11,21 @@ void querie1(char line[100]){
     
     if(line[0]=='0') {        
         d = procura_hash_drivers(line);
-        if(d!=NULL && strcmp(d->account_status,"active")) {
+        if(d!=NULL && strcmp(converte(d->account_status),"active"))  {
 
         }
     }
     else {                      
         u = procura_hash_users(line);
-        if(u!=NULL && strcmp(u->account_status,"active")) {
+        if(u!=NULL && strcmp(converte(u->account_status),"active"))  {
 
         }
     }                      
 }
-void querie2(char line[100])
-{
-   
-}
 
-void querie3(char line[100])
-{
-  
-}
+void querie2(char line[100]){}
+
+void querie3(char line[100]){}
 
 void read_exe_queries(char const *argv){
 

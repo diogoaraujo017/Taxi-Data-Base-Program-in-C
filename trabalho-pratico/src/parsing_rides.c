@@ -83,7 +83,8 @@ void analisa_linha_rides(char line[150]){
                  .comment={*a}
                  };
 
-    insert_hash_rides(&r);
+    insert_rides_drivers(&r);
+    insert_rides_users(&r);
 
 }
 
