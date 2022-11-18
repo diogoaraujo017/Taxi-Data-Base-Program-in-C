@@ -16,14 +16,14 @@ void querie1(char line[100],FILE* file){
         d = procura_hash_drivers(line);
         if(d!=NULL && strcmp(converte(d->account_status),"active")){
             drivers_q1 d1 = calcula_hash_rides_drivers(d->id);
-            printf("%s;%c;%d;%.3f;%d;%.3f",d1.name,d1.gender,d1.age,d1.avaliacao_media,d1.numero_viagens,d1.total_auferido);
+            printf("%s;%c;%d;%.3f;%d;%.3f\n",d1.name,d1.gender,d1.age,d1.avaliacao_media,d1.numero_viagens,d1.total_auferido);
         }
     }
     else {                      
         u = procura_hash_users(line);
         if(u!=NULL && strcmp(converte(u->account_status),"active")){
             users_q1 u1 = calcula_hash_rides_users(u->name);
-            printf("%s;%c;%d;%.3f;%d;%.3f",u1.name,u1.gender,u1.age,u1.avaliacao_media,u1.numero_viagens,u1.total_gasto);
+            printf("%s;%c;%d;%.3f;%d;%.3f\n",u1.name,u1.gender,u1.age,u1.avaliacao_media,u1.numero_viagens,u1.total_gasto);
         }
     }     
     fclose(file);
