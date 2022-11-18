@@ -18,7 +18,7 @@ void read_store_users(){
 }
 
 void analisa_linha_users(char line[150]){
-    char a[50], a1[50],a2[50],a3[50],a4[50],a5[50];
+    char a[50], a1[50],a2[50],a3[50],a4[50],a5[50],a6[50];
     int i,j;
     int aux=1;
     for(i=0,j=0;(i<=line[i])!='\0';i++,j++){
@@ -43,6 +43,9 @@ void analisa_linha_users(char line[150]){
             case 5:
                 strcpy(a5,a);
                 break;
+            case 6:
+                strcpy(a6,a);
+                break;
             default:
                 break;
             }
@@ -55,9 +58,10 @@ void analisa_linha_users(char line[150]){
     }
     users u = {.username={*a1},
                .name={*a2},
-               .birth_day={*a3},
-               .account_creation={*a4},
-               .pay_method={*a5},
+               .gender=a3[0],
+               .birth_day={*a4},
+               .account_creation={*a5},
+               .pay_method={*a6},
                .account_status={*a}
               };
 

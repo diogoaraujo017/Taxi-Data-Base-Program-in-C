@@ -7,6 +7,7 @@
 typedef struct{
     char username[MAX_INFO];
     char name[MAX_INFO];
+    char gender;
     char birth_day[MAX_INFO];
     char account_creation[MAX_INFO]; 
     char pay_method[MAX_INFO];

@@ -7,6 +7,7 @@
 #include <stdbool.h>
 
 
+
 //Inicia a hash_table
 drivers *hash_table_drivers[N_LINHAS2];
 

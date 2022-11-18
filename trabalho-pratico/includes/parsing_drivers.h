@@ -4,6 +4,7 @@
 #define MAX_INFO 50
 #define N_LINHAS2 10000
 
+
 typedef struct{
     char id[MAX_INFO];
     char name[MAX_INFO];

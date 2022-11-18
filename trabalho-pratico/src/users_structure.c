@@ -7,6 +7,7 @@
 #include <stdbool.h>
 
 
+
 //Inicia a hash_table
 users *hash_table_users[N_LINHAS1];
 

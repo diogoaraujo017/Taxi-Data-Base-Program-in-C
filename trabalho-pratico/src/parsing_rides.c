@@ -1,6 +1,7 @@
 #include "rides_structure.h"
 #include "parsing_rides.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
 
@@ -69,15 +70,16 @@ void analisa_linha_rides(char line[150]){
         a[j]=line[i];
 
     }
+    char *ptr;
     rides r = {  .id={*a1},
                  .date={*a2},
                  .driver={*a3},
                  .user={*a4},
                  .city={*a5},
-                 .distance=(int)a6[0],
-                 .score_user=(int)a7[0],
-                 .score_driver=(int)a8[0],
-                 .tip=(double)a9[0],
+                 .distance=atoi(a6),
+                 .score_user=(a7[0]-'0'),
+                 .score_driver=(a8[0]-'0'),
+                 .tip=strtod(a9,&ptr),
                  .comment={*a}
                  };
 
@@ -86,15 +88,4 @@ void analisa_linha_rides(char line[150]){
 }
 
 
-    // rides r = {.id=convertToString(a1,50/sizeof(char)),
-    //              .date=convertToString(a2,50/sizeof(char)),
-    //              .driver=convertToString(a3,50/sizeof(char)),
-    //              .user=convertToString(a4,50/sizeof(char)),
-    //              .city=convertToString(a5,50/sizeof(char)),
-    //              .distance=(int)a6[0],
-    //              .score_user=(int)a7[0],
-    //              .score_driver=(int)a8[0],
-    //              .tip=(double)a9[0],
-    //              .comment=convertToString(a,50/sizeof(char))
-    //              };
 
