@@ -27,7 +27,7 @@ void querie1(char line[100],FILE* file){
         }
     }     
     fclose(file);
-    closedir(dir);                 
+    closedir(dir);
 }
 
 void querie2(char line[100],FILE* file){}

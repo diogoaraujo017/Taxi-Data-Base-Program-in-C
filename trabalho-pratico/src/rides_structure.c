@@ -109,7 +109,7 @@ bool insert_rides_users(rides *r){
 drivers_q1 calcula_hash_rides_drivers(char *id){
     int aux = hash_drivers_rides(id);
     drivers d = *procura_hash_drivers(id);
-    drivers_q1 result = {.name={*(d.name)},
+    drivers_q1 result = {.name=d.name,
                          .gender=d.gender,
                          .age=calculaIdade((d.birth_day)),
                          .avaliacao_media=0.000,
@@ -120,9 +120,9 @@ drivers_q1 calcula_hash_rides_drivers(char *id){
         if (hash_rides_drivers[next_position] != NULL && strncmp(hash_rides_drivers[next_position]->driver, id, MAX_INFO)==0){
             result.avaliacao_media += hash_rides_drivers[next_position]->score_driver;    
             result.numero_viagens++;
-            if ((strcmp (converte((*procura_hash_drivers(hash_rides_users[next_position]->driver)).car_class),"basic"))==0) result.total_auferido += 3.25 + 0.62*(hash_rides_users[next_position]->distance) + (hash_rides_users[next_position]->tip);
-            else if ((strcmp (converte((*procura_hash_drivers(hash_rides_users[next_position]->driver)).car_class),"green"))==0) result.total_auferido += 4.00 + 0.79*(hash_rides_users[next_position]->distance) + (hash_rides_users[next_position]->tip);
-            else if ((strcmp (converte((*procura_hash_drivers(hash_rides_users[next_position]->driver)).car_class),"premium"))==0) result.total_auferido += 5.20 + 0.94*(hash_rides_users[next_position]->distance) + (hash_rides_users[next_position]->tip);    
+            if ((strcmp (converte((*procura_hash_drivers(hash_rides_drivers[next_position]->driver)).car_class),"basic"))==0) result.total_auferido += 3.25 + 0.62*(hash_rides_drivers[next_position]->distance) + (hash_rides_drivers[next_position]->tip);
+            else if ((strcmp (converte((*procura_hash_drivers(hash_rides_drivers[next_position]->driver)).car_class),"green"))==0) result.total_auferido += 4.00 + 0.79*(hash_rides_drivers[next_position]->distance) + (hash_rides_drivers[next_position]->tip);
+            else if ((strcmp (converte((*procura_hash_drivers(hash_rides_drivers[next_position]->driver)).car_class),"premium"))==0) result.total_auferido += 5.20 + 0.94*(hash_rides_drivers[next_position]->distance) + (hash_rides_drivers[next_position]->tip);    
         }
     }
     
@@ -134,7 +134,7 @@ drivers_q1 calcula_hash_rides_drivers(char *id){
 users_q1 calcula_hash_rides_users(char *user){
     int aux = hash_user_rides(user);
     users u = *procura_hash_users(user);
-    users_q1 result = {.name={*(u.name)},
+    users_q1 result = {.name=u.name,
                        .gender=u.gender,
                        .age=calculaIdade((u.birth_day)),
                        .avaliacao_media=0.000,

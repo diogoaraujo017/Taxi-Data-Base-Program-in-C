@@ -9,18 +9,18 @@
 void read_store_drivers(){
     FILE *driversF;
     char line[150];
-    driversF = fopen("drivers.scv", "r");
+    driversF = fopen("drivers.csv", "r");
 
     fgets(line, 150, driversF);
 
-    while (fgets(line, 150, driversF)){
+    while (fgets(line, 150, driversF)!=NULL){
         analisa_linha_drivers(line);
     }
     fclose(driversF);
 }
 
 void analisa_linha_drivers(char line[150]){
-    char a[50], a1[50],a2[50],a3[50],a4[50],a5[50],a6[50],a7[50];
+    char a[100], a1[100],a2[100],a3[100],a4[100],a5[100],a6[100],a7[100];
     int i,j;
     int aux=1;
     for(i=0,j=0;(i<=line[i])!='\0';i++,j++){
@@ -58,22 +58,20 @@ void analisa_linha_drivers(char line[150]){
             aux++;
             j=0;
         }
-        a[j]=line[i];
+        else a[j]=line[i];
 
     }
-    drivers d = {.id={*a1},
-                 .name={*a2},
-                 .birth_day={*a3},
+    a[j]='\0';
+    drivers d = {.id=a1,
+                 .name=a2,
+                 .birth_day=a3,
                  .gender=a4[0],
-                 .car_class={*a5},
-                 .license_plate={*a6},
-                 .account_creation={*a7},
-                 .account_status={*a}
+                 .car_class=a5,
+                 .license_plate=a6,
+                 .account_creation=a7,
+                 .account_status=a
                  };
 
     insert_hash_drivers(&d);
 
 }
-
-
-

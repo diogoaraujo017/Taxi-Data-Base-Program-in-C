@@ -24,13 +24,12 @@ unsigned int hash_users(char *username){
     return num_hash;
 }
 
-//Inicia a hash_table colocando todas as linhas a NULL
-void init_hash_table_users(){
-    for (int i = 0; i < N_LINHAS1; i++)
-    {
+void init_hash_table_users() {
+    for (int i = 0; i < N_LINHAS1; ++i) {
         hash_table_users[i] = NULL;
-    }   
+    }
 }
+
 
 //Insere linhas na hash_table se essa linhas não estiver ocupada (Se return for true)
 bool insert_hash_users(users *u){

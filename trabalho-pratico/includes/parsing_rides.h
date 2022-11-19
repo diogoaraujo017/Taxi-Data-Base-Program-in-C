@@ -1,24 +1,25 @@
 #ifndef PARSING_RIDES_H
 #define PARSING_RIDES_H
 
-#define MAX_INFO 50
-#define N_LINHAS 1000000
+#define MAX_INFO 100
+#define N_LINHAS 1000000  
+
 
 typedef struct{
-    char id[MAX_INFO];
-    char date[MAX_INFO];
-    char driver[MAX_INFO];
-    char user[MAX_INFO];
-    char city[MAX_INFO];
+    char *id;
+    char *date;
+    char *driver;
+    char *user;
+    char *city;
     int distance;
     int score_user;
     int score_driver;
     double tip;
-    char comment[MAX_INFO];  
+    char *comment;  
 }rides;
 
 typedef struct drivers_q1{
-    char name[MAX_INFO];
+    char *name;
     char gender;
     int age;
     double avaliacao_media;
@@ -27,7 +28,7 @@ typedef struct drivers_q1{
 }drivers_q1;
 
 typedef struct users_q1{
-    char name[MAX_INFO];
+    char *name;
     char gender;
     int age;
     double avaliacao_media;

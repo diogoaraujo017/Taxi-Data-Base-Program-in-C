@@ -17,7 +17,7 @@ int main(int argc, char const *argv[]){
     init_hash_rides_drivers();
     init_hash_rides_users();
 
-    DIR* dir = opendir(argv[1]);
+    DIR* dir = opendir(argv[0]);
     if (dir == NULL) {
         return 1;
     }
@@ -26,11 +26,11 @@ int main(int argc, char const *argv[]){
     read_store_rides();
     closedir(dir);
      
-    DIR* dir2 = opendir(argv[2]);
+    DIR* dir2 = opendir(argv[1]);
     if (dir2 == NULL) {
         return 1;
     }
-    read_exe_queries(argv[2]);
+    read_exe_queries(argv[1]);
     closedir(dir2);
      
     return 0;

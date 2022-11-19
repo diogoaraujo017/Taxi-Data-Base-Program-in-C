@@ -9,18 +9,18 @@
 void read_store_rides(){
     FILE *ridesF;
     char line[150];
-    ridesF = fopen("rides.scv", "r");
+    ridesF = fopen("rides.csv", "r");
 
     fgets(line, 150, ridesF);
 
-    while (fgets(line, 150, ridesF)){
+    while (fgets(line, 150, ridesF)!=NULL){
         analisa_linha_rides(line);
     }
     fclose(ridesF);
 }
 
 void analisa_linha_rides(char line[150]){
-    char a[100], a1[50],a2[50],a3[50],a4[50],a5[50],a6[50],a7[50],a8[50],a9[50];
+    char a[100], a1[100],a2[100],a3[100],a4[100],a5[100],a6[100],a7[100],a8[100],a9[100];
     int i,j;
     int aux=1;
     for(i=0,j=0;(i<=line[i])!='\0';i++,j++){
@@ -53,9 +53,6 @@ void analisa_linha_rides(char line[150]){
                 break;
             case 8:    
                 strcpy(a8,a);
-                if (a[i+1]=='\0'){
-                    a9[0]='\0';
-                }
                 break;
             case 9:    
                 strcpy(a9,a);
@@ -67,20 +64,21 @@ void analisa_linha_rides(char line[150]){
             aux++;
             j=0;
         }
-        a[j]=line[i];
+        else a[j]=line[i];
 
     }
+    a[j]='\0';
     char *ptr;
-    rides r = {  .id={*a1},
-                 .date={*a2},
-                 .driver={*a3},
-                 .user={*a4},
-                 .city={*a5},
+    rides r = {  .id=a1,
+                 .date=a2,
+                 .driver=a3,
+                 .user=a4,
+                 .city=a5,
                  .distance=atoi(a6),
                  .score_user=(a7[0]-'0'),
                  .score_driver=(a8[0]-'0'),
                  .tip=strtod(a9,&ptr),
-                 .comment={*a}
+                 .comment=a
                  };
 
     insert_rides_drivers(&r);

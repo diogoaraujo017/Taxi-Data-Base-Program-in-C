@@ -1,17 +1,17 @@
 #ifndef PARSING_USERS_H
 #define PARSING_USERS_H
 
-#define MAX_INFO 50
+#define MAX_INFO 100
 #define N_LINHAS1 100000
 
 typedef struct{
-    char username[MAX_INFO];
-    char name[MAX_INFO];
+    char *username;
+    char *name;
     char gender;
-    char birth_day[MAX_INFO];
-    char account_creation[MAX_INFO]; 
-    char pay_method[MAX_INFO];
-    char account_status[MAX_INFO];
+    char *birth_day;
+    char *account_creation; 
+    char *pay_method;
+    char *account_status;
 }users;
 
 
