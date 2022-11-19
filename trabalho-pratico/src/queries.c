@@ -19,14 +19,14 @@ void querie1(char line[],char *file){
         d = procura_hash_drivers(line);
         if(d!=NULL && strcmp(converte(d->account_status),"active")){
             drivers_q1 d1 = calcula_hash_rides_drivers(d->id);
-            printf("%s;%c;%d;%.3f;%d;%.3f\n",d1.name,d1.gender,d1.age,d1.avaliacao_media,d1.numero_viagens,d1.total_auferido);
+            fprintf("%s;%c;%d;%.3f;%d;%.3f\n",d1.name,d1.gender,d1.age,d1.avaliacao_media,d1.numero_viagens,d1.total_auferido);
         }
     }
     else {                      
         u = procura_hash_users(line);
         if(u!=NULL && strcmp(converte(u->account_status),"active")){
             users_q1 u1 = calcula_hash_rides_users(u->name);
-            printf("%s;%c;%d;%.3f;%d;%.3f\n",u1.name,u1.gender,u1.age,u1.avaliacao_media,u1.numero_viagens,u1.total_gasto);
+            fprintf("%s;%c;%d;%.3f;%d;%.3f\n",u1.name,u1.gender,u1.age,u1.avaliacao_media,u1.numero_viagens,u1.total_gasto);
         }
     }     
     fclose(NewFile);
@@ -45,7 +45,7 @@ void read_exe_queries(char *file){
     char querie;
     int i;
     
-    while(fgets(line, 150, stdin)!=NULL){
+    while(fgets(line, 150, File1)!=NULL){
 
         int x=0;
         x++;
@@ -59,7 +59,7 @@ void read_exe_queries(char *file){
             line2[i-2] = line[i];
         }
 
-        line2[i] = '\0';
+        line2[i-3] = '\0';
 
         switch (querie)
         {

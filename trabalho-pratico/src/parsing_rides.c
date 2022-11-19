@@ -1,5 +1,6 @@
 #include "rides_structure.h"
 #include "parsing_rides.h"
+#include "parsing_users.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,12 +9,12 @@
 
 void read_store_rides(){
     FILE *ridesF;
-    char line[150];
+    char line[250];
     ridesF = fopen("rides.csv", "r");
 
-    fgets(line, 150, ridesF);
+    fgets(line, 250, ridesF);
 
-    while (fgets(line, 150, ridesF)!=NULL){
+    while (fgets(line, 250, ridesF)!=NULL){
         analisa_linha_rides(line);
     }
     fclose(ridesF);
@@ -67,18 +68,18 @@ void analisa_linha_rides(char line[]){
         else a[j]=line[i];
 
     }
-    a[j]='\0';
+    a[j-1]='\0';
     char *ptr;
-    rides r = {  .id=a1,
-                 .date=a2,
-                 .driver=a3,
-                 .user=a4,
-                 .city=a5,
+    rides r = {  .id=filtra(a1),
+                 .date=filtra(a2),
+                 .driver=filtra(a3),
+                 .user=filtra(a4),
+                 .city=filtra(a5),
                  .distance=atoi(a6),
                  .score_user=(a7[0]-'0'),
                  .score_driver=(a8[0]-'0'),
                  .tip=strtod(a9,&ptr),
-                 .comment=a
+                 .comment=filtra(a)
                  };
 
     insert_rides_drivers(&r);

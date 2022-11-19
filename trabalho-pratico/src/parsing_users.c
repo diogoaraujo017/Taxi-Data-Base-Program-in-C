@@ -3,15 +3,29 @@
 #include "parsing_users.h"
 #include <string.h>
 #include <dirent.h>
+#include <stdlib.h>
+
+char* filta(char dest[]){
+    int i,N=0;
+    for(i=0;dest[i]!='\0';i++){
+        N++;
+    }
+    char *str = malloc(N+1);
+    for(i=0;dest[i]!='\0';i++){
+        str[i]=dest[i];
+    }
+    str[i]='\0';
+    return str;
+}
 
 void read_store_users(){
     FILE *usersF;
-    char line[150];
+    char line[250];
     usersF = fopen("users.csv", "r");
 
-    fgets(line, 150, usersF);
+    fgets(line, 250, usersF);
 
-    while (fgets(line, 150, usersF)!=NULL){
+    while (fgets(line, 250, usersF)!=NULL){
         analisa_linha_users(line);
        }
     fclose(usersF);
@@ -29,45 +43,43 @@ void analisa_linha_users(char line[]){
             switch (aux)
             {
             case 1:
-                strcpy(a1,a);
+                strcpy(a1, a);
                 break;
             case 2:    
-                strcpy(a2,a);
+                strcpy(a2, a);
                 break;
             case 3:
-                strcpy(a3,a);
+                strcpy(a3, a);
                 break;
             case 4:    
-                strcpy(a4,a);
+                strcpy(a4, a);
                 break;
             case 5:
-                strcpy(a5,a);
+                strcpy(a5, a);
                 break;
             case 6:
-                strcpy(a6,a);
+                strcpy(a6, a);
                 break;
             default:
                 break;
             }
-
             aux++;
             j=-1;
         }
         else a[j]=line[i];
 
     }
-    a[j]='\0';
-    users u = {.username=a1,
-               .name=a2,
+    a[j-1]='\0';
+    users u = {.username=filta(a1),
+               .name=filta(a2),
                .gender=a3[0],
-               .birth_day=a4,
-               .account_creation=a5,
-               .pay_method=a6,
-               .account_status=a
+               .birth_day=filta(a4),
+               .account_creation=filta(a5),
+               .pay_method=filta(a6),
+               .account_status=filta(a)
               };
-
+    
     insert_hash_users(&u);
-
 }
 
 

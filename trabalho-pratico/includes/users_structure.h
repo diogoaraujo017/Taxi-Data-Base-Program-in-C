@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include "parsing_users.h"
 
-
 unsigned int hash_users(char *username);
 void init_hash_table_users();
 bool insert_hash_users(users *u);

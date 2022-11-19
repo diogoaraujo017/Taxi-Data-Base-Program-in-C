@@ -117,7 +117,7 @@ drivers_q1 calcula_hash_rides_drivers(char *id){
                          .total_auferido=0.000};
     for (int i = 0; i < N_LINHAS; i++){
         int next_position = (i + aux) % N_LINHAS;
-        if (hash_rides_drivers[next_position] != NULL && strncmp(hash_rides_drivers[next_position]->driver, id, MAX_INFO)==0){
+        if (strncmp(hash_rides_drivers[next_position]->driver, id, MAX_INFO)==0){
             result.avaliacao_media += hash_rides_drivers[next_position]->score_driver;    
             result.numero_viagens++;
             if ((strcmp (converte((*procura_hash_drivers(hash_rides_drivers[next_position]->driver)).car_class),"basic"))==0) result.total_auferido += 3.25 + 0.62*(hash_rides_drivers[next_position]->distance) + (hash_rides_drivers[next_position]->tip);
@@ -142,7 +142,7 @@ users_q1 calcula_hash_rides_users(char *user){
                        .total_gasto=0.000};
     for (int i = 0; i < N_LINHAS; i++){
         int next_position = (i + aux) % N_LINHAS;
-        if (hash_rides_users[next_position] != NULL && strncmp(hash_rides_users[next_position]->user, user, MAX_INFO)==0){
+        if (strncmp(hash_rides_users[next_position]->user, user, MAX_INFO)==0){
             result.avaliacao_media += hash_rides_users[next_position]->score_user;    
             result.numero_viagens++;
             if ((strcmp (converte((*procura_hash_drivers(hash_rides_users[next_position]->driver)).car_class),"basic"))==0) result.total_gasto += 3.25 + 0.62*(hash_rides_users[next_position]->distance);

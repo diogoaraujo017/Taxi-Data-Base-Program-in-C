@@ -1,19 +1,19 @@
 #include "drivers_structure.h"
 #include <stdio.h>
+#include "parsing_users.h"
 #include "parsing_drivers.h"
 #include <string.h>
 #include <dirent.h>
-
-
+#include <stdlib.h>
 
 void read_store_drivers(){
     FILE *driversF;
-    char line[150];
+    char line[250];
     driversF = fopen("drivers.csv", "r");
 
-    fgets(line, 150, driversF);
+    fgets(line, 250, driversF);
 
-    while (fgets(line, 150, driversF)!=NULL){
+    while (fgets(line, 250, driversF)!=NULL){
         analisa_linha_drivers(line);
     }
     fclose(driversF);
@@ -61,15 +61,15 @@ void analisa_linha_drivers(char line[]){
         else a[j]=line[i];
 
     }
-    a[j]='\0';
-    drivers d = {.id=a1,
-                 .name=a2,
-                 .birth_day=a3,
+    a[j-1]='\0';
+    drivers d = {.id=filta(a1),
+                 .name=filta(a2),
+                 .birth_day=filta(a3),
                  .gender=a4[0],
-                 .car_class=a5,
-                 .license_plate=a6,
-                 .account_creation=a7,
-                 .account_status=a
+                 .car_class=filta(a5),
+                 .license_plate=filta(a6),
+                 .account_creation=filta(a7),
+                 .account_status=filta(a)
                  };
 
     insert_hash_drivers(&d);

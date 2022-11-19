@@ -16,7 +16,6 @@ typedef struct{
     char *account_status;
 } drivers;
 
-
 void read_store_drivers();
 void analisa_linha_drivers(char line[150]);
 

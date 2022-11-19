@@ -26,8 +26,7 @@ unsigned int hash_drivers(char *id){
 
 //Inicia a hash_table colocando todas as linhas a NULL
 void init_hash_table_drivers(){
-    for (int i = 0; i < N_LINHAS2; i++)
-    {
+    for (int i = 0; i < N_LINHAS2; i++){
         hash_table_drivers[i] = NULL;
     }   
 }
@@ -51,8 +50,7 @@ drivers *procura_hash_drivers(char *id){
     int index = hash_drivers(id);
     for (int i = 0; i < N_LINHAS2; i++){
         int next_position = (i + index) % N_LINHAS2;
-        if (hash_table_drivers[next_position] == NULL) return false;
-        if (hash_table_drivers[next_position] != NULL && strncmp(hash_table_drivers[next_position]->id, id, MAX_INFO)==0){
+        if (strncmp(hash_table_drivers[next_position]->id, id, MAX_INFO)==0){
             return hash_table_drivers[next_position];
         }
     }

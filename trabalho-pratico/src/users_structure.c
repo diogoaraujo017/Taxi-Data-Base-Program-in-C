@@ -1,5 +1,5 @@
-#include <stdio.h>
 #include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include "users_structure.h"
 #include "parsing_users.h"
@@ -25,7 +25,7 @@ unsigned int hash_users(char *username){
 }
 
 void init_hash_table_users() {
-    for (int i = 0; i < N_LINHAS1; ++i) {
+    for (int i = 0; i < N_LINHAS1; i++) {
         hash_table_users[i] = NULL;
     }
 }
@@ -51,8 +51,7 @@ users *procura_hash_users(char *username){
     int aux = hash_users(username);
     for (int i = 0; i < N_LINHAS1; i++){
         int next_position = (i + aux) % N_LINHAS1;
-        if (hash_table_users[next_position] == NULL) return false;
-        if (hash_table_users[next_position] != NULL && strncmp(hash_table_users[next_position]->username, username, MAX_INFO)==0){
+        if (strncmp(hash_table_users[next_position]->username, username, MAX_INFO)==0){
             return hash_table_users[next_position];
         }
     }
