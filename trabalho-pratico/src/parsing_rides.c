@@ -19,11 +19,11 @@ void read_store_rides(){
     fclose(ridesF);
 }
 
-void analisa_linha_rides(char line[150]){
+void analisa_linha_rides(char line[]){
     char a[100], a1[100],a2[100],a3[100],a4[100],a5[100],a6[100],a7[100],a8[100],a9[100];
     int i,j;
     int aux=1;
-    for(i=0,j=0;(i<=line[i])!='\0';i++,j++){
+    for(i=0,j=0;line[i]!='\0';i++,j++){
         if (line[i]==';'){
 
             a[j]='\0';
@@ -62,7 +62,7 @@ void analisa_linha_rides(char line[150]){
             }
 
             aux++;
-            j=0;
+            j=-1;
         }
         else a[j]=line[i];
 

@@ -17,21 +17,25 @@ int main(int argc, char const *argv[]){
     init_hash_rides_drivers();
     init_hash_rides_users();
 
-    DIR* dir = opendir(argv[0]);
-    if (dir == NULL) {
-        return 1;
-    }
+    // DIR* dir = opendir(argv[0]);
+    // if (dir == NULL) {
+    //     return 1;
+    // }
+
     read_store_drivers();
     read_store_users();
     read_store_rides();
-    closedir(dir);
+
+    //closedir(dir);
      
-    DIR* dir2 = opendir(argv[1]);
-    if (dir2 == NULL) {
-        return 1;
-    }
-    read_exe_queries(argv[1]);
-    closedir(dir2);
+    // DIR* dir2 = opendir(argv[1]);
+    // if (dir2 == NULL) {
+    //     return 1;
+    // }
+
+    read_exe_queries("tests.txt");
+    
+    //closedir(dir2);
      
     return 0;
 }

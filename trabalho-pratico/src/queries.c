@@ -6,11 +6,14 @@
 #include "users_structure.h"
 #include <dirent.h>
 
-void querie1(char line[100],FILE* file){
+void querie1(char line[],char *file){
+
     drivers *d;
     users *u;   
 
-    DIR* dir = opendir("Resultados");
+    FILE * NewFile;
+    NewFile = fopen(file, "w");
+    //DIR* dir = opendir("Resultados/.");
 
     if(line[0]=='0') {        
         d = procura_hash_drivers(line);
@@ -26,28 +29,29 @@ void querie1(char line[100],FILE* file){
             printf("%s;%c;%d;%.3f;%d;%.3f\n",u1.name,u1.gender,u1.age,u1.avaliacao_media,u1.numero_viagens,u1.total_gasto);
         }
     }     
-    fclose(file);
-    closedir(dir);
+    fclose(NewFile);
+    //closedir(dir);
 }
 
-void querie2(char line[100],FILE* file){}
+void querie2(char line[],char *file){}
 
-void querie3(char line[100],FILE* file){}
+void querie3(char line[],char *file){}
 
-void read_exe_queries(char const *argv){
+void read_exe_queries(char *file){
 
+    FILE* File1;
+    File1 = fopen("tests.txt","r");
     char line[100],line2[100];
-    int querie,i;
+    char querie;
+    int i;
     
-    while(fgets(line, 100, stdin)!=NULL){
+    while(fgets(line, 150, stdin)!=NULL){
 
         int x=0;
         x++;
         char buffer [50];
         snprintf(buffer, sizeof (buffer), "command%d_output.txt",x);
 
-        FILE * NewFile;
-        NewFile = fopen(buffer, "w");
 
         querie = line[0];
     
@@ -60,15 +64,15 @@ void read_exe_queries(char const *argv){
         switch (querie)
         {
         case '1':
-           querie1(line2,NewFile);
+           querie1(line2,buffer);
            break;
 
         case '2':
-           querie2(line2,NewFile);
+           querie2(line2,buffer);
            break;
 
         case '3':
-           querie3(line2,NewFile);
+           querie3(line2,buffer);
            break;
 
         default:
@@ -76,5 +80,6 @@ void read_exe_queries(char const *argv){
         }
   
     }
+    fclose(File1);
 
 }
