@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "users_structure.h"
+#include "rides_structure.h"
 #include "parsing_users.h"
 #include <stdint.h>
 #include <stdbool.h>
@@ -45,7 +46,7 @@ bool insert_hash_users(char *us,char *n,char g,char *b,char *ac,char *p,char *as
     for (int i=0;i < N_LINHAS1;i++){
         int next_position = (i + aux) % N_LINHAS1;
     
-        if (hash_table_users[next_position] == NULL){
+        if ((hash_table_users[next_position] == NULL)){
             hash_table_users[next_position] = u;
             return true;
         }

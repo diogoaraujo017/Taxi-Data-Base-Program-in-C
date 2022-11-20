@@ -22,15 +22,17 @@ void querie1(char *line,char *file){
     if(line[0]=='0') {        
         d = procura_hash_drivers(line);
         if(d!=NULL && (strcmp((converte(d->account_status)),"active")==0)){
-            drivers_q1 d1 = calcula_hash_rides_drivers(d->id);
-            fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",d1.name,d1.gender,d1.age,d1.avaliacao_media,d1.numero_viagens,d1.total_auferido);
+            drivers_q1 *d1 = procura_rides_drivers(line);
+            d1->avaliacao_media = d1->avaliacao_media/d1->numero_viagens;
+            fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",d->name,d->gender,calculaIdade(d->birth_day),d1->avaliacao_media,d1->numero_viagens,d1->total_auferido);
         }
     }
     else {                      
         u = procura_hash_users(line);
         if(u!=NULL && (strcmp((converte(u->account_status)),"active")==0)){
-            users_q1 u1 = calcula_hash_rides_users(u->username);
-            fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",u1.name,u1.gender,u1.age,u1.avaliacao_media,u1.numero_viagens,u1.total_gasto);
+            users_q1 *u1 = procura_rides_users(line);
+            u1->avaliacao_media = u1->avaliacao_media/u1->numero_viagens;
+            fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",u->name,u->gender,calculaIdade(u->birth_day),u1->avaliacao_media,u1->numero_viagens,u1->total_gasto);
         }
     }     
     fclose(NewFile);

@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "drivers_structure.h"
+#include "rides_structure.h"
 #include "parsing_drivers.h"
 #include <stdint.h>
 #include <stdbool.h>
@@ -45,7 +46,7 @@ bool insert_hash_drivers(char *id,char *n,char *b,char g,char *cc,char *lp,char 
     int aux = hash_drivers(id);
     for (int i=0;i < N_LINHAS2;i++){
         int next_position = (i + aux) % N_LINHAS2;
-        if (hash_table_drivers[next_position] == NULL){
+        if ((hash_table_drivers[next_position] == NULL)){
             hash_table_drivers[next_position] = d;
             return true;
         }

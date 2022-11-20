@@ -19,20 +19,14 @@ int main(int argc, char **argv){
     init_hash_rides_users();
     
     chdir(argv[0]);
-    // DIR* dir = opendir(argv[0]);
-    // if (dir == NULL) {
-    //     return 1;
-    // }
+   
     read_store_drivers();
     read_store_users();
     read_store_rides();
-    //closedir(dir);
+    
     chdir("trabalho-pratico");
     chdir(argv[1]);
-    // DIR* dir2 = opendir(argv[1]);
-    // if (dir2 == NULL) {
-    //     return 1;
-    // }
+   
     read_exe_queries(argv[1]);
     return 0;
 }
