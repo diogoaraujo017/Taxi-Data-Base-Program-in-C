@@ -14,7 +14,7 @@ typedef struct{
     char *account_status;
 }users;
 
-char* filta(char dest[]);
+char* filtra(char dest[]);
 void read_store_users();
 void analisa_linha_users(char line[150]);
 

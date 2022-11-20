@@ -5,7 +5,7 @@
 #include <dirent.h>
 #include <stdlib.h>
 
-char* filta(char dest[]){
+char* filtra(char dest[]){
     int i,N=0;
     for(i=0;dest[i]!='\0';i++){
         N++;
@@ -70,16 +70,7 @@ void analisa_linha_users(char line[]){
 
     }
     a[j-1]='\0';
-    users u = {.username=filta(a1),
-               .name=filta(a2),
-               .gender=a3[0],
-               .birth_day=filta(a4),
-               .account_creation=filta(a5),
-               .pay_method=filta(a6),
-               .account_status=filta(a)
-              };
-    
-    insert_hash_users(&u);
+    insert_hash_users(filtra(a1),filtra(a2),a3[0],filtra(a4),filtra(a5),filtra(a6),filtra(a));
 }
 
 

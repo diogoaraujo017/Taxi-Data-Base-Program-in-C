@@ -62,16 +62,6 @@ void analisa_linha_drivers(char line[]){
 
     }
     a[j-1]='\0';
-    drivers d = {.id=filta(a1),
-                 .name=filta(a2),
-                 .birth_day=filta(a3),
-                 .gender=a4[0],
-                 .car_class=filta(a5),
-                 .license_plate=filta(a6),
-                 .account_creation=filta(a7),
-                 .account_status=filta(a)
-                 };
-
-    insert_hash_drivers(&d);
+    insert_hash_drivers(filtra(a1),filtra(a2),filtra(a3),a4[0],filtra(a5),filtra(a6),filtra(a7),filtra(a));
 
 }

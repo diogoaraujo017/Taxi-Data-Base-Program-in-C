@@ -32,9 +32,17 @@ void init_hash_table_drivers(){
 }
 
 //Insere linhas na hash_table se essa linhas não estiver ocupada (Se return for true)
-bool insert_hash_drivers(drivers *d){
-    if (d==NULL) return false;
-    int aux = hash_drivers(d->id);
+bool insert_hash_drivers(char *id,char *n,char *b,char g,char *cc,char *lp,char *ac,char *as){
+    drivers *d = malloc(sizeof(drivers));
+    d->id = id;
+    d->name = n;
+    d->gender = g;
+    d->birth_day = b;
+    d->account_creation = ac;
+    d->car_class = cc;
+    d->license_plate = lp;
+    d->account_status = as;
+    int aux = hash_drivers(id);
     for (int i=0;i < N_LINHAS2;i++){
         int next_position = (i + aux) % N_LINHAS2;
         if (hash_table_drivers[next_position] == NULL){

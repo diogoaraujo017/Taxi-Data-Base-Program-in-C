@@ -77,9 +77,19 @@ void init_hash_rides_users(){
     }   
 }
 
-bool insert_rides_drivers(rides *r){
-    if (r==NULL) return false;
-    int aux = hash_drivers_rides(r->driver);
+bool insert_rides_drivers(char *id,char *dt,char *dr,char *u,char *ac,int dist,int su,int sd,double tip,char *cm){
+    rides *r = malloc(sizeof(rides));
+    r->id = id;
+    r->date = dt;
+    r->driver = dr;
+    r->user = u;
+    r->city = ac;
+    r->distance =dist;
+    r->score_user = su;
+    r->score_driver = sd;
+    r->tip = tip;
+    r->comment = cm;
+    int aux = hash_drivers_rides(dr);
     for (int i=0;i < N_LINHAS;i++){
         int next_position = (i + aux) % N_LINHAS;
     
@@ -91,9 +101,19 @@ bool insert_rides_drivers(rides *r){
     return false;
 }
 
-bool insert_rides_users(rides *r){
-    if (r==NULL) return false;
-    int aux = hash_user_rides(r->user);
+bool insert_rides_users(char *id,char *dt,char *dr,char *u,char *ac,int dist,int su,int sd,double tip,char *cm){
+    rides *r = malloc(sizeof(rides));
+    r->id = id;
+    r->date = dt;
+    r->driver = dr;
+    r->user = u;
+    r->city = ac;
+    r->distance =dist;
+    r->score_user = su;
+    r->score_driver = sd;
+    r->tip = tip;
+    r->comment = cm;
+    int aux = hash_user_rides(u);
     for (int i=0;i < N_LINHAS;i++){
         int next_position = (i + aux) % N_LINHAS;
     
@@ -111,7 +131,7 @@ drivers_q1 calcula_hash_rides_drivers(char *id){
     drivers d = *procura_hash_drivers(id);
     drivers_q1 result = {.name=d.name,
                          .gender=d.gender,
-                         .age=calculaIdade((d.birth_day)),
+                         .age=calculaIdade(d.birth_day),
                          .avaliacao_media=0.000,
                          .numero_viagens=0,
                          .total_auferido=0.000};
@@ -136,7 +156,7 @@ users_q1 calcula_hash_rides_users(char *user){
     users u = *procura_hash_users(user);
     users_q1 result = {.name=u.name,
                        .gender=u.gender,
-                       .age=calculaIdade((u.birth_day)),
+                       .age=calculaIdade(u.birth_day),
                        .avaliacao_media=0.000,
                        .numero_viagens=0,
                        .total_gasto=0.000};
@@ -145,9 +165,9 @@ users_q1 calcula_hash_rides_users(char *user){
         if (strncmp(hash_rides_users[next_position]->user, user, MAX_INFO)==0){
             result.avaliacao_media += hash_rides_users[next_position]->score_user;    
             result.numero_viagens++;
-            if ((strcmp (converte((*procura_hash_drivers(hash_rides_users[next_position]->driver)).car_class),"basic"))==0) result.total_gasto += 3.25 + 0.62*(hash_rides_users[next_position]->distance);
-            else if ((strcmp (converte((*procura_hash_drivers(hash_rides_users[next_position]->driver)).car_class),"green"))==0) result.total_gasto += 4.00 + 0.79*(hash_rides_users[next_position]->distance);
-            else if ((strcmp (converte((*procura_hash_drivers(hash_rides_users[next_position]->driver)).car_class),"premium"))==0) result.total_gasto += 5.20 + 0.94*(hash_rides_users[next_position]->distance);    
+            if ((strcmp (converte((*procura_hash_drivers(hash_rides_users[next_position]->driver)).car_class),"basic"))==0) result.total_gasto += 3.25 + 0.62*(hash_rides_users[next_position]->distance) + (hash_rides_users[next_position]->tip);
+            else if ((strcmp (converte((*procura_hash_drivers(hash_rides_users[next_position]->driver)).car_class),"green"))==0) result.total_gasto += 4.00 + 0.79*(hash_rides_users[next_position]->distance) + (hash_rides_users[next_position]->tip);
+            else if ((strcmp (converte((*procura_hash_drivers(hash_rides_users[next_position]->driver)).car_class),"premium"))==0) result.total_gasto += 5.20 + 0.94*(hash_rides_users[next_position]->distance) + (hash_rides_users[next_position]->tip);    
         }
     }
     
