@@ -20,7 +20,15 @@ void read_store_drivers(){
 }
 
 void analisa_linha_drivers(char *line){
-    char a[100], a1[100],a2[100],a3[100],a4[100],a5[100],a6[100],a7[100];
+    char *a,*a1,*a2,*a3,*a5,*a6,*a7;
+    char a4;
+    a=malloc(sizeof(line));
+    a1=malloc(sizeof(line));
+    a2=malloc(sizeof(line));
+    a3=malloc(sizeof(line));
+    a5=malloc(sizeof(line));
+    a6=malloc(sizeof(line));
+    a7=malloc(sizeof(line));
     int i,j;
     int aux=1;
     for(i=0,j=0;line[i]!='\0';i++,j++){
@@ -31,25 +39,25 @@ void analisa_linha_drivers(char *line){
             switch (aux)
             {
             case 1:
-                strcpy(a1,a);
+                filtra(a,a1);
                 break;
             case 2:    
-                strcpy(a2,a);
+                filtra(a,a2);
                 break;
             case 3:
-                strcpy(a3,a);
+                filtra(a,a3);
                 break;
             case 4:    
-                strcpy(a4,a);
+                a4=a[0];
                 break;
             case 5:
-                strcpy(a5,a);
+                filtra(a,a5);
                 break;
             case 6:    
-                strcpy(a6,a);
+                filtra(a,a6);
                 break;
             case 7:    
-                strcpy(a7,a);
+                filtra(a,a7);
                 break;    
             default:
                 break;
@@ -62,6 +70,6 @@ void analisa_linha_drivers(char *line){
 
     }
     a[j-1]='\0';
-    insert_hash_drivers(filtra(a1),filtra(a2),filtra(a3),a4[0],filtra(a5),filtra(a6),filtra(a7),filtra(a));
+    insert_hash_drivers(a1,a2,a3,a4,a5,a6,a7,a);
 
 }

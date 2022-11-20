@@ -39,22 +39,39 @@ void querie1(char *line,char *file){
     chdir("trabalho-pratico");
 }
 
-void querie2(char *line,char *file){}
+void querie2(char *n,char *file){}
 
 void querie3(char *line,char *file){}
 
-void read_exe_queries(const char *file){
 
+// Função responsável pela abertura e leitura do ficheiro .txt relativo aos inputs das
+// queries. Esta função a cada linha que lê, envia o input para uma das funções relativas
+// às queries para futuro tratamento dos dados.
+void read_exe_queries(char *file){
+
+
+// Leitura do ficheiro .txt de modo a recebemos os seus inputs para as queries
     FILE* File1;
-    File1 = fopen(file,"r");
+    File1 = fopen("tests.txt","r");
+    
+
     char line[150],line2[150];
     char querie;
     int i,x=0;
     
+
+// Leitura das várias linhas do ficheiro .txt e redirecionamento para a sua querie correspondente
     while(fgets(line, 150, File1)!=NULL){
+
+        
         x++;
         char buffer [50];
+
+// Esta função é responsável pela criação de N ficheiros de texto .txt com o intuito de 
+// serem escritos com o output correspondente à querie em questão. Os ficheiros terão o nome
+// commandX_output.txt
         snprintf(buffer, sizeof (buffer), "command%d_output.txt",x);
+
 
         querie = line[0];
     

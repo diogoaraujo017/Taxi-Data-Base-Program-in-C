@@ -22,9 +22,18 @@ void read_store_rides(){
 }
 
 void analisa_linha_rides(char *line){
-    char a[100], a1[100],a2[100],a3[100],a4[100],a5[100],a6[100],a7[100],a8[100],a9[100];
+    char *a,*a1,*a2,*a3,*a4,*a5;
+    int a6,a7,a8;
+    double a9;
+    a=malloc(sizeof(line));
+    a1=malloc(sizeof(line));
+    a2=malloc(sizeof(line));
+    a3=malloc(sizeof(line));
+    a4=malloc(sizeof(line));
+    a5=malloc(sizeof(line));
     int i,j;
     int aux=1;
+    char *ptr;
     for(i=0,j=0;line[i]!='\0';i++,j++){
         if (line[i]==';'){
 
@@ -33,31 +42,31 @@ void analisa_linha_rides(char *line){
             switch (aux)
             {
             case 1:
-                strcpy(a1,a);
+                filtra(a,a1);
                 break;
             case 2:    
-                strcpy(a2,a);
+                filtra(a,a2);
                 break;
             case 3:
-                strcpy(a3,a);
+                filtra(a,a3);
                 break;
             case 4:    
-                strcpy(a4,a);
+                filtra(a,a4);
                 break;
             case 5:
-                strcpy(a5,a);
+                filtra(a,a5);
                 break;
             case 6:    
-                strcpy(a6,a);
+                a6 =(a[0]-'0');
                 break;
             case 7:    
-                strcpy(a7,a);
+                a7 =(a[0]-'0');
                 break;
             case 8:    
-                strcpy(a8,a);
+                a8 =(a[0]-'0');
                 break;
             case 9:    
-                strcpy(a9,a);
+                a9 = strtod(a,&ptr);
                 break;
             default:
                 break;
@@ -70,9 +79,8 @@ void analisa_linha_rides(char *line){
 
     }
     a[j-1]='\0';
-    char *ptr;
-    insert_rides_drivers(filtra(a1),filtra(a2),filtra(a3),filtra(a4),filtra(a5),atoi(a6),(a7[0]-'0'),(a8[0]-'0'),strtod(a9,&ptr),filtra(a));
-    insert_rides_users(filtra(a1),filtra(a2),filtra(a3),filtra(a4),filtra(a5),atoi(a6),(a7[0]-'0'),(a8[0]-'0'),strtod(a9,&ptr),filtra(a));
+    insert_rides_drivers(a1,a2,a3,a4,a5,a6,a7,a8,a9,a);
+    insert_rides_users(a1,a2,a3,a4,a5,a6,a7,a8,a9,a);
 
 }
 
