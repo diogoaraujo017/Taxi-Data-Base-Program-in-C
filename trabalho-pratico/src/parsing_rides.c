@@ -21,7 +21,7 @@ void read_store_rides(){
     fclose(ridesF);
 }
 
-void analisa_linha_rides(char line[]){
+void analisa_linha_rides(char *line){
     char a[100], a1[100],a2[100],a3[100],a4[100],a5[100],a6[100],a7[100],a8[100],a9[100];
     int i,j;
     int aux=1;

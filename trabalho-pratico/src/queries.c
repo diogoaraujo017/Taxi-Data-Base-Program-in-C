@@ -5,10 +5,10 @@
 #include "rides_structure.h"
 #include "users_structure.h"
 #include <dirent.h>
-#include<unistd.h>
+#include <unistd.h>
 
 
-void querie1(char line[],char *file){
+void querie1(char *line,char *file){
 
     drivers *d;
     users *u;   
@@ -37,15 +37,15 @@ void querie1(char line[],char *file){
     chdir("trabalho-pratico");
 }
 
-void querie2(char line[],char *file){}
+void querie2(char *line,char *file){}
 
-void querie3(char line[],char *file){}
+void querie3(char *line,char *file){}
 
 void read_exe_queries(const char *file){
 
     FILE* File1;
     File1 = fopen(file,"r");
-    char line[100],line2[100];
+    char line[150],line2[150];
     char querie;
     int i,x=0;
     

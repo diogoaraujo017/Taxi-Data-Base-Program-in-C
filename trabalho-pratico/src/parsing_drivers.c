@@ -19,7 +19,7 @@ void read_store_drivers(){
     fclose(driversF);
 }
 
-void analisa_linha_drivers(char line[]){
+void analisa_linha_drivers(char *line){
     char a[100], a1[100],a2[100],a3[100],a4[100],a5[100],a6[100],a7[100];
     int i,j;
     int aux=1;

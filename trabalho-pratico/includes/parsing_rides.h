@@ -37,6 +37,6 @@ typedef struct users_q1{
 }users_q1;
 
 void read_store_rides();
-void analisa_linha_rides(char line[150]);
+void analisa_linha_rides(char *line);
 
 #endif
