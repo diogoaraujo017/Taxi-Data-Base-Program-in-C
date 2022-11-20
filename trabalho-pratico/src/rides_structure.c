@@ -12,8 +12,8 @@
 #define IDADE_MES 10
 #define IDADE_ANO 2022
 
-//return True: Data1>Data2
-//return False: Data2>=Data1
+// return True: Data1>Data2
+// return False: Data2>=Data1
 int calculaData (char *line,char *line2){
 
     int dia1,mes1,ano1;

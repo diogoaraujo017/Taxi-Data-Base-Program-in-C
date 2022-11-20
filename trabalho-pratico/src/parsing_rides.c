@@ -7,7 +7,9 @@
 #include <dirent.h>
 
 
-
+// Esta função é responsável pelo parsing do ficheiro rides.csv. Funciona da seguinte forma:
+// É aberto o fichero rides.csv e em seguida é lida linha a linha do ficheiro e colocada na função
+// analisa_linha_rides para um melhor tratamento dos dados.
 void read_store_rides(){
     FILE *ridesF;
     char line[250];
@@ -21,6 +23,12 @@ void read_store_rides(){
     fclose(ridesF);
 }
 
+
+// Esta função é responsável pelo tratamento da linha, ou seja, é ela que tem o papel de
+// ler cada parâmetro dos rides definido na struct. Essa leitura é facilmente efetuada devido
+// à existência dos ';' que separam todos os parâmetros. Em seguida, é necessário inserir
+// todos os parâmetros relativos à ride (apenas do ficheiro rides.csv) nas hash tables através 
+// das funções insert_rides_drivers e insert_rides_users.
 void analisa_linha_rides(char *line){
     char *a,*a1,*a2,*a3,*a4,*a5;
     int a6,a7,a8;
@@ -79,6 +87,8 @@ void analisa_linha_rides(char *line){
 
     }
     a[j-1]='\0';
+
+//Funções que inserem todos os parâmetros da ride (apenas do ficheiro rides.csv) nas hash tables 
     insert_rides_drivers(a1,a2,a3,a4,a5,a6,a7,a8,a9,a);
     insert_rides_users(a1,a2,a3,a4,a5,a6,a7,a8,a9,a);
 

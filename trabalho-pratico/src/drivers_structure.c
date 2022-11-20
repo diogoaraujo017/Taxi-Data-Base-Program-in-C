@@ -8,12 +8,12 @@
 #include <stdbool.h>
 
 
-
-//Inicia a hash_table
+// Hash table dos drivers
 drivers *hash_table_drivers[N_LINHAS2];
 
 
-//Associa um número da hash a cada linha
+// Associa um número da hash a cada linha criando uma key que mais tarde pode ser utilizada para
+// procurar esse driver na hash table
 unsigned int hash_drivers(char *id){
     int comp = strnlen(id,MAX_INFO);
     unsigned int num_hash = 0;
@@ -25,14 +25,21 @@ unsigned int hash_drivers(char *id){
     return num_hash;
 }
 
-//Inicia a hash_table colocando todas as linhas a NULL
+
+// Esta função inicia a hash table com os tamanho respetivos, colocando todas as
+// suas linhas a NULL. Fazemos isto, para quando existirem colisões, estas não serem um problema.
 void init_hash_table_drivers(){
     for (int i = 0; i < N_LINHAS2; i++){
         hash_table_drivers[i] = NULL;
     }   
 }
 
-//Insere linhas na hash_table se essa linhas não estiver ocupada (Se return for true)
+
+// Esta função insere uma determinada linha na hash_table se essa linha não estiver ocupada.
+// Uma linha está ocupada quando não está a NULL e vice-versa, daí a importância da função
+// init_hash_table_drivers. Se a linha for adicionada com sucesso a função dará return a true,
+// não dando qualquer problema, caso contrário dará return a false significando que a 
+// função não conseguiu adicionar a linha.
 bool insert_hash_drivers(char *id,char *n,char *b,char g,char *cc,char *lp,char *ac,char *as){
     drivers *d = malloc(sizeof(drivers));
     d->id = id;
@@ -54,11 +61,16 @@ bool insert_hash_drivers(char *id,char *n,char *b,char g,char *cc,char *lp,char 
     return false;
 }
 
-//Procura o id na hash table
+// Procura um determinado driver na hash table. Esta função é bastante rápida a executar, mesmo
+// existindo muitas linhas de hash, devido à existência de keys que estão associadas, uma a cada
+// input colocado na hash table. Se encontrar a função dará return à linha da hash correspondente
+// em forma de struct, caso contrário dará return a NULL.
 drivers *procura_hash_drivers(char *id){
     int index = hash_drivers(id);
     for (int i = 0; i < N_LINHAS2; i++){
+        // Calcula a possível key
         int next_position = (i + index) % N_LINHAS2;
+        // Verifica se o driver que está nessa posição da hash table e o que estamos à procura são iguais
         if (strncmp(hash_table_drivers[next_position]->id, id, MAX_INFO)==0){
             return hash_table_drivers[next_position];
         }

@@ -6,6 +6,10 @@
 #include <dirent.h>
 #include <stdlib.h>
 
+
+// Esta função é responsável pelo parsing do ficheiro drivers.csv. Funciona da seguinte forma:
+// É aberto o fichero drivers.csv e em seguida é lida linha a linha do ficheiro e colocada na função
+// analisa_linha_drivers para um melhor tratamento dos dados.
 void read_store_drivers(){
     FILE *driversF;
     char line[250];
@@ -19,6 +23,12 @@ void read_store_drivers(){
     fclose(driversF);
 }
 
+
+// Esta função é responsável pelo tratamento da linha, ou seja, é ela que tem o papel de
+// ler cada parâmetro dos drivers definido na struct. Essa leitura é facilmente efetuada devido
+// à existência dos ';' que separam todos os parâmetros. Em seguida, é necessário inserir
+// todos os parâmetros relativos ao driver (apenas do ficheiro drivers.csv) na hash table através 
+// da função insert_hash_drivers.
 void analisa_linha_drivers(char *line){
     char *a,*a1,*a2,*a3,*a5,*a6,*a7;
     char a4;
@@ -70,6 +80,8 @@ void analisa_linha_drivers(char *line){
 
     }
     a[j-1]='\0';
+
+//Função que insere todos os parâmetros do driver(apenas do ficheiro drivers.csv) na hash table 
     insert_hash_drivers(a1,a2,a3,a4,a5,a6,a7,a);
 
 }

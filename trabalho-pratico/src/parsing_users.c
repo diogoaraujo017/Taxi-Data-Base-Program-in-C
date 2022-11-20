@@ -5,6 +5,10 @@
 #include <dirent.h>
 #include <stdlib.h>
 
+
+// Esta função copia uma string (init) para outra (dest) com um tamanho menor que a primeira.
+// Isto acontece, porque a string dest é finalizada quando encontra o primeiro '\0', cortando 
+// o tamanho substancialmente.
 char* filtra(char *init,char *dest){
     int i;
     for(i=0;init[i]!='\0';i++){
@@ -14,6 +18,10 @@ char* filtra(char *init,char *dest){
     return dest;
 }
 
+
+// Esta função é responsável pelo parsing do ficheiro users.csv. Funciona da seguinte forma:
+// É aberto o fichero users.csv e em seguida é lida linha a linha do ficheiro e colocada na função
+// analisa_linha_users para um melhor tratamento dos dados.
 void read_store_users(){
     FILE *usersF;
     char line[250];
@@ -27,6 +35,12 @@ void read_store_users(){
     fclose(usersF);
 }
 
+
+// Esta função é responsável pelo tratamento da linha, ou seja, é ela que tem o papel de
+// ler cada parâmetro dos users definido na struct. Essa leitura é facilmente efetuada devido
+// à existência dos ';' que separam todos os parâmetros. Em seguida, é necessário inserir
+// todos os parâmetros relativos ao user (apenas do ficheiro users.csv) na hash table através 
+// da função insert_hash_users.
 void analisa_linha_users(char *line){
     char *a,*a1,*a2,*a4,*a5,*a6;
     char a3;
@@ -74,6 +88,8 @@ void analisa_linha_users(char *line){
 
     }
     a[j-1]='\0';
+
+//Função que insere todos os parâmetros do user (apenas do ficheiro users.csv) na hash table 
     insert_hash_users(a1,a2,a3,a4,a5,a6,a);
 }
 
