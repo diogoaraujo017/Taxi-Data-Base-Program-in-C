@@ -14,7 +14,7 @@
 // MODO: Batch -> Neste modo, o programa é executado com dois argumentos, o primero é o caminho
 // para a pasta onde estão os ficheiros de entrada. Já o segundo corresponde ao
 // caminho para um ficheiro de texto que contém uma lista de comandos (queries) a serem executados.
-int main(int argc, char** argv){
+int main(int argc, char* argv[]){
     
 
 // Estas funções iniciam as hash tables com os tamanho respetivos, colocando todas as
@@ -23,6 +23,7 @@ int main(int argc, char** argv){
     init_hash_table_users();
     init_hash_rides_drivers();
     init_hash_rides_users();
+    init_hash_rides_city();
     
 
 // Com este comando, abrimos a diretoria onde estão guardados os ficheiros .csv
@@ -39,7 +40,7 @@ int main(int argc, char** argv){
 // Com este comando, regressamos à pasta principal (trabalho-pratico), visto que já demos o parse dos 
 // ficheiros .csv
     chdir("trabalho-pratico");
-    chdir(argv[2]);
+    //chdir(argv[2]);
    
 
 // Com este comando, temos acesso ao caminho que leva ao ficheiro .txt para ler os inputs.

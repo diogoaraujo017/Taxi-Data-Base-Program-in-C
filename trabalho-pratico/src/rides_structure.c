@@ -18,6 +18,8 @@ drivers_q1 *hash_rides_drivers[N_LINHASD];
 // Hash Table das rides com a key dos users.
 users_q1 *hash_rides_users[N_LINHASU];
 
+// Hash Table das rides com a key dos users.
+city_c1 *hash_rides_city[N_LINHASC];
 
 // A função calculaData verifica se a data do primeiro input e mais recente que a  
 // do segundo input.
@@ -104,6 +106,19 @@ unsigned int hash_user_rides(char *user){
     return num_hash;
 }
 
+// Associa um número da hash a cada linha criando uma key que mais tarde pode ser utilizada para
+// procurar esse user na hash table rides_city.
+unsigned int hash_city_rides(char *city){
+    int comp = strnlen(city,MAX_INFO);
+    unsigned int num_hash = 0;
+    for (int i = 0; i < comp; i++)
+    {
+        num_hash += city[i];
+        num_hash = (num_hash * city[i]) % N_LINHASC;
+    }
+    return num_hash;
+}
+
 // Esta função inicia a hash table rides_drivers com os tamanho respetivos, colocando todas as
 // suas linhas a NULL. Fazemos isto, para quando existirem colisões, estas não serem um problema.
 void init_hash_rides_drivers(){
@@ -119,6 +134,15 @@ void init_hash_rides_users(){
     for (int i = 0; i < N_LINHASU; i++)
     {
         hash_rides_users[i] = NULL; 
+    }   
+}
+
+// Esta função inicia a hash table city com os tamanho respetivos, colocando todas as
+// suas linhas a NULL. Fazemos isto, para quando existirem colisões, estas não serem um problema.
+void init_hash_rides_city(){
+    for (int i = 0; i < N_LINHASC; i++)
+    {
+        hash_rides_city[i] = NULL; 
     }   
 }
 
@@ -208,6 +232,45 @@ bool insert_rides_users(char *id,char *dt,char *dr,char *user,char *ac,int dist,
     return false;
 }
 
+// A função insert_rides_city insere uma struct city_c1 na hash table rides_users.
+bool insert_rides_city(char *id,char *dt,char *dr,char *user,char *c,int dist,int su,int sd,double tip,char *cm){
+    // Procura o driver na hash tables dos drivers para obtermos o modelo do carro.
+    drivers d = *procura_hash_drivers(dr);
+    // Cria uma struct users_q1 e atualiza os valores para inserirmos na hash tables rides_users.
+    city_c1 *c1 = malloc(sizeof(city_c1));
+    c1->id = dr;
+    c1->city = c;
+    c1->numero_viagens = 1;
+    // Verifica o tipo de carro do driver e calcula quanto gastou o user com base na distancia e a tip que deu.
+    if ((strcmp(converte(d.car_class),"basic"))==0) c1->custo = 3.25 + 0.62*dist;
+    else if ((strcmp(converte(d.car_class),"green"))==0) c1->custo = 4.00 + 0.79*dist;
+    else if ((strcmp(converte(d.car_class),"premium"))==0) c1->custo = 5.20 + 0.94*dist;
+    // Calcula a key atraves do username do user.
+    int aux = hash_city_rides(c);
+    for (int i=0;i < N_LINHASC;i++){
+        // Calcula uma das keys possíveis.
+        int next_position = (i + aux) % N_LINHASC;
+        // Verifica se nessa posição tem algum user.
+        if (hash_rides_city[next_position] == NULL){
+            // Se nao tiver insere o nosso users_q1 nessa posição
+            // e da return a true para terminar a função. 
+            hash_rides_city[next_position] = c1;
+            return true;
+        }
+        // Verifica se o user que esta nessa posição na hash table e o que estamos a tentar inserir são iguais.
+        // Se for o user que estamos a procura a função vai actualizar os parâmetros da struct users_q1 que
+        // se encontra na hash table.
+        if(strcmp(hash_rides_city[next_position]->city,c)==0)  {
+            // Atualiza os restantes parâmetros.
+            hash_rides_city[next_position]->numero_viagens ++;
+            hash_rides_city[next_position]->custo += c1->custo;
+            // Da return a true para terminar a execução da função.
+            return true;
+        }
+    }
+    return false;
+}
+
 // Procura um determinado id na hash table rides_drivers. Esta função é bastante rápida a executar, mesmo
 // existindo muitas linhas de hash, devido à existência de keys que estão associadas, uma a cada
 // input colocado na hash table. Se encontrar a função dará return à linha da hash correspondente
@@ -243,3 +306,23 @@ users_q1 *procura_rides_users(char *username){
     // Return a NULL se não encontrar o user na hash table.
     return NULL;                                                                        
 }
+
+// Procura um determinado username na hash table city. Esta função é bastante rápida a executar, mesmo
+// existindo muitas linhas de hash, devido à existência de keys que estão associadas, uma a cada
+// input colocado na hash table. Se encontrar a função dará return à linha da hash correspondente
+// em forma de struct, caso contrário dará return a NULL.
+city_c1 *procura_rides_city(char *city){
+    int aux = hash_city_rides(city);
+    for (int i = 0; i < N_LINHASC; i++){
+        // Calcula uma das keys possíveis.
+        int next_position = (i + aux) % N_LINHASC;
+        // Verifica se a info que esta nessa posição da hash table e o que estamos a procura são iguais.
+        if (strncmp(hash_rides_city[next_position]->city, city, MAX_INFO)==0){ 
+            return hash_rides_city[next_position];
+        }
+    }
+    // Return a NULL se não encontrar o user na hash table.
+    return NULL;                                                                        
+}
+
+

@@ -12,6 +12,7 @@ typedef struct{
     char gender;
     char *car_class;
     char *license_plate;
+    char *city;
     char *account_creation;  
     char *account_status;
 } drivers;

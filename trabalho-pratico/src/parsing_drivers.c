@@ -30,7 +30,7 @@ void read_store_drivers(){
 // todos os parâmetros relativos ao driver (apenas do ficheiro drivers.csv) na hash table através 
 // da função insert_hash_drivers.
 void analisa_linha_drivers(char *line){
-    char *a,*a1,*a2,*a3,*a5,*a6,*a7;
+    char *a,*a1,*a2,*a3,*a5,*a6,*a7,*a8;
     char a4;
     a=malloc(sizeof(line));
     a1=malloc(sizeof(line));
@@ -39,6 +39,7 @@ void analisa_linha_drivers(char *line){
     a5=malloc(sizeof(line));
     a6=malloc(sizeof(line));
     a7=malloc(sizeof(line));
+    a8=malloc(sizeof(line));
     int i,j;
     int aux=1;
     for(i=0,j=0;line[i]!='\0';i++,j++){
@@ -68,7 +69,10 @@ void analisa_linha_drivers(char *line){
                 break;
             case 7:    
                 filtra(a,a7);
-                break;    
+                break;   
+            case 8:    
+                filtra(a,a8);
+                break;   
             default:
                 break;
             }
@@ -82,6 +86,6 @@ void analisa_linha_drivers(char *line){
     a[j-1]='\0';
 
 //Função que insere todos os parâmetros do driver(apenas do ficheiro drivers.csv) na hash table 
-    insert_hash_drivers(a1,a2,a3,a4,a5,a6,a7,a);
+    insert_hash_drivers(a1,a2,a3,a4,a5,a6,a7,a8,a);
 
 }

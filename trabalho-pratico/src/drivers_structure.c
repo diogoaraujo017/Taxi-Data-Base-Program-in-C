@@ -40,7 +40,7 @@ void init_hash_table_drivers(){
 // init_hash_table_drivers. Se a linha for adicionada com sucesso a função dará return a true,
 // não dando qualquer problema, caso contrário dará return a false significando que a 
 // função não conseguiu adicionar a linha.
-bool insert_hash_drivers(char *id,char *n,char *b,char g,char *cc,char *lp,char *ac,char *as){
+bool insert_hash_drivers(char *id,char *n,char *b,char g,char *cc,char *lp,char *c,char *ac,char *as){
     drivers *d = malloc(sizeof(drivers));
     d->id = id;
     d->name = n;
@@ -48,6 +48,7 @@ bool insert_hash_drivers(char *id,char *n,char *b,char g,char *cc,char *lp,char 
     d->birth_day = b;
     d->account_creation = ac;
     d->car_class = cc;
+    d->city=c;
     d->license_plate = lp;
     d->account_status = as;
     int aux = hash_drivers(id);

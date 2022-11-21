@@ -4,6 +4,7 @@
 #define MAX_INFO 100
 #define N_LINHASU 100000  
 #define N_LINHASD 10000  
+#define N_LINHASC 500
 
 typedef struct{
     char *username;
@@ -20,6 +21,14 @@ typedef struct drivers_q1{
     int numero_viagens;
     double total_auferido;      
 }drivers_q1;
+
+typedef struct city_c1{
+    char *id;
+    char *city;
+    int numero_viagens;
+    double custo;      
+}city_c1;
+
 
 void read_store_rides();
 void analisa_linha_rides(char *line);

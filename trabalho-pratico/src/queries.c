@@ -4,9 +4,10 @@
 #include "drivers_structure.h"
 #include "rides_structure.h"
 #include "users_structure.h"
+#include <parsing_users.h>
 #include <dirent.h>
 #include <unistd.h>
-
+#include <stdlib.h>
 
 // Função responsável pelo tratamento de dados relativo à querie 1
 void querie1(char *line,char *file){
@@ -58,6 +59,27 @@ void querie3(char *line,char *file){}
 
 
 
+void querie4(char *line,char *file){
+
+    chdir("trabalho-pratico");  // Esta função retorna para a diretoria principal
+    chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
+                                // para que seja possível nela os ficheiros .txt de output das queries
+    FILE * NewFile;
+    NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write
+    city_c1 *c1 = procura_rides_city(line);     // Procura o driver na hash table dos rides
+    if (c1->numero_viagens!=0){
+        c1->custo = c1->custo/c1->numero_viagens;
+        fprintf(NewFile,"%.3f\n",c1->custo);
+        }
+    
+    
+    fclose(NewFile);            //Fecha o ficheiro criado
+    chdir("trabalho-pratico");  // Volta à diretoria principal
+
+}
+
+
+
 
 // Função responsável pela abertura e leitura do ficheiro .txt relativo aos inputs das
 // queries. Esta função a cada linha que lê, envia o input para uma das funções relativas
@@ -67,7 +89,7 @@ void read_exe_queries(char *file){
 
 // Leitura do ficheiro .txt de modo a recebemos os seus inputs para as queries
     FILE* File1;
-    File1 = fopen(file,"r");
+    File1 = fopen("tests.txt","r");
     
 
     char line[150],line2[150];
@@ -109,6 +131,10 @@ void read_exe_queries(char *file){
 
         case '3':
            querie3(line2,buffer);
+           break;
+
+        case '4':
+           querie4(line2,buffer);
            break;
 
         default:
