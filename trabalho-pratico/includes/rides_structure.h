@@ -4,6 +4,9 @@
 #include <stdbool.h>
 #include "parsing_rides.h"
 
+drivers_q1 *procura_rides_drivers_arr(int aux);
+void mergeSort(int l, int r);
+void merge(int l2, int m, int r2);
 int calculaData (char *line,char *line2);
 int calculaIdade (char line[]);
 const char* converte(char str[]);
