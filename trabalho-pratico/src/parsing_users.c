@@ -22,10 +22,10 @@ char* filtra(char *init,char *dest){
 // Esta função é responsável pelo parsing do ficheiro users.csv. Funciona da seguinte forma:
 // É aberto o fichero users.csv e em seguida é lida linha a linha do ficheiro e colocada na função
 // analisa_linha_users para um melhor tratamento dos dados.
-void read_store_users(){
+void read_store_users(char *dir){
     FILE *usersF;
     char line[250];
-    usersF = fopen("users.csv", "r");
+    usersF = fopen(strcat(dir,"users.csv"), "r");
 
     fgets(line, 250, usersF);
 

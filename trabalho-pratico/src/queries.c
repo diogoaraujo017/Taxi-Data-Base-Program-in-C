@@ -15,9 +15,6 @@ void querie1(char *line,char *file){
     drivers *d;
     users *u;   
 
-    chdir("trabalho-pratico");  // Esta função retorna para a diretoria principal
-
-
     chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
                                 // para que seja possível nela os ficheiros .txt de output das queries
     
@@ -61,11 +58,11 @@ void querie3(char *line,char *file){}
 
 void querie4(char *line,char *file){
 
-    chdir("trabalho-pratico");  // Esta função retorna para a diretoria principal
     chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
                                 // para que seja possível nela os ficheiros .txt de output das queries
     FILE * NewFile;
     NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write
+    
     city_c1 *c1 = procura_rides_city(line);     // Procura o driver na hash table dos rides
     if (c1->numero_viagens!=0){
         c1->custo = c1->custo/c1->numero_viagens;
@@ -89,7 +86,7 @@ void read_exe_queries(char *file){
 
 // Leitura do ficheiro .txt de modo a recebemos os seus inputs para as queries
     FILE* File1;
-    File1 = fopen("tests.txt","r");
+    File1 = fopen(file,"r");
     
 
     char line[150],line2[150];

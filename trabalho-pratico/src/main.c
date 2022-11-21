@@ -26,21 +26,18 @@ int main(int argc, char* argv[]){
     init_hash_rides_city();
     
 
-// Com este comando, abrimos a diretoria onde estão guardados os ficheiros .csv
-    chdir(argv[1]);
    
 
 // Estas funções são responsáveis pelo parsing de cada linha dos ficheiros .csv. Para além disso,
 // também inserem os valores lidos (organizados numa struct) para a hash table, linha a linha. 
-    read_store_drivers();
-    read_store_users();
-    read_store_rides();
+    read_store_drivers(argv[1]);
+    read_store_users(argv[1]);
+    read_store_rides(argv[1]);
 
 
 // Com este comando, regressamos à pasta principal (trabalho-pratico), visto que já demos o parse dos 
 // ficheiros .csv
-    chdir("trabalho-pratico");
-    //chdir(argv[2]);
+
    
 
 // Com este comando, temos acesso ao caminho que leva ao ficheiro .txt para ler os inputs.

@@ -10,10 +10,10 @@
 // Esta função é responsável pelo parsing do ficheiro drivers.csv. Funciona da seguinte forma:
 // É aberto o fichero drivers.csv e em seguida é lida linha a linha do ficheiro e colocada na função
 // analisa_linha_drivers para um melhor tratamento dos dados.
-void read_store_drivers(){
+void read_store_drivers(char *dir){
     FILE *driversF;
     char line[250];
-    driversF = fopen("drivers.csv", "r");
+    driversF = fopen(strcat(dir,"drivers.csv"), "r");
 
     fgets(line, 250, driversF);
 

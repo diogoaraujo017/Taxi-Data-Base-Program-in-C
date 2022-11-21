@@ -70,7 +70,7 @@ int calculaIdade (char *line){
 
 // A função converte trasforma uma string que possa ter letras maiúsculas
 // numa string com apenas letras minúsculas.
-const char* converte(char str[]){
+const char* converte(char *str){
     int i;
     
     for (i = 0; str[i] != '\0'; i++) {

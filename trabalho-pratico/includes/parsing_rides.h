@@ -14,7 +14,7 @@ typedef struct{
     double total_gasto;  
 }users_q1;
 
-typedef struct drivers_q1{
+typedef struct{
     char *id;
     char *date;       //Data da viagem mais recente;
     double avaliacao_media;
@@ -22,7 +22,7 @@ typedef struct drivers_q1{
     double total_auferido;      
 }drivers_q1;
 
-typedef struct city_c1{
+typedef struct{
     char *id;
     char *city;
     int numero_viagens;
@@ -30,7 +30,7 @@ typedef struct city_c1{
 }city_c1;
 
 
-void read_store_rides();
+void read_store_rides(char *dir);
 void analisa_linha_rides(char *line);
 
 #endif

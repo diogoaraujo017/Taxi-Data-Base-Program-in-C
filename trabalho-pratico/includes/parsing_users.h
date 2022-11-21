@@ -15,7 +15,7 @@ typedef struct{
 }users;
 
 char* filtra(char *init,char *dest);
-void read_store_users();
+void read_store_users(char *dir);
 void analisa_linha_users(char *line);
 
 #endif

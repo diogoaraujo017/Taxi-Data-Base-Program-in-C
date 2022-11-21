@@ -10,10 +10,10 @@
 // Esta função é responsável pelo parsing do ficheiro rides.csv. Funciona da seguinte forma:
 // É aberto o fichero rides.csv e em seguida é lida linha a linha do ficheiro e colocada na função
 // analisa_linha_rides para um melhor tratamento dos dados.
-void read_store_rides(){
+void read_store_rides(char *dir){
     FILE *ridesF;
     char line[250];
-    ridesF = fopen("rides.csv", "r");
+    ridesF = fopen(strcat(dir,"rides.csv"), "r");
 
     fgets(line, 250, ridesF);
 
@@ -65,13 +65,13 @@ void analisa_linha_rides(char *line){
                 filtra(a,a5);
                 break;
             case 6:    
-                a6 =(a[0]-'0');
+                a6 =atoi(a);
                 break;
             case 7:    
-                a7 =(a[0]-'0');
+                a7 =atoi(a);
                 break;
             case 8:    
-                a8 =(a[0]-'0');
+                a8 =atoi(a);
                 break;
             case 9:    
                 a9 = strtod(a,&ptr);
