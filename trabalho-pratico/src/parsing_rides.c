@@ -13,7 +13,7 @@
 void read_store_rides(char *dir){
     FILE *ridesF;
     char line[250];
-    ridesF = fopen(strcat(dir,"rides.csv"), "r");
+    ridesF = fopen(dir, "r");
 
     fgets(line, 250, ridesF);
 

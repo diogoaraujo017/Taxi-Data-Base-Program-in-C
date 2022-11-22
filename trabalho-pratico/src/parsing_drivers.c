@@ -13,7 +13,7 @@
 void read_store_drivers(char *dir){
     FILE *driversF;
     char line[250];
-    driversF = fopen(strcat(dir,"drivers.csv"), "r");
+    driversF = fopen(dir, "r");
 
     fgets(line, 250, driversF);
 

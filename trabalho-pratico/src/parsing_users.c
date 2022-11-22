@@ -25,7 +25,7 @@ char* filtra(char *init,char *dest){
 void read_store_users(char *dir){
     FILE *usersF;
     char line[250];
-    usersF = fopen(strcat(dir,"users.csv"), "r");
+    usersF = fopen(dir, "r");
 
     fgets(line, 250, usersF);
 

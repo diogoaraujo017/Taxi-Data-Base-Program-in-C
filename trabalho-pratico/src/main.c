@@ -8,7 +8,7 @@
 #include "parsing_drivers.h"
 #include "parsing_rides.h"
 #include "parsing_users.h"
-#include <unistd.h>
+#include <stdlib.h>
 
 
 // MODO: Batch -> Neste modo, o programa é executado com dois argumentos, o primero é o caminho
@@ -26,22 +26,31 @@ int main(int argc, char* argv[]){
     init_hash_rides_city();
     
 
-   
+    char *aux = malloc (100*sizeof(char));
+    strcpy(aux,argv[1]);
+    strcat(aux,"/drivers.csv");
+
+    char *aux2 = malloc (100*sizeof(char));
+    strcpy(aux2,argv[1]);
+    strcat(aux2,"/users.csv");
+
+    char *aux3 = malloc (100*sizeof(char));
+    strcpy(aux3,argv[1]);
+    strcat(aux3,"/rides.csv");
+
+    char *aux4 = malloc (100*sizeof(char));
+    strcpy(aux4,argv[2]);
+
 
 // Estas funções são responsáveis pelo parsing de cada linha dos ficheiros .csv. Para além disso,
 // também inserem os valores lidos (organizados numa struct) para a hash table, linha a linha. 
-    read_store_drivers(argv[1]);
-    read_store_users(argv[1]);
-    read_store_rides(argv[1]);
+    read_store_drivers(aux);
+    read_store_users(aux2);
+    read_store_rides(aux3);
 
-
-// Com este comando, regressamos à pasta principal (trabalho-pratico), visto que já demos o parse dos 
-// ficheiros .csv
-
-   
 
 // Com este comando, temos acesso ao caminho que leva ao ficheiro .txt para ler os inputs.
-    read_exe_queries(argv[2]);
+    read_exe_queries(aux4);
 
 
     return 0;
