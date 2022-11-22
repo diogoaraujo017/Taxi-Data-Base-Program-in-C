@@ -85,7 +85,7 @@ void analisa_linha_drivers(char *line){
     }
     a[j-1]='\0';
 
-//Função que insere todos os parâmetros do driver(apenas do ficheiro drivers.csv) na hash table 
+    //Função que insere todos os parâmetros do driver(apenas do ficheiro drivers.csv) na hash table 
     insert_hash_drivers(a1,a2,a3,a4,a5,a6,a7,a8,a);
 
 }

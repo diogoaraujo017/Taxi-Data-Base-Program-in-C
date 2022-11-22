@@ -18,8 +18,9 @@ drivers_q1 *hash_rides_drivers[N_LINHASD];
 // Hash Table das rides com a key dos users.
 users_q1 *hash_rides_users[N_LINHASU];
 
-// Hash Table das rides com a key dos users.
+// Hash Table das rides com a key das cities.
 city_c1 *hash_rides_city[N_LINHASC];
+
 
 // A função calculaData verifica se a data do primeiro input e mais recente que a  
 // do segundo input.
@@ -146,6 +147,7 @@ void init_hash_rides_city(){
     }   
 }
 
+
 // A função insert_rides_drivers insere uma struct drivers_q1 na hash table rides_drivers.
 bool insert_rides_drivers(char *id,char *dt,char *dr,char *u,char *ac,int dist,int su,int sd,double tip,char *cm){
     // Procura o driver na hash tables dos drivers para obtermos o modelo do carro.
@@ -238,7 +240,6 @@ bool insert_rides_city(char *id,char *dt,char *dr,char *user,char *c,int dist,in
     drivers d = *procura_hash_drivers(dr);
     // Cria uma struct users_q1 e atualiza os valores para inserirmos na hash tables rides_users.
     city_c1 *c1 = malloc(sizeof(city_c1));
-    c1->id = dr;
     c1->city = c;
     c1->numero_viagens = 1;
     // Verifica o tipo de carro do driver e calcula quanto gastou o user com base na distancia e a tip que deu.
@@ -270,6 +271,8 @@ bool insert_rides_city(char *id,char *dt,char *dr,char *user,char *c,int dist,in
     }
     return false;
 }
+
+
 
 // Procura um determinado id na hash table rides_drivers. Esta função é bastante rápida a executar, mesmo
 // existindo muitas linhas de hash, devido à existência de keys que estão associadas, uma a cada
@@ -324,5 +327,7 @@ city_c1 *procura_rides_city(char *city){
     // Return a NULL se não encontrar o user na hash table.
     return NULL;                                                                        
 }
+
+
 
 

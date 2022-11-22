@@ -89,7 +89,7 @@ void analisa_linha_users(char *line){
     }
     a[j-1]='\0';
 
-//Função que insere todos os parâmetros do user (apenas do ficheiro users.csv) na hash table 
+    //Função que insere todos os parâmetros do user (apenas do ficheiro users.csv) na hash table 
     insert_hash_users(a1,a2,a3,a4,a5,a6,a);
 }
 
