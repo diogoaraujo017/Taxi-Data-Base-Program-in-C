@@ -4,7 +4,7 @@
 #include "drivers_structure.h"
 #include "rides_structure.h"
 #include "users_structure.h"
-#include <parsing_users.h>
+#include <parsing.h>
 #include <dirent.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -77,106 +77,7 @@ void querie4(char *line,char *file){
 void querie5(char *line,char *file){}
 
 // Função responsável pela execução da querie 6.
-void querie6(char *line,char *file){
-
-    char *a11= malloc(sizeof(line));   // City
-    char *a22= malloc(sizeof(line));   // Data1 (mais antiga)
-    char *a33= malloc(sizeof(line));   // Data2 (mais recente)
-
-    int i=0;
-    for (i=0;line[i]!=' ';i++){         // For loop que retira do input a cidade.
-        a11[i]=line[i];
-    }
-    a11[i] = '\0';
-    filtra(a11,a11);
-
-    for (i=i+1;line[i]!=' ';i++){       // For loop que retira do input a primeira data.
-        a22[i]=line[i];
-    }
-    a22[i] = '\0';
-    filtra(a22,a22);
-
-    for (i=i+1;line[i]!='\0';i++){      // For loop que retira do input a segunda data.
-        a33[i]=line[i]; 
-    }
-    a33[i] = '\0';
-    filtra(a33,a33);
-    
-    double dist=0;
-    int cont;
-
-    FILE *ridesF1;
-    char line2[250];
-    ridesF1 = fopen("rides.csv", "r");
-
-    fgets(line2, 250, ridesF1);
-
-    while (fgets(line2, 250, ridesF1)!=NULL){    // While loop que le as linhas do ficheiros de rides
-       char *a,*a1,*a2,*a3,*a4,*a5;              // e que verifica se determinada ride foi feita na cidade
-       int a6;                                   // fornecida e verifica se essa ride foi efetuada detro 
-       a=malloc(sizeof(line2));                  // do intervalo fornecido.
-       a1=malloc(sizeof(line2));
-       a2=malloc(sizeof(line2));
-       a3=malloc(sizeof(line2));
-       a4=malloc(sizeof(line2));
-       a5=malloc(sizeof(line2));
-       int i,j;
-       int aux=1;
-       for(i=0,j=0;line2[i]!='\0';i++,j++){
-           if (line2[i]==';'){
-
-              a[j]='\0';
-
-              switch (aux)
-               {
-                case 1:
-                  filtra(a,a1);
-                  break;
-                case 2:    
-                  filtra(a,a2);
-                  break;
-                case 3:
-                  filtra(a,a3);
-                  break;
-                case 4:    
-                  filtra(a,a4);
-                  break;
-                case 5:
-                  filtra(a,a5);
-                  break;
-                case 6:    
-                  a6 =atoi(a);
-                  break;
-                default:
-                  break;
-            }
-
-              aux++;
-              j=-1;
-          }
-          else a[j]=line2[i];
-  
-         }
-         a[j-1]='\0';
-         if((strncmp(a5, a11, MAX_INFO)==0) && calculaData(a22,a2)==0 && calculaData(a33,a2)==1){ // Se a ride foi feita na cidade e dentro das datas: 
-                   dist += a6;                                                                    // Adiciona a distancia feita nessa ride;
-                   cont++;                                                                        // Incrementa o contador do numero de viagens;
-         }
-       }
-
-    fclose(ridesF1);
-    
-    chdir("Resultados/"); 
-
-    FILE *NewFile;
-    NewFile = fopen(file, "w");
-
-    fprintf(NewFile,"%.3f\n",dist/cont);
-                                                                   
-    fclose(NewFile);            //Fecha o ficheiro criado
-    chdir("trabalho-pratico");  // Volta à diretoria principal
-
-}
+void querie6(char *line,char *file){}
 
 // Função responsável pela execução da querie 7.
 void querie7(char *line,char *file){}

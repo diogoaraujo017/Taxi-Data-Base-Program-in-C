@@ -5,9 +5,7 @@
 #include "drivers_structure.h"
 #include "rides_structure.h"
 #include "users_structure.h"
-#include "parsing_drivers.h"
-#include "parsing_rides.h"
-#include "parsing_users.h"
+#include "parsing.h"
 #include <stdlib.h>
 
 
@@ -25,29 +23,29 @@ int main(int argc, char* argv[]){
     init_hash_rides_city();
     
     // Criação do path para o ficheiro drivers.csv.
-    char *aux = malloc (100*sizeof(char));
-    strcpy(aux,argv[1]);
-    strcat(aux,"/drivers.csv");
+    char *file_d = malloc (100*sizeof(char));
+    strcpy(file_d,argv[1]);
+    strcat(file_d,"/drivers.csv");
     // Criação do path para o ficheiro users.csv.
-    char *aux2 = malloc (100*sizeof(char));
-    strcpy(aux2,argv[1]);
-    strcat(aux2,"/users.csv");
+    char *file_u = malloc (100*sizeof(char));
+    strcpy(file_u,argv[1]);
+    strcat(file_u,"/users.csv");
     // Criação do path para o ficheiro rides.csv.
-    char *aux3 = malloc (100*sizeof(char));
-    strcpy(aux3,argv[1]);
-    strcat(aux3,"/rides.csv");
+    char *file_r = malloc (100*sizeof(char));
+    strcpy(file_r,argv[1]);
+    strcat(file_r,"/rides.csv");
     // Criação do path para o ficheiro dos inputs.
-    char *aux4 = malloc (100*sizeof(char));
-    strcpy(aux4,argv[2]);
+    char *file_txt = malloc (100*sizeof(char));
+    strcpy(file_txt,argv[2]);
 
     // Estas funções são responsáveis pelo parsing de cada linha dos ficheiros .csv. Para além disso,
     // também inserem os valores lidos (organizados numa struct) para a hash table, linha a linha. 
-    read_store_drivers(aux);
-    read_store_users(aux2);
-    read_store_rides(aux3);
+    read_store(file_d,'d');
+    read_store(file_u,'u');
+    read_store(file_r,'r');
 
     // Esta função trata os inputs e envia os mesmos para a respetiva querie.
-    read_exe_queries(aux4);
+    read_exe_queries(file_txt);
 
     return 0;
 }

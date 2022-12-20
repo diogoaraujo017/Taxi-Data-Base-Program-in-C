@@ -1,7 +1,10 @@
 #ifndef DRIVERS_STRUCTURE_H
 #define DRIVERS_STRUCTURE_H
 #include <stdbool.h>
-#include "parsing_drivers.h"
+#include "parsing.h"
+
+#define MAX_INFO 100
+#define N_LINHAS2 10000
 
 unsigned int hash_drivers(char *id);
 void init_hash_table_drivers();

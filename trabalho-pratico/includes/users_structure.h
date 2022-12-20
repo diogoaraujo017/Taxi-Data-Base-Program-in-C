@@ -2,7 +2,10 @@
 #define USERS_STRUCTURE_H
 
 #include <stdbool.h>
-#include "parsing_users.h"
+#include "parsing.h"
+
+#define MAX_INFO 100
+#define N_LINHAS1 100000
 
 unsigned int hash_users(char *username);
 void init_hash_table_users();

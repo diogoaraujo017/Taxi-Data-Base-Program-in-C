@@ -2,7 +2,13 @@
 #define RIDES_STRUCTURE_H
 
 #include <stdbool.h>
-#include "parsing_rides.h"
+#include "parsing.h"
+
+#define MAX_INFO 100
+#define N_LINHASU 100000  
+#define N_LINHASD 10000  
+#define N_LINHASC 500
+#define N_LINHASRC 1000000
 
 int calculaData (char *line,char *line2);
 int calculaIdade (char *line);
