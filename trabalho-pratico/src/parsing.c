@@ -7,22 +7,6 @@
 #include <dirent.h>
 #include <stdlib.h>
 
-
-// Esta função copia uma string (init) para outra (dest) com um tamanho menor que a primeira.
-// Isto acontece, porque a string dest é finalizada quando encontra o primeiro '\0', cortando 
-// o tamanho substancialmente.
-char* filtra(char *init,char *dest){
-    int i;
-    for(i=0;init[i]!='\0';i++){
-        dest[i]=init[i];
-    }
-    dest[i]='\0';
-    return dest;
-}
-
-
-
-
 // Esta função é responsável pelo parsing do ficheiro drivers.csv. Funciona da seguinte forma:
 // É aberto o fichero drivers.csv e em seguida é lida linha a linha do ficheiro e colocada na função
 // analisa_linha_drivers para um melhor tratamento dos dados.
@@ -53,9 +37,7 @@ void read_store(char *dir, char file_aux){
 }
 
 
-
 // DRIVERS //////////////////////////////////////////////////
-
 
 // Esta função é responsável pelo tratamento da linha, ou seja, é ela que tem o papel de
 // ler cada parâmetro dos drivers definido na struct. Essa leitura é facilmente efetuada devido
@@ -75,10 +57,7 @@ void analisa_linha_drivers(char *line){
     acc_creation=malloc(sizeof(line));
     acc_status=malloc(sizeof(line));
 
-    
-
     sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^\n]", id,name,birth_date,gender,car_class,license_plate,city,acc_creation,acc_status);
-
 
     //Função que insere todos os parâmetros do driver(apenas do ficheiro drivers.csv) na hash table 
     insert_hash_drivers(id,name,birth_date,gender[0],car_class,license_plate,city,acc_creation,acc_status);
@@ -86,10 +65,7 @@ void analisa_linha_drivers(char *line){
 }
 
 
-
-
 // USERS /////////////////////////////////////
-
 
 // Esta função é responsável pelo tratamento da linha, ou seja, é ela que tem o papel de
 // ler cada parâmetro dos users definido na struct. Essa leitura é facilmente efetuada devido
@@ -114,24 +90,7 @@ void analisa_linha_users(char *line){
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //RIDES //////////////////////////////////
-
-
-
 
 // Esta função é responsável pelo tratamento da linha, ou seja, é ela que tem o papel de
 // ler cada parâmetro dos rides definido na struct. Essa leitura é facilmente efetuada devido
@@ -152,7 +111,6 @@ void analisa_linha_rides(char *line){
     tip=malloc(sizeof(line));
     char *ptr;
 
-
     sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;]", id,date,driver,user,city,distance,score_user,score_driver,tip);
 
     int distance_int = atoi(distance);
@@ -161,8 +119,6 @@ void analisa_linha_rides(char *line){
     double tip_double =strtod(tip,&ptr);
 
     //Funções que inserem todos os parâmetros da ride (apenas do ficheiro rides.csv) nas hash tables 
-    insert_rides_drivers(id,date,driver,user,city,distance_int,score_user_int,score_driver_int,tip_double,"comment");
-    insert_rides_users(id,date,driver,user,city,distance_int,score_user_int,score_driver_int,tip_double,"comment");
-    insert_rides_city(id,date,driver,user,city,distance_int,score_user_int,score_driver_int,tip_double,"comment");
+    insert_hash_rides(id,date,driver,user,city,distance_int,score_user_int,score_driver_int,tip_double);
 }
 

@@ -18,9 +18,7 @@ int main(int argc, char* argv[]){
     // suas linhas a NULL. Fazemos isto, para quando existirem colisões, estas não serem um problema.
     init_hash_table_drivers();
     init_hash_table_users();
-    init_hash_rides_drivers();
-    init_hash_rides_users();
-    init_hash_rides_city();
+    init_hash_rides();
     
     // Criação do path para o ficheiro drivers.csv.
     char *file_d = malloc (100*sizeof(char));

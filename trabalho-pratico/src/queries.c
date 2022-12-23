@@ -11,9 +11,14 @@
 
 // Função responsável pela execução da querie 1.
 void querie1(char *line,char *file){
-    drivers *d;
-    users *u;   
+    drivers *d,*d1;
+    users *u;  
+    rides *r,*r1; 
+    int i,numero_viagens=0;
+    double carType[2];
+    double avaliacao_media=0.000,total_auferido=0.000,total_gasto=0.000;
 
+    
     chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
                                 // para que seja possível nela os ficheiros .txt de output das queries
     
@@ -24,19 +29,44 @@ void querie1(char *line,char *file){
     if(line[0]=='0') {                                        // O input da querie é um id (corresponde a um driver)
         d = procura_hash_drivers(line);                       // Procura o driver na hash table dos users
         if(d!=NULL && (strcmp((converte(d->account_status)),"active")==0)){  // Verifica se o driver existe e tem a conta ativa
-            drivers_q1 *d1 = procura_rides_drivers(line);                    // Procura o driver na hash table dos rides
-            d1->avaliacao_media = d1->avaliacao_media/d1->numero_viagens;
-            fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",d->name,d->gender,calculaIdade(d->birth_day),d1->avaliacao_media,d1->numero_viagens,d1->total_auferido);
+            
+            if ((strcmp(converte(d->car_class),"basic"))==0) {carType[0]=3.25;carType[1]=0.62;}
+            else if ((strcmp(converte(d->car_class),"green"))==0) {carType[0]=4.00;carType[1]=0.79;}
+            else if ((strcmp(converte(d->car_class),"premium"))==0) {carType[0]=5.20;carType[1]=0.94;}
+            
+            for(i=0;i<N_LINHAS;i++){
+                 r = procura_rides(i);
+                 if(strcmp(r->driver,line)==0){
+                     avaliacao_media += r->score_driver;
+                     numero_viagens++;
+                     total_auferido += carType[0] + carType[1]*r->distance + r->tip;
+                 }
+               }
+            fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",d->name,d->gender,calculaIdade(d->birth_day),avaliacao_media/numero_viagens,numero_viagens,total_auferido);
         }
     }
 
 
-    else {                                                    // O input da querie é um username (corresponde a um user)                    
+    else {                                                  // O input da querie é um username (corresponde a um user)                    
         u = procura_hash_users(line);                         // Procura o driver na hash table dos users
         if(u!=NULL && (strcmp((converte(u->account_status)),"active")==0)){  // Verifica se o user existe e tem a conta ativa
-            users_q1 *u1 = procura_rides_users(line);                        // Procura o user na hash table dos rides
-            u1->avaliacao_media = u1->avaliacao_media/u1->numero_viagens;
-            fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",u->name,u->gender,calculaIdade(u->birth_day),u1->avaliacao_media,u1->numero_viagens,u1->total_gasto);
+            
+            for(i=0;i<N_LINHAS;i++){
+                 r1 = procura_rides(i);
+                 
+                 if(strcmp(r1->user,line)==0){
+                     d1 = procura_hash_drivers(r1->driver);
+                     if ((strcmp(converte(d1->car_class),"basic"))==0) total_gasto += 3.25 + 0.62*r1->distance + r1->tip;
+                     else if ((strcmp(converte(d1->car_class),"green"))==0) total_gasto += 4.00 + 0.79*r1->distance + r1->tip;
+                     else if ((strcmp(converte(d1->car_class),"premium"))==0) total_gasto += 5.20 + 0.94*r1->distance + r1->tip;
+
+                     avaliacao_media += r1->score_user;
+                     numero_viagens++;
+                     
+                 }
+               }
+         
+         fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",u->name,u->gender,calculaIdade(u->birth_day),avaliacao_media/numero_viagens,numero_viagens,total_gasto);
         }
     }     
 
@@ -44,40 +74,116 @@ void querie1(char *line,char *file){
     chdir("trabalho-pratico");  // Volta à diretoria principal
 }
 
-
 // Função responsável pela execução da querie 2.
 void querie2(char *n,char *file){}
-
 
 // Função responsável pela execução da querie 3.
 void querie3(char *line,char *file){}
 
-
 // Função responsável pela execução da querie 4.
 void querie4(char *line,char *file){
+    rides *r;
+    drivers *d;
+    double preco_medio=0.000;
+    int i, numero_viagens=0;
 
     chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
                                 // para que seja possível nela os ficheiros .txt de output das queries.
     FILE * NewFile;
     NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write.
     
-    city_c1 *c1 = procura_rides_city(line);     // Procura o driver na hash table dos rides.
-    if (c1->numero_viagens!=0){
-        c1->custo = c1->custo/c1->numero_viagens;    // Calcula o custo medio da cidade, com base no numero de viagens feitas.
-        fprintf(NewFile,"%.3f\n",c1->custo);
-        }
-    
-    
-    fclose(NewFile);            //Fecha o ficheiro criado
-    chdir("trabalho-pratico");  // Volta à diretoria principal
-
+     for(i=0;i<N_LINHAS;i++){
+                 r = procura_rides(i);
+                 
+                 if(strcmp(r->city,line)==0){
+                     d = procura_hash_drivers(r->driver);
+                     
+                     if ((strcmp(converte(d->car_class),"basic"))==0) preco_medio += 3.25 + 0.62*r->distance;
+                     else if ((strcmp(converte(d->car_class),"green"))==0) preco_medio += 4.00 + 0.79*r->distance;
+                     else if ((strcmp(converte(d->car_class),"premium"))==0) preco_medio += 5.20 + 0.94*r->distance;
+                     
+                     numero_viagens++;
+                     
+                 }
+               }
+            
+        fprintf(NewFile,"%.3f\n",preco_medio/numero_viagens);
+        
+        fclose(NewFile);            //Fecha o ficheiro criado
+        chdir("trabalho-pratico");  // Volta à diretoria principal
 }
 
 // Função responsável pela execução da querie 5.
-void querie5(char *line,char *file){}
+void querie5(char *line,char *file){
+    rides *r;
+    drivers *d;
+    double preco_medio=0.000;
+    int i,numero_viagens=0;
+    char newLine[10],newLine2[10];
+
+    strncpy(newLine,line,10);
+    strncpy(newLine2,line+11,10);
+
+    chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
+                                // para que seja possível nela os ficheiros .txt de output das queries.
+    FILE * NewFile;
+    NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write.
+    
+     for(i=0;i<N_LINHAS;i++){
+                 r = procura_rides(i);
+                 
+                 if((calculaData(r->date,newLine)==0) && (calculaData(newLine2,r->date)==0)){
+                     d = procura_hash_drivers(r->driver);
+                     
+                     if ((strcmp(converte(d->car_class),"basic"))==0) preco_medio += 3.25 + 0.62*r->distance;
+                     else if ((strcmp(converte(d->car_class),"green"))==0) preco_medio += 4.00 + 0.79*r->distance;
+                     else if ((strcmp(converte(d->car_class),"premium"))==0) preco_medio += 5.20 + 0.94*r->distance;
+                     
+                     numero_viagens++;
+                     
+                 }
+               }
+
+        preco_medio = preco_medio/numero_viagens;    
+        fprintf(NewFile,"%.3f\n",preco_medio);
+        
+        fclose(NewFile);            //Fecha o ficheiro criado
+        chdir("trabalho-pratico");  // Volta à diretoria principal
+}
 
 // Função responsável pela execução da querie 6.
-void querie6(char *line,char *file){}
+void querie6(char *line,char *file){
+    
+    rides *r;
+    double dist=0.000;
+    int i,numero_viagens=0;
+    char newLine[30],newLine2[10],newLine3[10];
+
+    for(i=0;line[i] /= ' ';i++){
+        newLine[i]=line[i];
+    }
+    newLine[i]='\0';
+    strncpy(newLine2,line+i+1,10);
+    strncpy(newLine3,line+i+11,10);
+
+    chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
+                                // para que seja possível nela os ficheiros .txt de output das queries.
+    FILE * NewFile;
+    NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write.
+    
+     for(i=0;i<N_LINHAS;i++){
+                 r = procura_rides(i);
+                 
+                 if((strcmp(r->city,newLine)==0) && (calculaData(r->date,newLine2)==0) && (calculaData(newLine3,r->date)==0)){
+                     dist += r->distance;
+                 }
+               }
+  
+        fprintf(NewFile,"%.3f\n",dist/numero_viagens);
+        
+        fclose(NewFile);            //Fecha o ficheiro criado
+        chdir("trabalho-pratico");  // Volta à diretoria principal
+}
 
 // Função responsável pela execução da querie 7.
 void querie7(char *line,char *file){}
@@ -138,6 +244,14 @@ void read_exe_queries(char *file){
         case '4':
            querie4(line2,buffer);
            break;
+           
+        case '5':
+           querie5(line2,buffer);
+           break;
+
+        case '6':
+           querie6(line2,buffer);
+           break;   
 
         default:
            break;

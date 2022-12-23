@@ -21,7 +21,6 @@ typedef struct{
 void analisa_linha_drivers(char *line);
 
 
-
 // USERS ///////////////////////////////////////////////////////////
 
 typedef struct{
@@ -37,36 +36,23 @@ typedef struct{
 void analisa_linha_users(char *line);
 
 
-
 // RIDES /////////////////////////////////////////////////////////////
 
 typedef struct{
-    char *username;            // Username do user.
-    char *date;                // Data da viagem mais recente.
-    double avaliacao_media;    // Avaliacao media do user.
-    int numero_viagens;        // Numero de viagens que o user ja fez.
-    double total_gasto;        // Total gasto pelo user.
-}users_q1;
-
-typedef struct{
-    char *id;                  // Id do drivers.
-    char *date;                // Data da viagem mais recente.
-    double avaliacao_media;    // Avaliacao media do driver.
-    int numero_viagens;        // Numero de viagem efetuados pelo driver.
-    double total_auferido;     // Total ganho pelo driver. 
-}drivers_q1;
-
-typedef struct{
-    char *city;             // Cidade que correspondem os seguintes parametro.
-    int numero_viagens;     // Numero de viagens acumuladas por uma cidade.
-    double custo;           // Custo acumulado de uma certa cidade.
-}city_c1;
+    char *id;
+    char *date;
+    char *driver;
+    char *user;
+    char *city;
+    int distance;
+    int score_user;
+    int score_driver;
+    double tip;
+    char *comment;      
+}rides;
 
 void analisa_linha_rides(char *line);
 
-
 ////////////////////////////////////////////////////////////////////
-
-
 
 #endif
