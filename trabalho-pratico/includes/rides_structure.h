@@ -7,7 +7,6 @@
 #define MAX_INFO 100
 #define N_LINHAS 1000000
 
-
 int calculaData (char *line,char *line2);
 int calculaData2 (int dia, int mes, int ano,char *line2,int key);
 int calculaIdade (char *line);

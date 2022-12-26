@@ -62,6 +62,7 @@ void analisa_linha_drivers(char *line){
     //Função que insere todos os parâmetros do driver(apenas do ficheiro drivers.csv) na hash table 
     insert_hash_drivers(id,name,birth_date,gender[0],car_class,license_plate,city,acc_creation,acc_status);
 
+
 }
 
 

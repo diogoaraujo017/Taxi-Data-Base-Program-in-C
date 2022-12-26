@@ -45,5 +45,11 @@ int main(int argc, char* argv[]){
     // Esta função trata os inputs e envia os mesmos para a respetiva querie.
     read_exe_queries(file_txt);
 
+
+    free(file_d);
+    free(file_u);
+    free(file_r);
+    free(file_txt);
+
     return 0;
 }

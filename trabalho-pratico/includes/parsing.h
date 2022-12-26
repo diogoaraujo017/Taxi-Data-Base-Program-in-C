@@ -2,7 +2,6 @@
 #define PARSING_H
 
 void read_store(char *dir, char file_aux);
-char* filtra(char *init,char *dest);
 
 // DRIVERS //////////////////////////////////
 

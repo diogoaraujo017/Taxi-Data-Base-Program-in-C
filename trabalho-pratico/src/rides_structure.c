@@ -16,8 +16,6 @@
 // Hash Table das rides com a key das rides.
 rides *hash_rides[N_LINHAS];
 
-// A função calculaData verifica se a data do primeiro input e mais recente que a  
-// do segundo input.
 int calculaData (char *line,char *line2){
 
     int dia1,mes1,ano1;
@@ -34,32 +32,8 @@ int calculaData (char *line,char *line2){
     
     //Da return a True se Data1 mais recente.
     if (ano1>ano2) return 0;
-    else if (mes1>mes2) return 0;
-    else if (dia1>dia2) return 0;
-    
-    //Da return a False se Data2 mais recente.
-    return 1;
-}
-
-int calculaData2 (int dia,int mes,int ano,char *line2, int key){
-
-    int dia2,mes2,ano2;
-
-    dia2 = (line2[0]-'0')*10+(line2[1]-'0');
-    mes2 = (line2[3]-'0')*10+(line2[4]-'0');
-    ano2 = (line2[6]-'0')*1000+(line2[7]-'0')*100+(line2[8]-'0')*10+(line2[9]-'0');
-    
-    //Da return a True se Data1 mais recente.
-    if(key == 1){
-    if (ano>ano2) return 0;
-    else if (mes>mes2) return 0;
-    else if (dia>dia2) return 0;
-    }
-    else {
-        if (ano<ano2) return 0;
-        else if (mes<mes2) return 0;
-        else if (dia<dia2) return 0;
-    }
+    if (ano1==ano2 && mes1>mes2) return 0;
+    if (ano1==ano2 && mes1==mes2 && dia1>=dia2) return 0;
     
     //Da return a False se Data2 mais recente.
     return 1;

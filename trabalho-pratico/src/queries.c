@@ -119,10 +119,10 @@ void querie5(char *line,char *file){
     drivers *d;
     double preco_medio=0.000;
     int i,numero_viagens=0;
-    char newLine[10],newLine2[10];
+    char data1[10],data2[10];
 
-    strncpy(newLine,line,10);
-    strncpy(newLine2,line+11,10);
+    strncpy(data1,line,10);
+    strncpy(data2,line+11,10);
 
     chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
                                 // para que seja possível nela os ficheiros .txt de output das queries.
@@ -132,7 +132,7 @@ void querie5(char *line,char *file){
      for(i=0;i<N_LINHAS;i++){
                  r = procura_rides(i);
                  
-                 if((calculaData(r->date,newLine)==0) && (calculaData(newLine2,r->date)==0)){
+                 if((calculaData(r->date,data1)==0) && (calculaData(r->date,data2)==1)){
                      d = procura_hash_drivers(r->driver);
                      
                      if ((strcmp(converte(d->car_class),"basic"))==0) preco_medio += 3.25 + 0.62*r->distance;
@@ -155,16 +155,16 @@ void querie5(char *line,char *file){
 void querie6(char *line,char *file){
     
     rides *r;
-    double dist=0.000;
+    double dist=0;
     int i,numero_viagens=0;
-    char newLine[30],newLine2[10],newLine3[10];
+    char cidade[20],data1[10],data2[10];
 
-    for(i=0;line[i] /= ' ';i++){
-        newLine[i]=line[i];
+    for(i=0;line[i] != ' ';i++){
+        cidade[i]=line[i];
     }
-    newLine[i]='\0';
-    strncpy(newLine2,line+i+1,10);
-    strncpy(newLine3,line+i+11,10);
+    cidade[i]='\0';
+    strncpy(data1,line+i+1,10);
+    strncpy(data2,line+i+12,10);
 
     chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
                                 // para que seja possível nela os ficheiros .txt de output das queries.
@@ -174,12 +174,14 @@ void querie6(char *line,char *file){
      for(i=0;i<N_LINHAS;i++){
                  r = procura_rides(i);
                  
-                 if((strcmp(r->city,newLine)==0) && (calculaData(r->date,newLine2)==0) && (calculaData(newLine3,r->date)==0)){
+                 if((strcmp(r->city,cidade)==0) && (calculaData(r->date,data1)==0) && (calculaData(data2,r->date)==0)){
                      dist += r->distance;
+                     numero_viagens++;
                  }
                }
-  
-        fprintf(NewFile,"%.3f\n",dist/numero_viagens);
+
+        if(dist==0) fprintf(NewFile,"0.000");
+        else fprintf(NewFile,"%.3f\n",dist/numero_viagens);
         
         fclose(NewFile);            //Fecha o ficheiro criado
         chdir("trabalho-pratico");  // Volta à diretoria principal
