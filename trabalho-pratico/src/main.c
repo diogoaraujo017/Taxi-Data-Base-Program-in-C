@@ -16,9 +16,8 @@ int main(int argc, char* argv[]){
     
     // Estas funções iniciam as hash tables com os tamanho respetivos, colocando todas as
     // suas linhas a NULL. Fazemos isto, para quando existirem colisões, estas não serem um problema.
-    init_hash_table_drivers();
     init_hash_table_users();
-    init_hash_rides();
+    init_hash_rides_users();
     
     // Criação do path para o ficheiro drivers.csv.
     char *file_d = malloc (100*sizeof(char));
@@ -43,7 +42,7 @@ int main(int argc, char* argv[]){
     read_store(file_r,'r');
 
     // Esta função trata os inputs e envia os mesmos para a respetiva querie.
-    read_exe_queries(file_txt);
+    read_exe_queries("/home/tomas/Desktop/f1/tests.txt");
 
 
     free(file_d);

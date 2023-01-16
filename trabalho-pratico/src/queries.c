@@ -8,6 +8,7 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include "func_auxiliares.h"
 
 // Função responsável pela execução da querie 1.
 void querie1(char *line,char *file){
@@ -75,10 +76,56 @@ void querie1(char *line,char *file){
 }
 
 // Função responsável pela execução da querie 2.
-void querie2(char *n,char *file){}
+void querie2(char *line,char *file){
+
+    rides_driver *rd;
+
+    chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
+                                // para que seja possível nela os ficheiros .txt de output das queries
+    
+    FILE * NewFile;
+    NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write
+
+
+    int n_condutores=atoi(line);
+
+    while(n_condutores!=0){
+        rd = procura_rides_driver();
+        fprintf(NewFile,"%s;%s;%.3f\n",rd->driver,rd->nome,(rd->score_driver)+10);
+        n_condutores--;
+    }
+    restore_hash_rides_drivers();
+
+
+    fclose(NewFile);            //Fecha o ficheiro criado
+    chdir("trabalho-pratico");  // Volta à diretoria principal
+}
 
 // Função responsável pela execução da querie 3.
-void querie3(char *line,char *file){}
+void querie3(char *line,char *file){
+
+    rides_user *ru;
+
+    chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
+                                // para que seja possível nela os ficheiros .txt de output das queries
+    
+    FILE * NewFile;
+    NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write
+
+
+    int n_utilizadores=atoi(line);
+
+    while(n_utilizadores!=0){
+        ru = procura_rides_users();
+        fprintf(NewFile,"%s;%s;%d\n",ru->username,ru->nome,ru->distancia+1000);
+        n_utilizadores--;
+    }
+    restore_hash_rides_users();
+
+
+    fclose(NewFile);            //Fecha o ficheiro criado
+    chdir("trabalho-pratico");  // Volta à diretoria principal
+}
 
 // Função responsável pela execução da querie 4.
 void querie4(char *line,char *file){
@@ -132,7 +179,7 @@ void querie5(char *line,char *file){
      for(i=0;i<N_LINHAS;i++){
                  r = procura_rides(i);
                  
-                 if((calculaData(r->date,data1)==0) && (calculaData(r->date,data2)==1)){
+                 if((calculaData(r->date,data1)<=0) && (calculaData(r->date,data2)==1)){
                      d = procura_hash_drivers(r->driver);
                      
                      if ((strcmp(converte(d->car_class),"basic"))==0) preco_medio += 3.25 + 0.62*r->distance;
@@ -174,7 +221,7 @@ void querie6(char *line,char *file){
      for(i=0;i<N_LINHAS;i++){
                  r = procura_rides(i);
                  
-                 if((strcmp(r->city,cidade)==0) && (calculaData(r->date,data1)==0) && (calculaData(data2,r->date)==0)){
+                 if((strcmp(r->city,cidade)==0) && (calculaData(r->date,data1)<=0) && (calculaData(data2,r->date)<=0)){
                      dist += r->distance;
                      numero_viagens++;
                  }

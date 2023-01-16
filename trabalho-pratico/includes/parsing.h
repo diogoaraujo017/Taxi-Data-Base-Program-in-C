@@ -46,11 +46,31 @@ typedef struct{
     int distance;
     int score_user;
     int score_driver;
-    double tip;
-    char *comment;      
+    double tip;     
 }rides;
 
 void analisa_linha_rides(char *line);
+
+
+
+
+typedef struct{
+    char *date;
+    char *driver;
+    double score_driver;
+    char *nome;
+    int numero_viagens;
+}rides_driver;
+
+
+
+
+typedef struct{
+    int distancia;
+    char *data;
+    char *username;
+    char *nome;
+}rides_user;
 
 ////////////////////////////////////////////////////////////////////
 
