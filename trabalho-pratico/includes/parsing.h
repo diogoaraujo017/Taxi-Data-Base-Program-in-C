@@ -60,6 +60,7 @@ typedef struct{
     double score_driver;
     char *nome;
     int numero_viagens;
+    double score_total;
 }rides_driver;
 
 
@@ -73,12 +74,27 @@ typedef struct{
 }rides_user;
 
 
+typedef struct{
+    double avaliacao_media;
+    char *id;
+    int numero_viagens;
+    char *nome;
+    double avaliacao_total;
+}rides_driver_city;
+
+
+
 
 typedef struct{
-    char* id;
-    char *nome;
-    double avalicao_media;
-}rides_driver_city;
+    char *id_condutor;
+    char *nome_condutor;
+    char *username_utilizador;
+    char *nome_utilizador;
+    char *data_driver;
+    char *data_user;
+    int isValid;
+}rides_gender;
+
 
 ////////////////////////////////////////////////////////////////////
 

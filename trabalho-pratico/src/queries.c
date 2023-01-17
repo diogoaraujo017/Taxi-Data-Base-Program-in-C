@@ -235,10 +235,81 @@ void querie6(char *line,char *file){
 }
 
 // Função responsável pela execução da querie 7.
-void querie7(char *line,char *file){}
+void querie7(char *line,char *file){
 
+    chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
+                                // para que seja possível nela os ficheiros .txt de output das queries
+    
+    FILE * NewFile;
+    NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write
+
+    int i,j,n_condutores=0;
+    char*aux=malloc(sizeof(line));
+    for (i=0;line[i]!=' ';i++){
+        aux[i]=line[i];
+    }
+    aux[i]='\0';
+    n_condutores= atoi(aux);
+
+    char *city = malloc(sizeof(strlen(line)-i));
+    for (i=i+1,j=0;line[i]!='\0';i++,j++){
+        city[j]=line[i];
+    }
+    city[j]='\0';
+
+    rides_driver_city *rdc;
+
+    if(n_condutores!=0) insert_hash_rides_drivers_city(city);
+
+    while(n_condutores!=0){
+        rdc=procura_rides_driver_city();
+        fprintf(NewFile,"%s;%s;%.3f\n",rdc->id,rdc->nome,rdc->avaliacao_media+10);
+        n_condutores--;       
+    }
+    restore_hash_rides_drivers_city();
+
+    fclose(NewFile);            //Fecha o ficheiro criado
+    chdir("trabalho-pratico");  // Volta à diretoria principal
+
+    
+}
 // Função responsável pela execução da querie 8.
-void querie8(char *line,char *file){}
+void querie8(char *line,char *file){
+
+    chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
+                                // para que seja possível nela os ficheiros .txt de output das queries
+    
+    FILE * NewFile;
+    NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write
+
+
+
+    char*aux=malloc(sizeof(line));
+    char genero=line[0];
+    int i,j=0,idade;
+
+    for(i=2;line[i]!='\0';i++,j++){
+        aux[j]=line[i];
+    }
+    aux[j]='\0';
+    idade = atoi(aux);
+
+    rides_gender *rg;
+
+    insert_hash_rides_gender(genero,idade);
+
+    for(i=0;i<N_LINHAS_GENDER;i++){
+        rg=procura_rides_gender();
+        if(rg==NULL)break;
+        fprintf(NewFile,"%s;%s;%s;%s\n",rg->id_condutor,rg->nome_condutor,rg->username_utilizador,rg->nome_utilizador);
+    }
+
+
+
+    fclose(NewFile);            //Fecha o ficheiro criado
+    chdir("trabalho-pratico");  // Volta à diretoria principal
+
+}
 
 // Função responsável pela execução da querie 9.
 void querie9(char *line,char *file){}
@@ -302,6 +373,18 @@ void read_exe_queries(char *file){
            querie6(line2,buffer);
            break;   
 
+        case '7':
+           querie7(line2,buffer);
+           break; 
+
+        case '8':
+           querie8(line2,buffer);
+           break; 
+
+        //case '9':
+           querie9(line2,buffer);
+           break; 
+             
         default:
            break;
         }
