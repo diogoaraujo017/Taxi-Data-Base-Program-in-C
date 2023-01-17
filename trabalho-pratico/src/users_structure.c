@@ -26,15 +26,6 @@ unsigned int hash_users(char *username){
 }
 
 
-// Esta função inicia a hash table com os tamanho respetivos, colocando todas as
-// suas linhas a NULL. Fazemos isto, para quando existirem colisões, estas não serem um problema.
-void init_hash_table_users() {
-    for (int i = 0; i < N_LINHAS1; i++) {
-        hash_table_users[i] = NULL;
-    }
-}
-
-
 // Esta função insere uma determinada linha na hash_table se essa linha não estiver ocupada.
 // Uma linha está ocupada quando não está a NULL e vice-versa, daí a importância da função
 // init_hash_table_users. Se a linha for adicionada com sucesso a função dará return a true,

@@ -123,5 +123,6 @@ void analisa_linha_rides(char *line){
     insert_hash_rides(id,date,driver,user,city,distance_int,score_user_int,score_driver_int,tip_double);
     insert_hash_rides_drivers(date,driver,score_driver_int);
     insert_hash_rides_users(distance_int,date,user);
+    
 }
 

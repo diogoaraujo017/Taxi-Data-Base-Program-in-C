@@ -72,6 +72,14 @@ typedef struct{
     char *nome;
 }rides_user;
 
+
+
+typedef struct{
+    char* id;
+    char *nome;
+    double avalicao_media;
+}rides_driver_city;
+
 ////////////////////////////////////////////////////////////////////
 
 #endif
