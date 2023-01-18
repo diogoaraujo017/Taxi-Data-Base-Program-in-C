@@ -8,7 +8,7 @@
 #define N_LINHAS 1000000
 #define N_LINHAS_DRIVERS 10000
 #define N_LINHAS_USERS 100000
-#define N_LINHAS_GENDER 1000
+#define N_LINHAS_GENDER 2500
 
 
 bool insert_hash_rides(char *id,char *dt,char *dr,char *user,char *c,int dist,int su,int sd,double tip);
@@ -25,7 +25,6 @@ void restore_hash_rides_users();
 
 bool insert_hash_rides_drivers_city(char* city);
 rides_driver_city *procura_rides_driver_city();
-void restore_hash_rides_drivers_city();
 
 bool insert_hash_rides_gender(char genero,int idade);
 rides_gender *procura_rides_gender();

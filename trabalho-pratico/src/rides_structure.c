@@ -35,7 +35,7 @@ bool insert_hash_rides(char *id,char *dt,char *dr,char *user,char *c,int dist,in
 // input colocado na hash table. Se encontrar a função dará return à linha da hash correspondente
 // em forma de struct, caso contrário dará return a NULL.
 rides *procura_rides(int id){
-        return hash_rides[id];                                                                      
+    return hash_rides[id];                                                                      
 }
 
 
@@ -92,7 +92,7 @@ bool insert_hash_rides_drivers(char *data,char *condutor,int avaliacao_media){
 rides_driver *procura_rides_driver(){
      double aval=0;
      char* data="00/00/0000";
-     int aux=0,i,id=0;
+     register int i,aux=0,id=0;
      for(i=0;i<N_LINHAS_DRIVERS;i++){
          if(hash_rides_drivers[i]!=NULL){
              if((hash_rides_drivers[i]->score_driver>aval) || (hash_rides_drivers[i]->score_driver==aval && calculaData(hash_rides_drivers[i]->date,data)==0) || (hash_rides_drivers[i]->score_driver==aval && calculaData(hash_rides_drivers[i]->date,data)==(-1) && (atoi(hash_rides_drivers[i]->driver)<id))){
@@ -111,7 +111,7 @@ rides_driver *procura_rides_driver(){
 
 void restore_hash_rides_drivers(){
 
-    int i;
+    register int i;
     for(i=0;i<N_LINHAS_DRIVERS;i++)
         if(hash_rides_drivers[i]!=NULL && hash_rides_drivers[i]->score_driver<0) hash_rides_drivers[i]->score_driver+=10;
 }
@@ -139,7 +139,8 @@ rides_user *hash_rides_users[N_LINHAS_USERS];
 unsigned int hash_rides_users_key(char *user){
     int comp = strnlen(user,MAX_INFO);
     unsigned int num_hash = 0;
-    for (int i = 0; i < comp; i++)
+    register int i;
+    for (i = 0; i < comp; i++)
     {
         num_hash += user[i];
         num_hash = (num_hash * user[i]) % N_LINHAS_USERS;
@@ -152,8 +153,9 @@ unsigned int hash_rides_users_key(char *user){
 
 
 bool insert_hash_rides_users(int distance,char *date,char *user){
-    int i, linha_hash=0;
+    register int i, linha_hash=0;
     int aux = hash_rides_users_key(user);
+    rides_user *ru = malloc(sizeof(rides_user));
     for (i=0;i < N_LINHAS_USERS;i++){
 
         linha_hash = (i + aux) % N_LINHAS_USERS;
@@ -164,7 +166,6 @@ bool insert_hash_rides_users(int distance,char *date,char *user){
 
             if(!strcmp(u.account_status,"inactive")) return true;
 
-            rides_user *ru = malloc(sizeof(rides_user));
             ru->distancia = distance;
             ru->data = date;
             ru->username = user;
@@ -191,7 +192,7 @@ bool insert_hash_rides_users(int distance,char *date,char *user){
 rides_user *procura_rides_users(){
     int dist=0;
     char* data="00/00/0000";
-    int aux=0,i;
+    register int i,aux=0;
     char *user="zzzz";
     for(i=0;i<N_LINHAS_USERS;i++){
         if(hash_rides_users[i]!=NULL && ((hash_rides_users[i]->distancia>dist) || (hash_rides_users[i]->distancia==dist && calculaData(hash_rides_users[i]->data,data)==0) || (hash_rides_users[i]->distancia==dist && calculaData(hash_rides_users[i]->data,data)==(-1) && ((hash_rides_users[i]->username)<user)))){
@@ -211,7 +212,7 @@ rides_user *procura_rides_users(){
 
 void restore_hash_rides_users(){
 
-    int i;
+    register int i;
     for(i=0;i<N_LINHAS_USERS;i++)
         if(hash_rides_users[i]!=NULL && hash_rides_users[i]->distancia<0) hash_rides_users[i]->distancia+=1000;
 }
@@ -237,7 +238,7 @@ rides_driver_city *hash_rides_drivers_city[N_LINHAS_DRIVERS];
 
 
 bool insert_hash_rides_drivers_city(char* city){
-    int i;
+    register int i;
     int id_driver;
     drivers *d;
     for(i=0;i<N_LINHAS;i++){
@@ -247,6 +248,7 @@ bool insert_hash_rides_drivers_city(char* city){
         if(strcmp(d->account_status,"active")==0 && strcmp(hash_rides[i]->city,city)==0){
 
             if(hash_rides_drivers_city[id_driver]==NULL){
+
                 rides_driver_city *rdc = malloc(sizeof(rides_driver_city));
                 rdc->numero_viagens=1;
                 rdc->id=d->id;
@@ -271,7 +273,7 @@ bool insert_hash_rides_drivers_city(char* city){
 
 
 rides_driver_city *procura_rides_driver_city(){
-    int i,aux;
+    register int i,aux;
     double score_driver=0;
     int condutor=0;
     for(i=0;i<N_LINHAS_DRIVERS;i++){
@@ -285,14 +287,6 @@ rides_driver_city *procura_rides_driver_city(){
     hash_rides_drivers_city[aux]->avaliacao_media-=10;
 
     return hash_rides_drivers_city[aux];
-}
-
-
-void restore_hash_rides_drivers_city(){
-
-    int i;
-    for(i=0;i<N_LINHAS_DRIVERS;i++)
-        if(hash_rides_drivers_city[i]!=NULL && hash_rides_drivers_city[i]->avaliacao_media<0) hash_rides_drivers_city[i]->avaliacao_media+=10;
 }
 
 
@@ -313,19 +307,15 @@ void restore_hash_rides_drivers_city(){
 rides_gender *hash_rides_gender[N_LINHAS_GENDER];
 
 
-
-
-
-
 bool insert_hash_rides_gender(char genero,int idade){
-    int i,j;
+    register int i,j;
     drivers *d;
     users *u;
     for(i=0;i<N_LINHAS;i++){
         d = procura_hash_drivers(hash_rides[i]->driver);
         u = procura_hash_users(hash_rides[i]->user);
 
-        if(strcmp(u->account_status,"active")==0 && strcmp(d->account_status,"active")==0 && d->gender==genero && u->gender==genero && calculaIdade(u->birth_day)>=idade && calculaIdade(d->birth_day)>=idade){
+        if(strcmp(u->account_status,"active")==0 && strcmp(d->account_status,"active")==0 && d->gender==genero && u->gender==genero && calculaIdade(u->account_creation)>=idade && calculaIdade(d->account_creation)>=idade){
 
             for(j=0;j<N_LINHAS_GENDER;j++){
                 if(hash_rides_gender[j]==NULL) break;
@@ -351,21 +341,24 @@ bool insert_hash_rides_gender(char genero,int idade){
 
 
 
+
+
+
 rides_gender *procura_rides_gender(){
-    int i,aux;
-    char* data_atual_user="00/00/0000";
-    char* data_atual_driver="00/00/0000";
+    register int i,aux;
+    char* data_atual_user="00/00/2222";
+    char* data_atual_driver="00/00/2222";
     int data_registo_user,data_registo_driver;
     int end=0;
     for(i=0;i<N_LINHAS_GENDER;i++){
 
-        if(hash_rides_gender[i]!=NULL && hash_rides_gender[i]->isValid==1){
-            end=1;
+        if(hash_rides_gender[i]!=NULL){
+
             data_registo_user=calculaData(hash_rides_gender[i]->data_user,data_atual_user);
             data_registo_driver=calculaData(hash_rides_gender[i]->data_driver,data_atual_driver);
         
-            if (data_registo_driver==1 || (data_registo_driver==-1 && data_registo_user==1) || (data_registo_driver==-1 && data_registo_user==-1)){
-
+            if (hash_rides_gender[i]->isValid==1 && (data_registo_driver==1 || (data_registo_driver==-1 && data_registo_user==1))){
+                end=1;
                 data_atual_user=hash_rides_gender[i]->data_user;
                 data_atual_driver=hash_rides_gender[i]->data_driver;
                 aux=i;
@@ -374,49 +367,35 @@ rides_gender *procura_rides_gender(){
     }
 
     if(end==0) return NULL;
-    hash_rides_gender[aux]->isValid=0;
 
+    hash_rides_gender[aux]->isValid=0;
     return hash_rides_gender[aux];
 }
 
 
 
 
-// rides_gender procura_rides_gender(char genero,int idade){
-//     int i,aux;
-//     char* data_atual_user="00/00/0000";
-//     char* data_atual_driver="00/00/0000";
-//     int data_registo_user,data_registo_driver;
-//     drivers *d;
-//     users *u;
-//     for(i=0;i<N_LINHAS;i++){
 
-//         d = procura_hash_drivers(hash_rides[i]->driver);
-//         u = procura_hash_users(hash_rides[i]->user);
 
-//         if(strcmp(u->account_status,"active")==0 && strcmp(d->account_status,"active")==0 && hash_rides[i]->id[0]!='a' && hash_rides[aux]->id[0]!='b' && calculaIdade(u->birth_day)>=idade && calculaIdade(d->birth_day)>=idade){
 
-//             data_registo_user=calculaData(u->birth_day,data_atual_user);
-//             data_registo_driver=calculaData(d->birth_day,data_atual_driver);
-        
-//             if (data_registo_driver==1 || (data_registo_driver==-1 && data_registo_user==1) || (data_registo_driver==-1 && data_registo_user==-1)){
 
-//                 data_atual_user=u->birth_day;
-//                 data_atual_driver=d->birth_day;
-//                 aux=i;
-//             }
-//         }
-//     }
-    
-//     rides_gender rg;
-//     rg.id_condutor=d->id;
-//     rg.nome_condutor=d->name;
-//     rg.username_utilizador=u->username;
-//     rg.nome_utilizador=u->name;
 
-//     if (hash_rides[aux]->id[0]=='0')
-//         hash_rides[aux]->id[0]='a';
-//     else hash_rides[aux]->id[0]='b';
 
-//     return rg;
-// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

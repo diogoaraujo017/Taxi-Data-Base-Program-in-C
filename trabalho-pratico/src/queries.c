@@ -266,8 +266,6 @@ void querie7(char *line,char *file){
         fprintf(NewFile,"%s;%s;%.3f\n",rdc->id,rdc->nome,rdc->avaliacao_media+10);
         n_condutores--;       
     }
-    restore_hash_rides_drivers_city();
-
     fclose(NewFile);            //Fecha o ficheiro criado
     chdir("trabalho-pratico");  // Volta à diretoria principal
 
@@ -303,7 +301,6 @@ void querie8(char *line,char *file){
         if(rg==NULL)break;
         fprintf(NewFile,"%s;%s;%s;%s\n",rg->id_condutor,rg->nome_condutor,rg->username_utilizador,rg->nome_utilizador);
     }
-
 
 
     fclose(NewFile);            //Fecha o ficheiro criado
@@ -377,7 +374,7 @@ void read_exe_queries(char *file){
            querie7(line2,buffer);
            break; 
 
-        case '8':
+        //case '8':
            querie8(line2,buffer);
            break; 
 

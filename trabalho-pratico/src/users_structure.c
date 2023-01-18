@@ -15,9 +15,9 @@ users *hash_table_users[N_LINHAS1];
 // Associa um número da hash a cada linha criando uma key que mais tarde pode ser utilizada para
 // procurar esse user na hash table
 unsigned int hash_users(char *username){
-    int comp = strnlen(username,MAX_INFO);
     unsigned int num_hash = 0;
-    for (int i = 0; i < comp; i++)
+    register int i;
+    for (i = 0; username[i]!='\0'; i++)
     {
         num_hash += username[i];
         num_hash = (num_hash * username[i]) % N_LINHAS1;
@@ -40,8 +40,9 @@ bool insert_hash_users(char *us,char *n,char g,char *b,char *ac,char *p,char *as
     u->pay_method = p;
     u->account_status = as;
     int aux = hash_users(us);
-    for (int i=0;i < N_LINHAS1;i++){
-        int next_position = (i + aux) % N_LINHAS1;
+    register int i,next_position;
+    for (i=0;i < N_LINHAS1;i++){
+        next_position = (i + aux) % N_LINHAS1;
     
         if ((hash_table_users[next_position] == NULL)){
             hash_table_users[next_position] = u;
@@ -56,12 +57,13 @@ bool insert_hash_users(char *us,char *n,char g,char *b,char *ac,char *p,char *as
 // input colocado na hash table. Se encontrar a função dará return à linha da hash correspondente
 // em forma de struct, caso contrário dará return a NULL.
 users *procura_hash_users(char *username){
+    register int i,next_position;
     int aux = hash_users(username);
-    for (int i = 0; i < N_LINHAS1; i++){
+    for (i = 0; i < N_LINHAS1; i++){
         // Calcula a possível key
-        int next_position = (i + aux) % N_LINHAS1;
+        next_position = (i + aux) % N_LINHAS1;
         // Verifica se o user que está nessa posição da hash table e o que estamos à procura são iguais
-        if (strncmp(hash_table_users[next_position]->username, username, MAX_INFO)==0){
+        if (strcmp(hash_table_users[next_position]->username, username)==0){
             return hash_table_users[next_position];
         }
     }
