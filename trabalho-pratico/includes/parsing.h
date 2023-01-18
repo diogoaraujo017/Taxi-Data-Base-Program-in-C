@@ -51,8 +51,7 @@ typedef struct{
 
 void analisa_linha_rides(char *line);
 
-
-
+// RIDES_DRIVERS /////////////////////////////////////////////////////////////
 
 typedef struct{
     char *date;
@@ -63,8 +62,7 @@ typedef struct{
     double score_total;
 }rides_driver;
 
-
-
+// RIDES_USER /////////////////////////////////////////////////////////////
 
 typedef struct{
     int distancia;
@@ -73,6 +71,7 @@ typedef struct{
     char *nome;
 }rides_user;
 
+// RIDES_DRIVER_CITY /////////////////////////////////////////////////////////////
 
 typedef struct{
     double avaliacao_media;
@@ -82,8 +81,7 @@ typedef struct{
     double avaliacao_total;
 }rides_driver_city;
 
-
-
+// RIDES_GENDER /////////////////////////////////////////////////////////////
 
 typedef struct{
     char *id_condutor;
@@ -95,7 +93,15 @@ typedef struct{
     int isValid;
 }rides_gender;
 
+// RIDES_DATE //////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////
+typedef struct{
+    int distance;
+    char *date;
+    char *id;
+    char *city;
+    double tip;
+    int isValid;
+}rides_date;
 
 #endif

@@ -13,7 +13,6 @@
 // Hash Table das rides com a key das rides.
 rides *hash_rides[N_LINHAS];
 
-
 bool insert_hash_rides(char *id,char *dt,char *dr,char *user,char *c,int dist,int su,int sd,double tip){
     rides *r = malloc(sizeof(rides));
     r->id=id;
@@ -39,19 +38,9 @@ rides *procura_rides(int id){
 }
 
 
-
-
-//////////////////////////////////////
-//////////////////////////////////////
-//////////////////////////////////////
-
-// DRIVERS
-
-
-
+//// DRIVERS //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 rides_driver *hash_rides_drivers[N_LINHAS_DRIVERS];
-
 
 bool insert_hash_rides_drivers(char *data,char *condutor,int avaliacao_media){
 
@@ -87,8 +76,6 @@ bool insert_hash_rides_drivers(char *data,char *condutor,int avaliacao_media){
         
 }
 
-
-
 rides_driver *procura_rides_driver(){
      double aval=0;
      char* data="00/00/0000";
@@ -108,7 +95,6 @@ rides_driver *procura_rides_driver(){
      return hash_rides_drivers[aux];
  }
 
-
 void restore_hash_rides_drivers(){
 
     register int i;
@@ -117,24 +103,9 @@ void restore_hash_rides_drivers(){
 }
 
 
-
-
-//////////////////////////////////////
-//////////////////////////////////////
-//////////////////////////////////////
-
-// USERS
-
-
-
-
-
-
-
-
+//// USERS ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 rides_user *hash_rides_users[N_LINHAS_USERS];
-
 
 unsigned int hash_rides_users_key(char *user){
     int comp = strnlen(user,MAX_INFO);
@@ -147,10 +118,6 @@ unsigned int hash_rides_users_key(char *user){
     }
     return num_hash;
 }
-
-
-
-
 
 bool insert_hash_rides_users(int distance,char *date,char *user){
     register int i, linha_hash=0;
@@ -188,7 +155,6 @@ bool insert_hash_rides_users(int distance,char *date,char *user){
     return false;
 }
 
-
 rides_user *procura_rides_users(){
     int dist=0;
     char* data="00/00/0000";
@@ -207,9 +173,6 @@ rides_user *procura_rides_users(){
     return hash_rides_users[aux];
 }
 
-
-
-
 void restore_hash_rides_users(){
 
     register int i;
@@ -218,24 +181,9 @@ void restore_hash_rides_users(){
 }
 
 
-
-
-
-
-// //////////////////////////////////////
-// //////////////////////////////////////
-// //////////////////////////////////////
-
-// // DRIVERS CITY
-
-
-
-
-
+//// DRIVERS CITY  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 rides_driver_city *hash_rides_drivers_city[N_LINHAS_DRIVERS];
-
-
 
 bool insert_hash_rides_drivers_city(char* city){
     register int i;
@@ -269,9 +217,6 @@ bool insert_hash_rides_drivers_city(char* city){
 
 }
 
-
-
-
 rides_driver_city *procura_rides_driver_city(){
     register int i,aux;
     double score_driver=0;
@@ -290,22 +235,9 @@ rides_driver_city *procura_rides_driver_city(){
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+//// RIDES_GENDER /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 rides_gender *hash_rides_gender[N_LINHAS_GENDER];
-
 
 bool insert_hash_rides_gender(char genero,int idade){
     register int i,j;
@@ -336,14 +268,6 @@ bool insert_hash_rides_gender(char genero,int idade){
     return true;
 }
 
-
-
-
-
-
-
-
-
 rides_gender *procura_rides_gender(){
     register int i,aux;
     char* data_atual_user="00/00/2222";
@@ -373,8 +297,56 @@ rides_gender *procura_rides_gender(){
 }
 
 
+//// RIDES_DATE /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+rides_date *hash_rides_date[N_LINHAS_DRIVERS];
 
+bool insert_hash_rides_date(char *date1,char *date2){
+    register int i,j;
+    
+    for(i=0;i<N_LINHAS;i++){
+
+        if((hash_rides[i]->tip != 0.0) && calculaData(hash_rides[i]->date,date1)<=0 && calculaData(date2,hash_rides[i]->date)<=0){
+
+         for(j=0;j<N_LINHAS_DRIVERS;j++){
+                if(hash_rides_date[j]==NULL) break;
+            }
+
+                rides_date *rd = malloc(sizeof(rides_date));
+                rd->distance=hash_rides[i]->distance;
+                rd->date=hash_rides[i]->date;
+                rd->id=hash_rides[i]->id;
+                rd->city=hash_rides[i]->city;
+                rd->tip=hash_rides[i]->tip;
+                rd->isValid=1;
+
+                hash_rides_date[j]=rd;
+       }
+    }
+    return true;
+}
+
+rides_date *procura_rides_date(){
+    register int i,aux;
+    char* recent_date = "00/00/0000";
+    int dist=0,end=0;
+
+    for(i=0;i<N_LINHAS_DRIVERS;i++){
+
+        if(hash_rides_date[i]!=NULL && hash_rides_date[i]->isValid==1 && (dist<hash_rides_date[i]->distance || (dist==hash_rides_date[i]->distance && calculaData(hash_rides_date[i]->date,recent_date)<=0))){
+                
+                end=1;
+                dist=hash_rides_date[i]->distance;
+                recent_date=hash_rides_date[i]->date;
+                aux=i;
+        }
+    }
+ 
+    if(end==0) return NULL;
+
+    hash_rides_date[aux]->isValid=0;
+    return hash_rides_date[aux];
+}
 
 
 

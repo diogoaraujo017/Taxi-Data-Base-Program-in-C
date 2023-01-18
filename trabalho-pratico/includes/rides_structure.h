@@ -29,4 +29,7 @@ rides_driver_city *procura_rides_driver_city();
 bool insert_hash_rides_gender(char genero,int idade);
 rides_gender *procura_rides_gender();
 
+bool insert_hash_rides_date(char *date1,char *date2);
+rides_date *procura_rides_date();
+
 #endif

@@ -280,8 +280,6 @@ void querie8(char *line,char *file){
     FILE * NewFile;
     NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write
 
-
-
     char*aux=malloc(sizeof(line));
     char genero=line[0];
     int i,j=0,idade;
@@ -309,7 +307,37 @@ void querie8(char *line,char *file){
 }
 
 // Função responsável pela execução da querie 9.
-void querie9(char *line,char *file){}
+void querie9(char *line,char *file){
+
+    chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
+                                // para que seja possível nela os ficheiros .txt de output das queries
+    
+    FILE * NewFile;
+    NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write
+
+    char date1[10],date2[10];
+    register int i;
+    
+    strncpy(date1,line,10);
+    strncpy(date2,line+11,10);
+
+    rides_date *rd;
+
+    insert_hash_rides_date(date1,date2);
+
+    for(i=0;i<N_LINHAS_DRIVERS;i++){
+        
+        rd=procura_rides_date();
+        
+        if(rd==NULL) break;
+        
+        fprintf(NewFile,"%s;%s;%s;%.3f\n",rd->id,rd->date,rd->city,rd->tip);
+    }
+
+    fclose(NewFile);            //Fecha o ficheiro criado
+    chdir("trabalho-pratico");  // Volta à diretoria principal
+
+}
 
 // Função responsável pela abertura e leitura do ficheiro .txt relativo aos inputs das
 // queries. Esta função a cada linha que lê, envia o input para uma das funções relativas
@@ -374,11 +402,11 @@ void read_exe_queries(char *file){
            querie7(line2,buffer);
            break; 
 
-        //case '8':
+        case '8':
            querie8(line2,buffer);
            break; 
 
-        //case '9':
+        case '9':
            querie9(line2,buffer);
            break; 
              
