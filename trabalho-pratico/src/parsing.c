@@ -36,7 +36,6 @@ void read_store(char *dir, char file_aux){
     fclose(file);
 }
 
-
 // DRIVERS //////////////////////////////////////////////////
 
 // Esta função é responsável pelo tratamento da linha, ou seja, é ela que tem o papel de
@@ -61,7 +60,6 @@ void analisa_linha_drivers(char *line){
 
     //Função que insere todos os parâmetros do driver(apenas do ficheiro drivers.csv) na hash table 
     insert_hash_drivers(id,name,birth_date,gender[0],car_class,license_plate,city,acc_creation,acc_status);
-
 
 }
 
@@ -91,7 +89,7 @@ void analisa_linha_users(char *line){
 }
 
 
-//RIDES //////////////////////////////////
+// RIDES //////////////////////////////////
 
 // Esta função é responsável pelo tratamento da linha, ou seja, é ela que tem o papel de
 // ler cada parâmetro dos rides definido na struct. Essa leitura é facilmente efetuada devido
@@ -114,13 +112,14 @@ void analisa_linha_rides(char *line){
 
     sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;]", id,date,driver,user,city,distance,score_user,score_driver,tip);
 
-    int distance_int = atoi(distance);
+    int distance_int = atoi(distance); 
     int score_user_int = atoi(score_user);
     int score_driver_int = atoi(score_driver);
-    double tip_double =strtod(tip,&ptr);
+    double tip_double = strtod(tip,&ptr);
 
     //Funções que inserem todos os parâmetros da ride (apenas do ficheiro rides.csv) nas hash tables 
     insert_hash_rides(id,date,driver,user,city,distance_int,score_user_int,score_driver_int,tip_double);
     insert_hash_rides_drivers(date,driver,score_driver_int);
     insert_hash_rides_users(distance_int,date,user);
 }
+

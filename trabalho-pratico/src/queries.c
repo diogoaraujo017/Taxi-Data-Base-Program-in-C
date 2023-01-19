@@ -331,7 +331,7 @@ void querie9(char *line,char *file){
         
         if(rd==NULL) break;
         
-        fprintf(NewFile,"%s;%s;%s;%.3f\n",rd->id,rd->date,rd->city,rd->tip);
+        fprintf(NewFile,"%s;%s;%d;%s;%.3f\n",rd->id,rd->date,rd->distance,rd->city,rd->tip);
     }
 
     fclose(NewFile);            //Fecha o ficheiro criado

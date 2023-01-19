@@ -66,3 +66,21 @@ const char* converte(char *str){
     }
     return str;
 }
+
+//int check_data(char *date){
+//    if(strlen(date)!=10) return 1;
+//}
+
+//int check_distance(char *score){
+//   register int i;
+
+//   for(i=0;i<strlen(score);i++){ if(score[i] < '0' && score[i] > '9') return 1; }
+   
+//   if(strlen(score)==1 && score[0]=='0') return 1;
+
+//   return 0;
+//}
+
+//int check_score(char *score){}
+
+//int check_tip(char *tip){}
