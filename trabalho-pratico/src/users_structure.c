@@ -63,7 +63,7 @@ users *procura_hash_users(char *username){
         // Calcula a possível key
         next_position = (i + aux) % N_LINHAS1;
         // Verifica se o user que está nessa posição da hash table e o que estamos à procura são iguais
-        if (strcmp(hash_table_users[next_position]->username, username)==0){
+        if (hash_table_users[next_position]!=NULL && strcmp(hash_table_users[next_position]->username, username)==0){
             return hash_table_users[next_position];
         }
     }

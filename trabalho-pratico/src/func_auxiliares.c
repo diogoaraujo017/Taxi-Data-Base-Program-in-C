@@ -57,7 +57,7 @@ int calculaIdade (char *line){
 
 // A função converte trasforma uma string que possa ter letras maiúsculas
 // numa string com apenas letras minúsculas.
-const char* converte(char *str){
+char* converte(char *str){
     int i;
     
     for (i = 0; str[i] != '\0'; i++) {
@@ -67,20 +67,59 @@ const char* converte(char *str){
     return str;
 }
 
-//int check_data(char *date){
-//    if(strlen(date)!=10) return 1;
-//}
 
-//int check_distance(char *score){
-//   register int i;
 
-//   for(i=0;i<strlen(score);i++){ if(score[i] < '0' && score[i] > '9') return 1; }
+
+
+
+
+int check_data(char *date){
+    if(strlen(date)!=10) return 1;
+
+    if(!isdigit(date[0]) || !isdigit(date[1]) || date[2]!='/' || !isdigit(date[3]) || !isdigit(date[4]) || date[5]!='/' ||
+       !isdigit(date[6]) || !isdigit(date[7]) || !isdigit(date[8]) || !isdigit(date[9])){
+        return 1;
+    }
+
+    char dia[3]; dia[0]=date[0]; dia[1]=date[1] ; dia[2]='\0';
+    char mes[3]; mes[0]=date[3]; mes[1]=date[4] ; mes[2]='\0';
+
+    if(atoi(dia)<1 || atoi(dia)>31 || atoi(mes)<1 || atoi(mes)>12) return 1;
+
+    return 0;
+}
+
+int check_distance(char *distance){
+    register int i;
+    int n_digitos=strlen(distance);
+
+    for(i=0;i<n_digitos;i++){
+        if (!isdigit(distance[i])) return 1; 
+    }
    
-//   if(strlen(score)==1 && score[0]=='0') return 1;
+    if(n_digitos==1 && distance[0]=='0') return 1;
 
-//   return 0;
-//}
+    return 0;
+}
 
-//int check_score(char *score){}
+int check_double(char *num){
+    register int i;
+    int n_digitos=strlen(num);
 
-//int check_tip(char *tip){}
+    for(i=0;i<n_digitos;i++){
+        if((!isdigit(num[i])) && num[i]!='.') return 1;
+    }
+
+    return 0;
+}
+
+
+int check_account(char* status){
+    if(strcmp(converte(status),"active")!=0 && strcmp(converte(status),"inactive")!=0) return 1;
+    return 0;
+}
+
+int check_class(char *car){
+    if(strcmp(converte(car),"basic")!=0 && strcmp(converte(car),"green")!=0 && strcmp(converte(car),"premium")!=0) return 1;
+    return 0;
+}

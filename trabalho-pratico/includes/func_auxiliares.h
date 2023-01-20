@@ -7,6 +7,10 @@
 
 int calculaData (char *line,char *line2);
 int calculaIdade (char *line);
-const char* converte(char *str);
-
+char* converte(char *str);
+int check_data(char *date);
+int check_distance(char *distance);
+int check_double(char *num);
+int check_account(char* status);
+int check_class(char *car);
 #endif

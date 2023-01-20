@@ -6,6 +6,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <stdlib.h>
+#include "func_auxiliares.h"
 
 // Esta função é responsável pelo parsing do ficheiro drivers.csv. Funciona da seguinte forma:
 // É aberto o fichero drivers.csv e em seguida é lida linha a linha do ficheiro e colocada na função
@@ -55,11 +56,14 @@ void analisa_linha_drivers(char *line){
     city=malloc(sizeof(line));
     acc_creation=malloc(sizeof(line));
     acc_status=malloc(sizeof(line));
+    acc_status[0]='!';
 
     sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^\n]", id,name,birth_date,gender,car_class,license_plate,city,acc_creation,acc_status);
 
+    if(acc_status[0]=='!' || check_data(birth_date) ==1 || check_data(acc_creation) ==1 || check_account(acc_status)==1 || check_class(car_class)==1) return;
+
     //Função que insere todos os parâmetros do driver(apenas do ficheiro drivers.csv) na hash table 
-    insert_hash_drivers(id,name,birth_date,gender[0],car_class,license_plate,city,acc_creation,acc_status);
+    insert_hash_drivers(id,name,birth_date,gender[0],converte(car_class),license_plate,city,acc_creation,converte(acc_status));
 
 }
 
@@ -81,11 +85,14 @@ void analisa_linha_users(char *line){
     acc_creation=malloc(sizeof(line));
     pay_method=malloc(sizeof(line));
     acc_status=malloc(sizeof(line));
+    acc_status[0]='!';
 
     sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^\n]", username,name,gender,birth_date,acc_creation,pay_method,acc_status);
 
+    if(acc_status[0]=='!' || check_data(birth_date) ==1 || check_account(acc_status)==1) return;
+
     //Função que insere todos os parâmetros do user (apenas do ficheiro users.csv) na hash table 
-    insert_hash_users(username,name,gender[0],birth_date,acc_creation,pay_method,acc_status);
+    insert_hash_users(username,name,gender[0],birth_date,acc_creation,pay_method,converte(acc_status));
 }
 
 
@@ -108,18 +115,23 @@ void analisa_linha_rides(char *line){
     score_user=malloc(sizeof(line));
     score_driver=malloc(sizeof(line));
     tip=malloc(sizeof(line));
+    tip[0]='!';
     char *ptr;
 
     sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;]", id,date,driver,user,city,distance,score_user,score_driver,tip);
 
+    if(tip[0]=='!' || check_data(date) ==1 || check_distance(distance)==1 || check_double(score_user)==1 || check_double(score_driver)==1 || check_double(tip)==1) return;
+
+
+
     int distance_int = atoi(distance); 
-    int score_user_int = atoi(score_user);
-    int score_driver_int = atoi(score_driver);
+    double score_user_double = strtod(score_user,&ptr);
+    double score_driver_double = strtod(score_driver,&ptr);
     double tip_double = strtod(tip,&ptr);
 
     //Funções que inserem todos os parâmetros da ride (apenas do ficheiro rides.csv) nas hash tables 
-    insert_hash_rides(id,date,driver,user,city,distance_int,score_user_int,score_driver_int,tip_double);
-    insert_hash_rides_drivers(date,driver,score_driver_int);
+    insert_hash_rides(id,date,driver,user,city,distance_int,score_user_double,score_driver_double,tip_double);
+    insert_hash_rides_drivers(date,driver,score_driver_double);
     insert_hash_rides_users(distance_int,date,user);
 }
 

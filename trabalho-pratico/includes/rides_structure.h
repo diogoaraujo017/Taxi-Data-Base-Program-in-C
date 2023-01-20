@@ -11,10 +11,10 @@
 #define N_LINHAS_GENDER 2500
 
 
-bool insert_hash_rides(char *id,char *dt,char *dr,char *user,char *c,int dist,int su,int sd,double tip);
+bool insert_hash_rides(char *id,char *dt,char *dr,char *user,char *c,int dist,double su,double sd,double tip);
 rides *procura_rides(int id);
 
-bool insert_hash_rides_drivers(char *data,char *condutor,int avaliacao_media);
+bool insert_hash_rides_drivers(char *data,char *condutor,double avaliacao_media);
 rides_driver *procura_rides_driver();
 void restore_hash_rides_drivers();
 

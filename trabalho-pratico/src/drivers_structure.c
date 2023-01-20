@@ -12,7 +12,6 @@
 drivers *hash_table_drivers[N_LINHAS2];
 
 
-
 // Esta função insere uma determinada linha na hash_table se essa linha não estiver ocupada.
 // Uma linha está ocupada quando não está a NULL e vice-versa, daí a importância da função
 // init_hash_table_drivers. Se a linha for adicionada com sucesso a função dará return a true,

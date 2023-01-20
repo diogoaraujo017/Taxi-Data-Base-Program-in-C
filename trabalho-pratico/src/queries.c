@@ -29,37 +29,39 @@ void querie1(char *line,char *file){
 
     if(line[0]=='0') {                                        // O input da querie é um id (corresponde a um driver)
         d = procura_hash_drivers(line);                       // Procura o driver na hash table dos users
-        if(d!=NULL && (strcmp((converte(d->account_status)),"active")==0)){  // Verifica se o driver existe e tem a conta ativa
+        if(d!=NULL && (strcmp((d->account_status),"active")==0)){  // Verifica se o driver existe e tem a conta ativa
             
-            if ((strcmp(converte(d->car_class),"basic"))==0) {carType[0]=3.25;carType[1]=0.62;}
-            else if ((strcmp(converte(d->car_class),"green"))==0) {carType[0]=4.00;carType[1]=0.79;}
-            else if ((strcmp(converte(d->car_class),"premium"))==0) {carType[0]=5.20;carType[1]=0.94;}
+            if (strcmp(d->car_class,"basic")==0) {carType[0]=3.25;carType[1]=0.62;}
+            else if (strcmp(d->car_class,"green")==0) {carType[0]=4.00;carType[1]=0.79;}
+            else if (strcmp(d->car_class,"premium")==0) {carType[0]=5.20;carType[1]=0.94;}
             
             for(i=0;i<N_LINHAS;i++){
                  r = procura_rides(i);
+                 if(r==NULL) break;
                  if(strcmp(r->driver,line)==0){
                      avaliacao_media += r->score_driver;
                      numero_viagens++;
                      total_auferido += carType[0] + carType[1]*r->distance + r->tip;
                  }
                }
-            fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",d->name,d->gender,calculaIdade(d->birth_day),avaliacao_media/numero_viagens,numero_viagens,total_auferido);
+            if(numero_viagens!=0) fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",d->name,d->gender,calculaIdade(d->birth_day),avaliacao_media/numero_viagens,numero_viagens,total_auferido);
         }
     }
 
 
     else {                                                  // O input da querie é um username (corresponde a um user)                    
         u = procura_hash_users(line);                         // Procura o driver na hash table dos users
-        if(u!=NULL && (strcmp((converte(u->account_status)),"active")==0)){  // Verifica se o user existe e tem a conta ativa
+        if(u!=NULL && (strcmp((u->account_status),"active")==0)){  // Verifica se o user existe e tem a conta ativa
             
             for(i=0;i<N_LINHAS;i++){
                  r1 = procura_rides(i);
-                 
+                 if(r1==NULL) break;
                  if(strcmp(r1->user,line)==0){
                      d1 = procura_hash_drivers(r1->driver);
-                     if ((strcmp(converte(d1->car_class),"basic"))==0) total_gasto += 3.25 + 0.62*r1->distance + r1->tip;
-                     else if ((strcmp(converte(d1->car_class),"green"))==0) total_gasto += 4.00 + 0.79*r1->distance + r1->tip;
-                     else if ((strcmp(converte(d1->car_class),"premium"))==0) total_gasto += 5.20 + 0.94*r1->distance + r1->tip;
+                     if(d1==NULL) return;
+                     if (strcmp(d1->car_class,"basic")==0) total_gasto += 3.25 + 0.62*r1->distance + r1->tip;
+                     else if (strcmp(d1->car_class,"green")==0) total_gasto += 4.00 + 0.79*r1->distance + r1->tip;
+                     else if (strcmp(d1->car_class,"premium")==0) total_gasto += 5.20 + 0.94*r1->distance + r1->tip;
 
                      avaliacao_media += r1->score_user;
                      numero_viagens++;
@@ -67,7 +69,7 @@ void querie1(char *line,char *file){
                  }
                }
          
-         fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",u->name,u->gender,calculaIdade(u->birth_day),avaliacao_media/numero_viagens,numero_viagens,total_gasto);
+         if(numero_viagens!=0) fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",u->name,u->gender,calculaIdade(u->birth_day),avaliacao_media/numero_viagens,numero_viagens,total_gasto);
         }
     }     
 
@@ -91,6 +93,7 @@ void querie2(char *line,char *file){
 
     while(n_condutores!=0){
         rd = procura_rides_driver();
+        if(rd==NULL) break;
         fprintf(NewFile,"%s;%s;%.3f\n",rd->driver,rd->nome,(rd->score_driver)+10);
         n_condutores--;
     }
@@ -117,8 +120,9 @@ void querie3(char *line,char *file){
 
     while(n_utilizadores!=0){
         ru = procura_rides_users();
-        fprintf(NewFile,"%s;%s;%d\n",ru->username,ru->nome,ru->distancia+1000);
-        n_utilizadores--;
+        if(ru==NULL)break;
+            fprintf(NewFile,"%s;%s;%d\n",ru->username,ru->nome,ru->distancia+1000);
+            n_utilizadores--;
     }
     restore_hash_rides_users();
 
@@ -141,21 +145,22 @@ void querie4(char *line,char *file){
     
      for(i=0;i<N_LINHAS;i++){
                  r = procura_rides(i);
-                 
+                 if(r==NULL) break;
                  if(strcmp(r->city,line)==0){
                      d = procura_hash_drivers(r->driver);
-                     
-                     if ((strcmp(converte(d->car_class),"basic"))==0) preco_medio += 3.25 + 0.62*r->distance;
-                     else if ((strcmp(converte(d->car_class),"green"))==0) preco_medio += 4.00 + 0.79*r->distance;
-                     else if ((strcmp(converte(d->car_class),"premium"))==0) preco_medio += 5.20 + 0.94*r->distance;
+                     if(d!=NULL){
+                        if (strcmp(d->car_class,"basic")==0) preco_medio += 3.25 + 0.62*r->distance;
+                        else if (strcmp(d->car_class,"green")==0) preco_medio += 4.00 + 0.79*r->distance;
+                        else if (strcmp(d->car_class,"premium")==0) preco_medio += 5.20 + 0.94*r->distance;
                      
                      numero_viagens++;
-                     
+                     }
                  }
                }
             
-        fprintf(NewFile,"%.3f\n",preco_medio/numero_viagens);
-        
+        if(numero_viagens!=0) fprintf(NewFile,"%.3f\n",preco_medio/numero_viagens);
+
+
         fclose(NewFile);            //Fecha o ficheiro criado
         chdir("trabalho-pratico");  // Volta à diretoria principal
 }
@@ -178,22 +183,22 @@ void querie5(char *line,char *file){
     
      for(i=0;i<N_LINHAS;i++){
                  r = procura_rides(i);
-                 
-                 if((calculaData(r->date,data1)<=0) && (calculaData(r->date,data2)==1)){
+                 if(r==NULL) break;
+                 if(calculaData(r->date,data1)<=0 && calculaData(r->date,data2)==1){
                      d = procura_hash_drivers(r->driver);
-                     
-                     if ((strcmp(converte(d->car_class),"basic"))==0) preco_medio += 3.25 + 0.62*r->distance;
-                     else if ((strcmp(converte(d->car_class),"green"))==0) preco_medio += 4.00 + 0.79*r->distance;
-                     else if ((strcmp(converte(d->car_class),"premium"))==0) preco_medio += 5.20 + 0.94*r->distance;
+                     if(d!=NULL){
+                        if (strcmp(d->car_class,"basic")==0) preco_medio += 3.25 + 0.62*r->distance;
+                        else if (strcmp(d->car_class,"green")==0) preco_medio += 4.00 + 0.79*r->distance;
+                        else if (strcmp(d->car_class,"premium")==0) preco_medio += 5.20 + 0.94*r->distance;
                      
                      numero_viagens++;
-                     
+                     }
                  }
                }
+               
+        if(numero_viagens!=0) fprintf(NewFile,"%.3f\n",preco_medio/numero_viagens);
+    
 
-        preco_medio = preco_medio/numero_viagens;    
-        fprintf(NewFile,"%.3f\n",preco_medio);
-        
         fclose(NewFile);            //Fecha o ficheiro criado
         chdir("trabalho-pratico");  // Volta à diretoria principal
 }
@@ -220,7 +225,7 @@ void querie6(char *line,char *file){
     
      for(i=0;i<N_LINHAS;i++){
                  r = procura_rides(i);
-                 
+                 if (r==NULL) break;
                  if((strcmp(r->city,cidade)==0) && (calculaData(r->date,data1)<=0) && (calculaData(data2,r->date)<=0)){
                      dist += r->distance;
                      numero_viagens++;
@@ -263,8 +268,9 @@ void querie7(char *line,char *file){
 
     while(n_condutores!=0){
         rdc=procura_rides_driver_city();
+        if(rdc==NULL)break;
         fprintf(NewFile,"%s;%s;%.3f\n",rdc->id,rdc->nome,rdc->avaliacao_media+10);
-        n_condutores--;       
+        n_condutores--;      
     }
     fclose(NewFile);            //Fecha o ficheiro criado
     chdir("trabalho-pratico");  // Volta à diretoria principal

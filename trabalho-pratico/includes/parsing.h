@@ -44,8 +44,8 @@ typedef struct{
     char *user;
     char *city;
     int distance;
-    int score_user;
-    int score_driver;
+    double score_user;
+    double score_driver;
     double tip;     
 }rides;
 
@@ -90,6 +90,7 @@ typedef struct{
     char *nome_utilizador;
     char *data_driver;
     char *data_user;
+    char *id_viagem;
     int isValid;
 }rides_gender;
 
@@ -101,6 +102,7 @@ typedef struct{
     char *id;
     char *city;
     double tip;
+    char *id_viagem;
     int isValid;
 }rides_date;
 
