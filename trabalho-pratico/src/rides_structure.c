@@ -161,7 +161,7 @@ rides_user *procura_rides_users(){
     register int i,aux=0;
     char *user="zzzz";
     for(i=0;i<N_LINHAS_USERS;i++){
-        if(hash_rides_users[i]!=NULL && ((hash_rides_users[i]->distancia>dist) || (hash_rides_users[i]->distancia==dist && calculaData(hash_rides_users[i]->data,data)==0) || (hash_rides_users[i]->distancia==dist && calculaData(hash_rides_users[i]->data,data)==(-1) && ((hash_rides_users[i]->username)<user)))){
+        if(hash_rides_users[i]!=NULL && ((hash_rides_users[i]->distancia>dist) || (hash_rides_users[i]->distancia==dist && calculaData(hash_rides_users[i]->data,data)==0) || (hash_rides_users[i]->distancia==dist && calculaData(hash_rides_users[i]->data,data)==(-1) && strcmp(hash_rides_users[i]->username,user)<0))){
             dist=hash_rides_users[i]->distancia;
             data= hash_rides_users[i]->data;  
             user= hash_rides_users[i]->username;

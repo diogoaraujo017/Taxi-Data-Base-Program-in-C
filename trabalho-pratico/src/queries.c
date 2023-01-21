@@ -37,11 +37,13 @@ void querie1(char *line,char *file){
             
             for(i=0;i<N_LINHAS;i++){
                  r = procura_rides(i);
-                 if(r==NULL) break;
-                 if(strcmp(r->driver,line)==0){
-                     avaliacao_media += r->score_driver;
-                     numero_viagens++;
-                     total_auferido += carType[0] + carType[1]*r->distance + r->tip;
+                 if(r!=NULL){
+
+                    if(strcmp(r->driver,line)==0){
+                        avaliacao_media += r->score_driver;
+                        numero_viagens++;
+                        total_auferido += carType[0] + carType[1]*r->distance + r->tip;
+                    }
                  }
                }
             if(numero_viagens!=0) fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",d->name,d->gender,calculaIdade(d->birth_day),avaliacao_media/numero_viagens,numero_viagens,total_auferido);
@@ -55,17 +57,20 @@ void querie1(char *line,char *file){
             
             for(i=0;i<N_LINHAS;i++){
                  r1 = procura_rides(i);
-                 if(r1==NULL) break;
-                 if(strcmp(r1->user,line)==0){
-                     d1 = procura_hash_drivers(r1->driver);
-                     if(d1==NULL) return;
-                     if (strcmp(d1->car_class,"basic")==0) total_gasto += 3.25 + 0.62*r1->distance + r1->tip;
-                     else if (strcmp(d1->car_class,"green")==0) total_gasto += 4.00 + 0.79*r1->distance + r1->tip;
-                     else if (strcmp(d1->car_class,"premium")==0) total_gasto += 5.20 + 0.94*r1->distance + r1->tip;
+                 if(r1!=NULL){
 
-                     avaliacao_media += r1->score_user;
-                     numero_viagens++;
+                    if(strcmp(r1->user,line)==0){
+                        d1 = procura_hash_drivers(r1->driver);
+                        if(d1==NULL) return;
+                        if (strcmp(d1->car_class,"basic")==0) total_gasto += 3.25 + 0.62*r1->distance + r1->tip;
+                        else if (strcmp(d1->car_class,"green")==0) total_gasto += 4.00 + 0.79*r1->distance + r1->tip;
+                        else if (strcmp(d1->car_class,"premium")==0) total_gasto += 5.20 + 0.94*r1->distance + r1->tip;
+
+                        avaliacao_media += r1->score_user;
+                        numero_viagens++;
                      
+                    
+                    }
                  }
                }
          
@@ -232,8 +237,7 @@ void querie6(char *line,char *file){
                  }
                }
 
-        if(dist==0) fprintf(NewFile,"0.000");
-        else fprintf(NewFile,"%.3f\n",dist/numero_viagens);
+        if(dist!=0) fprintf(NewFile,"%.3f\n",dist/numero_viagens);
         
         fclose(NewFile);            //Fecha o ficheiro criado
         chdir("trabalho-pratico");  // Volta à diretoria principal
@@ -264,7 +268,7 @@ void querie7(char *line,char *file){
 
     rides_driver_city *rdc;
 
-    if(n_condutores!=0) insert_hash_rides_drivers_city(city);
+    insert_hash_rides_drivers_city(city);
 
     while(n_condutores!=0){
         rdc=procura_rides_driver_city();
