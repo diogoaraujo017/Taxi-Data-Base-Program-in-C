@@ -150,16 +150,17 @@ void querie4(char *line,char *file){
     
      for(i=0;i<N_LINHAS;i++){
                  r = procura_rides(i);
-                 if(r==NULL) break;
-                 if(strcmp(r->city,line)==0){
-                     d = procura_hash_drivers(r->driver);
-                     if(d!=NULL){
-                        if (strcmp(d->car_class,"basic")==0) preco_medio += 3.25 + 0.62*r->distance;
-                        else if (strcmp(d->car_class,"green")==0) preco_medio += 4.00 + 0.79*r->distance;
-                        else if (strcmp(d->car_class,"premium")==0) preco_medio += 5.20 + 0.94*r->distance;
+                 if(r!=NULL){
+                    if(strcmp(r->city,line)==0){
+                        d = procura_hash_drivers(r->driver);
+                        if(d!=NULL){
+                            if (strcmp(d->car_class,"basic")==0) preco_medio += 3.25 + 0.62*r->distance;
+                            else if (strcmp(d->car_class,"green")==0) preco_medio += 4.00 + 0.79*r->distance;
+                            else if (strcmp(d->car_class,"premium")==0) preco_medio += 5.20 + 0.94*r->distance;
                      
-                     numero_viagens++;
-                     }
+                        numero_viagens++;
+                        }
+                    }
                  }
                }
             
@@ -188,16 +189,17 @@ void querie5(char *line,char *file){
     
      for(i=0;i<N_LINHAS;i++){
                  r = procura_rides(i);
-                 if(r==NULL) break;
-                 if(calculaData(r->date,data1)<=0 && calculaData(r->date,data2)==1){
-                     d = procura_hash_drivers(r->driver);
-                     if(d!=NULL){
-                        if (strcmp(d->car_class,"basic")==0) preco_medio += 3.25 + 0.62*r->distance;
-                        else if (strcmp(d->car_class,"green")==0) preco_medio += 4.00 + 0.79*r->distance;
-                        else if (strcmp(d->car_class,"premium")==0) preco_medio += 5.20 + 0.94*r->distance;
+                 if(r!=NULL){
+                    if(calculaData(r->date,data1)<=0 && calculaData(r->date,data2)==1){
+                        d = procura_hash_drivers(r->driver);
+                        if(d!=NULL){
+                            if (strcmp(d->car_class,"basic")==0) preco_medio += 3.25 + 0.62*r->distance;
+                            else if (strcmp(d->car_class,"green")==0) preco_medio += 4.00 + 0.79*r->distance;
+                            else if (strcmp(d->car_class,"premium")==0) preco_medio += 5.20 + 0.94*r->distance;
                      
-                     numero_viagens++;
-                     }
+                        numero_viagens++;
+                        }
+                    }
                  }
                }
                
@@ -230,10 +232,11 @@ void querie6(char *line,char *file){
     
      for(i=0;i<N_LINHAS;i++){
                  r = procura_rides(i);
-                 if (r==NULL) break;
-                 if((strcmp(r->city,cidade)==0) && (calculaData(r->date,data1)<=0) && (calculaData(data2,r->date)<=0)){
-                     dist += r->distance;
-                     numero_viagens++;
+                 if (r!=NULL){
+                    if((strcmp(r->city,cidade)==0) && (calculaData(r->date,data1)<=0) && (calculaData(data2,r->date)<=0)){
+                        dist += r->distance;
+                        numero_viagens++;
+                    }
                  }
                }
 
@@ -276,6 +279,8 @@ void querie7(char *line,char *file){
         fprintf(NewFile,"%s;%s;%.3f\n",rdc->id,rdc->nome,rdc->avaliacao_media+10);
         n_condutores--;      
     }
+    restore_hash_rides_driver_city();
+
     fclose(NewFile);            //Fecha o ficheiro criado
     chdir("trabalho-pratico");  // Volta à diretoria principal
 

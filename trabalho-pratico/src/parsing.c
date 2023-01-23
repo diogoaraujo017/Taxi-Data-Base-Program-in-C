@@ -120,13 +120,13 @@ void analisa_linha_rides(char *line){
 
     sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;]", id,date,driver,user,city,distance,score_user,score_driver,tip);
 
-    if(tip[0]=='!' || check_data(date) ==1 || check_distance(distance)==1 || check_double(score_user)==1 || check_double(score_driver)==1 || check_double(tip)==1) return;
+    if(tip[0]=='!' || check_data(date) ==1 || check_distance(distance)==1 || check_score(score_user)==1 || check_score(score_driver)==1|| check_tip(tip)==1) return;
 
 
 
     int distance_int = atoi(distance); 
-    double score_user_double = strtod(score_user,&ptr);
-    double score_driver_double = strtod(score_driver,&ptr);
+    double score_user_double = atoi(score_user);
+    double score_driver_double = atoi(score_driver);
     double tip_double = strtod(tip,&ptr);
 
     //Funções que inserem todos os parâmetros da ride (apenas do ficheiro rides.csv) nas hash tables 

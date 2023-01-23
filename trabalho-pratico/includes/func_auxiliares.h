@@ -10,7 +10,8 @@ int calculaIdade (char *line);
 char* converte(char *str);
 int check_data(char *date);
 int check_distance(char *distance);
-int check_double(char *num);
+int check_score(char *score);
+int check_tip(char *tip);
 int check_account(char* status);
 int check_class(char *car);
 #endif

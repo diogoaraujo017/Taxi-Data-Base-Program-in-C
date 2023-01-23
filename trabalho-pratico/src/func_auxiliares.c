@@ -102,17 +102,26 @@ int check_distance(char *distance){
     return 0;
 }
 
-int check_double(char *num){
+int check_score(char *score){
     register int i;
-    int n_digitos=strlen(num);
-
+    int n_digitos=strlen(score);
+    if(n_digitos==1 && score[0]=='0') return 1;
     for(i=0;i<n_digitos;i++){
-        if((!isdigit(num[i])) && num[i]!='.') return 1;
+        if(!isdigit(score[i])) return 1;
     }
 
     return 0;
 }
 
+int check_tip(char *tip){
+    register int i;
+    int n_digitos=strlen(tip);
+    for(i=0;i<n_digitos;i++){
+        if((!isdigit(tip[i])) && tip[i]!='.') return 1;
+    }
+
+    return 0;
+}
 
 int check_account(char* status){
     if(strcmp(converte(status),"active")!=0 && strcmp(converte(status),"inactive")!=0) return 1;
@@ -123,3 +132,4 @@ int check_class(char *car){
     if(strcmp(converte(car),"basic")!=0 && strcmp(converte(car),"green")!=0 && strcmp(converte(car),"premium")!=0) return 1;
     return 0;
 }
+

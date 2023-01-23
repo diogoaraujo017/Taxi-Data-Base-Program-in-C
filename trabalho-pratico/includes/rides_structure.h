@@ -25,6 +25,7 @@ void restore_hash_rides_users();
 
 bool insert_hash_rides_drivers_city(char* city);
 rides_driver_city *procura_rides_driver_city();
+void restore_hash_rides_driver_city();
 
 bool insert_hash_rides_gender(char genero,int idade);
 rides_gender *procura_rides_gender();
