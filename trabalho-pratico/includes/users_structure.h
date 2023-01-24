@@ -3,9 +3,7 @@
 
 #include <stdbool.h>
 #include "parsing.h"
-
-#define MAX_INFO 100
-#define N_LINHAS1 100000
+#include "rides_structure.h"
 
 unsigned int hash_users(char *username);
 bool insert_hash_users(char *us,char *n,char g,char *b,char *ac,char *p,char *s);

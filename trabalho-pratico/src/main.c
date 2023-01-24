@@ -49,6 +49,11 @@ int main(int argc, char* argv[]){
 // Inicializar todos os pointers, dar init na main
 // Nao utilizar o pointer original. fazer copias
 // Modo iterativo
-// Migrar as structures para o .c
 // Otimizar Querie 8.
 // Regist variaveis i
+// Make file TIME
+// Inicializar os apontadores
+// Valgrind
+// Linhas automaticamente, tirar os defines
+// Profiling
+// Tipos opacos

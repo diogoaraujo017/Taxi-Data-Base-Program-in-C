@@ -9,7 +9,7 @@
 
 
 // Hash table dos drivers
-drivers *hash_table_drivers[N_LINHAS2];
+drivers *hash_table_drivers[N_LINHAS_DRIVERS];
 
 
 // Esta função insere uma determinada linha na hash_table se essa linha não estiver ocupada.

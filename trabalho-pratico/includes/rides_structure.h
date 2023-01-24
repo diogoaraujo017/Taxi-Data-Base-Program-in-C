@@ -5,9 +5,9 @@
 #include "parsing.h"
 
 #define MAX_INFO 100
-#define N_LINHAS 1000000
-#define N_LINHAS_DRIVERS 10000
-#define N_LINHAS_USERS 100000
+#define N_LINHAS 50000000
+#define N_LINHAS_DRIVERS 500000
+#define N_LINHAS_USERS 5000000
 #define N_LINHAS_GENDER 2500
 
 
