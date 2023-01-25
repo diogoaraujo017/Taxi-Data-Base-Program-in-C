@@ -40,12 +40,27 @@ int main(int argc, char* argv[]){
     // Esta função trata os inputs e envia os mesmos para a respetiva querie.
     read_exe_queries(file_txt);
 
+
+    free(file_d);
+    free(file_u);
+    free(file_r);
+    free(file_txt);
+    
+
+    free_hash_drivers();
+    free_hash_users();
+    free_hash_rides();
+    free_hash_rides_drivers();
+    free_hash_rides_users();
+    free_hash_rides_driver_city();
+    free_hash_rides_gender();
+    free_hash_rides_date();
+
     return 0;
 }
 
 // Coisas a fazer:
 
-// Dar free a todos os mallocs e callocs
 // Inicializar todos os pointers, dar init na main
 // Nao utilizar o pointer original. fazer copias
 // Modo iterativo
@@ -53,7 +68,6 @@ int main(int argc, char* argv[]){
 // Regist variaveis i
 // Make file TIME
 // Inicializar os apontadores
-// Valgrind
 // Linhas automaticamente, tirar os defines
 // Profiling
 // Tipos opacos

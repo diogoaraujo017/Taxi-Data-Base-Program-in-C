@@ -30,14 +30,13 @@ unsigned int hash_users(char *username){
 // init_hash_table_users. Se a linha for adicionada com sucesso a função dará return a true,
 // não dando qualquer problema, caso contrário dará return a false significando que a 
 // função não conseguiu adicionar a linha.
-bool insert_hash_users(char *us,char *n,char g,char *b,char *ac,char *p,char *as){
+bool insert_hash_users(char *us,char *n,char *g,char *b,char *ac,char *as){
     users *u = malloc(sizeof(users));
     u->username = us;
     u->name = n;
     u->gender = g;
     u->birth_day = b;
     u->account_creation = ac;
-    u->pay_method = p;
     u->account_status = as;
     int aux = hash_users(us);
     register int i,next_position;
@@ -68,4 +67,19 @@ users *procura_hash_users(char *username){
         }
     }
     return NULL;
+}
+
+void free_hash_users(){
+    int i;
+    for(i=0;i<N_LINHAS_USERS;i++){
+        if(hash_table_users[i]!=NULL){
+            free(hash_table_users[i]->account_creation);
+            free(hash_table_users[i]->account_status);
+            free(hash_table_users[i]->birth_day);
+            free(hash_table_users[i]->gender);
+            free(hash_table_users[i]->name);
+            free(hash_table_users[i]->username);
+        }
+            free(hash_table_users[i]);
+    }
 }

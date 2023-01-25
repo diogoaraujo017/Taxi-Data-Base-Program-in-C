@@ -17,7 +17,7 @@ drivers *hash_table_drivers[N_LINHAS_DRIVERS];
 // init_hash_table_drivers. Se a linha for adicionada com sucesso a função dará return a true,
 // não dando qualquer problema, caso contrário dará return a false significando que a 
 // função não conseguiu adicionar a linha.
-bool insert_hash_drivers(char *id,char *n,char *b,char g,char *cc,char *lp,char *c,char *ac,char *as){
+bool insert_hash_drivers(char *id,char *n,char *b,char *g,char *cc,char *c,char *ac,char *as){
     drivers *d = malloc(sizeof(drivers));
     d->id = id;
     d->name = n;
@@ -26,10 +26,10 @@ bool insert_hash_drivers(char *id,char *n,char *b,char g,char *cc,char *lp,char 
     d->account_creation = ac;
     d->car_class = cc;
     d->city=c;
-    d->license_plate = lp;
     d->account_status = as;
 
     hash_table_drivers[atoi(id)-1] = d;
+
     return true;
     }
 
@@ -41,4 +41,22 @@ bool insert_hash_drivers(char *id,char *n,char *b,char g,char *cc,char *lp,char 
 // em forma de struct, caso contrário dará return a NULL.
 drivers *procura_hash_drivers(char *id){
     return hash_table_drivers[atoi(id)-1];
+}
+
+
+void free_hash_drivers(){
+    int i;
+    for(i=0;i<N_LINHAS_DRIVERS;i++){
+        if(hash_table_drivers[i]!=NULL){
+            free(hash_table_drivers[i]->account_creation);
+            free(hash_table_drivers[i]->account_status);
+            free(hash_table_drivers[i]->birth_day);
+            free(hash_table_drivers[i]->car_class);
+            free(hash_table_drivers[i]->city);
+            free(hash_table_drivers[i]->gender);
+            free(hash_table_drivers[i]->id);
+            free(hash_table_drivers[i]->name);
+        }
+            free(hash_table_drivers[i]);
+    }
 }

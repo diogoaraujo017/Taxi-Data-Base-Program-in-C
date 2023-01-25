@@ -9,9 +9,8 @@ typedef struct{
     char *id;                // Id do condutor.
     char *name;              // Nome do condutor.
     char *birth_day;         // Data de nascimento do condutor.
-    char gender;             // Sexo do condutor.
+    char *gender;             // Sexo do condutor.
     char *car_class;         // Classe do carro do condutor.
-    char *license_plate;     // Matricula do carro do condutor.
     char *city;              // Cidade de residencia do condutor.
     char *account_creation;  // Data de criação da conta do condutor.
     char *account_status;    // Status da conta do condutor.
@@ -25,10 +24,9 @@ void analisa_linha_drivers(char *line);
 typedef struct{
     char *username;          // Username do user.
     char *name;              // Nome do user.
-    char gender;             // Sexo do user.
+    char *gender;             // Sexo do user.
     char *birth_day;         // Data de nascimento do user.
     char *account_creation;  // Data da criacao da conta do user.
-    char *pay_method;        // Metodo de pagamentos do user.
     char *account_status;    // Status da conta do user.
 }users;
 

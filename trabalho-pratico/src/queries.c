@@ -46,7 +46,7 @@ void querie1(char *line,char *file){
                     }
                  }
                }
-            if(numero_viagens!=0) fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",d->name,d->gender,calculaIdade(d->birth_day),avaliacao_media/numero_viagens,numero_viagens,total_auferido);
+            if(numero_viagens!=0) fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",d->name,d->gender[0],calculaIdade(d->birth_day),avaliacao_media/numero_viagens,numero_viagens,total_auferido);
         }
     }
 
@@ -74,7 +74,7 @@ void querie1(char *line,char *file){
                  }
                }
          
-         if(numero_viagens!=0) fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",u->name,u->gender,calculaIdade(u->birth_day),avaliacao_media/numero_viagens,numero_viagens,total_gasto);
+         if(numero_viagens!=0) fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",u->name,u->gender[0],calculaIdade(u->birth_day),avaliacao_media/numero_viagens,numero_viagens,total_gasto);
         }
     }     
 
@@ -281,6 +281,9 @@ void querie7(char *line,char *file){
     }
     restore_hash_rides_driver_city();
 
+    free(aux);
+    free(city);
+
     fclose(NewFile);            //Fecha o ficheiro criado
     chdir("trabalho-pratico");  // Volta à diretoria principal
 
@@ -315,6 +318,7 @@ void querie8(char *line,char *file){
         fprintf(NewFile,"%s;%s;%s;%s\n",rg->id_condutor,rg->nome_condutor,rg->username_utilizador,rg->nome_utilizador);
     }
 
+    free(aux);
 
     fclose(NewFile);            //Fecha o ficheiro criado
     chdir("trabalho-pratico");  // Volta à diretoria principal
