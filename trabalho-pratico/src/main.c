@@ -14,7 +14,6 @@
 // caminho para um ficheiro de texto que contém uma lista de comandos (queries) a serem executados.
 int main(int argc, char* argv[]){
     
-    
     // Criação do path para o ficheiro drivers.csv.
     char *file_d = malloc (100*sizeof(char));
     strcpy(file_d,argv[1]);
@@ -46,13 +45,12 @@ int main(int argc, char* argv[]){
     free(file_r);
     free(file_txt);
     
-
     free_hash_drivers();
     free_hash_users();
     free_hash_rides();
     free_hash_rides_drivers();
     free_hash_rides_users();
-    free_hash_rides_driver_city();
+
     free_hash_rides_gender();
     free_hash_rides_date();
 

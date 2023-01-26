@@ -270,7 +270,6 @@ void querie7(char *line,char *file){
     city[j]='\0';
 
     rides_driver_city *rdc;
-
     insert_hash_rides_drivers_city(city);
 
     while(n_condutores!=0){
@@ -279,8 +278,8 @@ void querie7(char *line,char *file){
         fprintf(NewFile,"%s;%s;%.3f\n",rdc->id,rdc->nome,rdc->avaliacao_media+10);
         n_condutores--;      
     }
-    restore_hash_rides_driver_city();
-
+    free_hash_rides_driver_city();
+    //restore_hash_rides_driver_city();
     free(aux);
     free(city);
 

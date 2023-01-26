@@ -46,7 +46,7 @@ void read_store(char *dir, char file_aux){
 // da função insert_hash_drivers.
 void analisa_linha_drivers(char *line){
     char *id,*name,*birth_date,*gender,*car_class,*license_plate,*city,*acc_creation,*acc_status;
-    int tamanho_info = 250;
+    int tamanho_info = 50;
 
     id=malloc(tamanho_info);
     name=malloc(tamanho_info);
@@ -88,7 +88,7 @@ void analisa_linha_drivers(char *line){
 // da função insert_hash_users.
 void analisa_linha_users(char *line){
     char *username,*name,*gender,*birth_date,*acc_creation,*pay_method,*acc_status;
-    int tamanho_info = 250;
+    int tamanho_info = 50;
 
     username=malloc(tamanho_info);
     name=malloc(tamanho_info);
@@ -130,7 +130,7 @@ void analisa_linha_users(char *line){
 // das funções insert_rides_drivers e insert_rides_users.
 void analisa_linha_rides(char *line){
     char *id,*date,*driver,*user,*city,*distance,*score_user,*score_driver,*tip,*ptr;
-    int tamanho_info = 250;
+    int tamanho_info = 50;
 
     id=malloc(tamanho_info);
     date=malloc(tamanho_info);
