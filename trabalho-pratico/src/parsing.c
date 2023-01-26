@@ -46,17 +46,17 @@ void read_store(char *dir, char file_aux){
 // da função insert_hash_drivers.
 void analisa_linha_drivers(char *line){
     char *id,*name,*birth_date,*gender,*car_class,*license_plate,*city,*acc_creation,*acc_status;
-    int tamanho_info = 50;
+    int tamanho_info = 35;
 
-    id=malloc(tamanho_info);
+    id=malloc(14);
     name=malloc(tamanho_info);
-    birth_date=malloc(tamanho_info);
-    gender=malloc(tamanho_info);
-    car_class=malloc(tamanho_info);
-    license_plate=malloc(tamanho_info);
-    city=malloc(tamanho_info);
-    acc_creation=malloc(tamanho_info);
-    acc_status=malloc(tamanho_info);
+    birth_date=malloc(12);
+    gender=malloc(3);
+    car_class=malloc(10);
+    license_plate=malloc(10);
+    city=malloc(12);
+    acc_creation=malloc(12);
+    acc_status=malloc(10);
     acc_status[0]='!';
 
     sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^\n]", id,name,birth_date,gender,car_class,license_plate,city,acc_creation,acc_status);
@@ -88,15 +88,15 @@ void analisa_linha_drivers(char *line){
 // da função insert_hash_users.
 void analisa_linha_users(char *line){
     char *username,*name,*gender,*birth_date,*acc_creation,*pay_method,*acc_status;
-    int tamanho_info = 50;
+    int tamanho_info = 35;
 
     username=malloc(tamanho_info);
     name=malloc(tamanho_info);
-    gender=malloc(tamanho_info);
-    birth_date=malloc(tamanho_info);
-    acc_creation=malloc(tamanho_info);
-    pay_method=malloc(tamanho_info);
-    acc_status=malloc(tamanho_info);
+    gender=malloc(3);
+    birth_date=malloc(12);
+    acc_creation=malloc(12);
+    pay_method=malloc(12);
+    acc_status=malloc(10);
     acc_status[0]='!';
 
     sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^\n]", username,name,gender,birth_date,acc_creation,pay_method,acc_status);
@@ -130,17 +130,17 @@ void analisa_linha_users(char *line){
 // das funções insert_rides_drivers e insert_rides_users.
 void analisa_linha_rides(char *line){
     char *id,*date,*driver,*user,*city,*distance,*score_user,*score_driver,*tip,*ptr;
-    int tamanho_info = 50;
+    int tamanho_info = 35;
 
-    id=malloc(tamanho_info);
-    date=malloc(tamanho_info);
-    driver=malloc(tamanho_info); 
+    id=malloc(14);
+    date=malloc(12);
+    driver=malloc(14); 
     user=malloc(tamanho_info);
-    city=malloc(tamanho_info);
-    distance=malloc(tamanho_info);
-    score_user=malloc(tamanho_info);
-    score_driver=malloc(tamanho_info);
-    tip=malloc(tamanho_info);
+    city=malloc(12);
+    distance=malloc(6);
+    score_user=malloc(6);
+    score_driver=malloc(6);
+    tip=malloc(6);
     tip[0]='!';
 
     sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;]", id,date,driver,user,city,distance,score_user,score_driver,tip);

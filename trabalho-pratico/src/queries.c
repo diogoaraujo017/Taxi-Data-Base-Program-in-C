@@ -279,7 +279,7 @@ void querie7(char *line,char *file){
         n_condutores--;      
     }
     free_hash_rides_driver_city();
-    //restore_hash_rides_driver_city();
+
     free(aux);
     free(city);
 

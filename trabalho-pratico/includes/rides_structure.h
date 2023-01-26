@@ -4,10 +4,9 @@
 #include <stdbool.h>
 #include "parsing.h"
 
-#define MAX_INFO 100
-#define N_LINHAS 20000000
-#define N_LINHAS_DRIVERS 200000
-#define N_LINHAS_USERS 2000000
+#define N_LINHAS 15000000
+#define N_LINHAS_DRIVERS 150000
+#define N_LINHAS_USERS 1500000
 #define N_LINHAS_GENDER 10000
 
 
@@ -27,7 +26,6 @@ void free_hash_rides_users();
 
 bool insert_hash_rides_drivers_city(char* city);
 rides_driver_city *procura_rides_driver_city();
-void restore_hash_rides_driver_city();
 void free_hash_rides_driver_city();
 
 bool insert_hash_rides_gender(char genero,int idade);

@@ -263,20 +263,6 @@ rides_driver_city *procura_rides_driver_city(){
 
 
 
-void restore_hash_rides_driver_city(){
-
-    register int i;
-    for(i=0;i<N_LINHAS_DRIVERS;i++){
-        if(hash_rides_drivers_city[i]!=NULL){
-            free(hash_rides_drivers_city[i]->id);
-            free(hash_rides_drivers_city[i]->nome);
-            hash_rides_drivers_city[i]=NULL;
-        }
-    }
-}
-
-
-
 void free_hash_rides_driver_city(){
     register int i;
     for(i=0;i<N_LINHAS_DRIVERS;i++){
