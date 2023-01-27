@@ -190,7 +190,7 @@ void querie5(char *line,char *file){
      for(i=0;i<N_LINHAS;i++){
                  r = procura_rides(i);
                  if(r!=NULL){
-                    if(calculaData(r->date,data1)<=0 && calculaData(r->date,data2)==1){
+                    if(calculaData(r->date,data1)<=0 && calculaData(data2,r->date)<=0){
                         d = procura_hash_drivers(r->driver);
                         if(d!=NULL){
                             if (strcmp(d->car_class,"basic")==0) preco_medio += 3.25 + 0.62*r->distance;
@@ -279,9 +279,8 @@ void querie7(char *line,char *file){
     while(n_condutores!=0){
 
         rdc=procura_rides_driver_city(ind);
-        
+        if(strcmp(rdc->nome,"null")==0) break;
         fprintf(NewFile,"%s;%s;%.3f\n",rdc->id,rdc->nome,rdc->avaliacao_media);
-        
         n_condutores--;
         ind--;
     }
