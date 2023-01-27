@@ -19,13 +19,17 @@ rides_driver *procura_rides_driver();
 void restore_hash_rides_drivers();
 void free_hash_rides_drivers();
 
+
+void sortQ3();
 bool insert_hash_rides_users(int distance,char *date,char *user);
-rides_user *procura_rides_users();
-void restore_hash_rides_users();
+rides_user *procura_rides_users(int ind);
+int compareUsers(const void *elem1, const void *elem2);
 void free_hash_rides_users();
 
+void sortQ7();
 bool insert_hash_rides_drivers_city(char* city);
-rides_driver_city *procura_rides_driver_city();
+rides_driver_city *procura_rides_driver_city(int ind);
+int compareCity(const void *elem1, const void *elem2);
 void free_hash_rides_driver_city();
 
 bool insert_hash_rides_gender(char genero,int idade);

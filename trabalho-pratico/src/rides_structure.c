@@ -131,6 +131,22 @@ void free_hash_rides_drivers(){
 
 rides_user *hash_rides_users[N_LINHAS_USERS];
 
+void sortQ3(){
+    int i;
+    for (i=0;i < N_LINHAS_USERS;i++){
+         if(hash_rides_users[i]==NULL){
+            rides_user *ru = malloc(sizeof(rides_user));
+            ru->distancia = 0;
+            ru->data = "01/01/1000";
+            ru->username = "null";
+            ru->nome = "null";
+
+            hash_rides_users[i] = ru;
+         }
+    }
+
+    qsort(hash_rides_users, N_LINHAS_USERS, sizeof(rides_user*), compareUsers);
+}
 
 bool insert_hash_rides_users(int distance,char *date,char *user){
     register int i, linha_hash=0;
@@ -167,22 +183,27 @@ bool insert_hash_rides_users(int distance,char *date,char *user){
     return false;
 }
 
-rides_user *procura_rides_users(){
-    int dist=0;
-    char* data="00/00/0000";
-    register int i,aux=0;
-    char *user="zzzz";
-    for(i=0;i<N_LINHAS_USERS;i++){
-        if(hash_rides_users[i]!=NULL && ((hash_rides_users[i]->distancia>dist) || (hash_rides_users[i]->distancia==dist && calculaData(hash_rides_users[i]->data,data)==0) || (hash_rides_users[i]->distancia==dist && calculaData(hash_rides_users[i]->data,data)==(-1) && strcmp(hash_rides_users[i]->username,user)<0))){
-            dist=hash_rides_users[i]->distancia;
-            data= hash_rides_users[i]->data;  
-            user= hash_rides_users[i]->username;
-            aux = i;
-        }
-    }
-    if(hash_rides_users[aux]!=NULL) hash_rides_users[aux]->distancia-=1000;
+rides_user *procura_rides_users(int ind){
+    return hash_rides_users[ind];
+}
 
-    return hash_rides_users[aux];
+int compareUsers(const void *elem1, const void *elem2){
+    rides_user **ru1 = (rides_user**)elem1;
+    rides_user **ru2 = (rides_user**)elem2;               
+
+    
+    if((*ru1)->distancia > (*ru2)->distancia) {
+        return 1;
+    } else if ((*ru1)->distancia < (*ru2)->distancia) {
+        return -1;
+    } else if (calculaData((*ru1)->data, (*ru2)->data) == 0) {
+        return 1;
+    } else if (calculaData((*ru2)->data, (*ru1)->data) == 0) {
+        return -1;
+    } else if (strcmp((*ru2)->username, (*ru1)->username)<0){
+        return -1;
+    } else return 1;
+  
 }
 
 void restore_hash_rides_users(){
@@ -204,6 +225,24 @@ void free_hash_rides_users(){
 //// DRIVERS CITY  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 rides_driver_city *hash_rides_drivers_city[N_LINHAS_DRIVERS];
+
+void sortQ7(){
+    int i;
+    for (i=0;i < N_LINHAS_DRIVERS;i++){
+         if(hash_rides_drivers_city[i]==NULL){
+            rides_driver_city *rdc = malloc(sizeof(rides_driver_city));
+            rdc->avaliacao_media = 0;
+            rdc->id = "0";
+            rdc->numero_viagens = 0;
+            rdc->nome = "null";
+            rdc->avaliacao_media = 0.000;
+
+            hash_rides_drivers_city[i] = rdc;
+         }
+    }
+
+    qsort(hash_rides_drivers_city, N_LINHAS_DRIVERS, sizeof(rides_driver_city*), compareCity);
+}
 
 bool insert_hash_rides_drivers_city(char* city){
     register int i;
@@ -244,24 +283,24 @@ bool insert_hash_rides_drivers_city(char* city){
     return true;
 }
 
-rides_driver_city *procura_rides_driver_city(){
-    register int i,aux=0;
-    double score_driver=0;
-    int condutor=0;
-    for(i=0;i<N_LINHAS_DRIVERS;i++){
-        if(hash_rides_drivers_city[i]!=NULL && (hash_rides_drivers_city[i]->avaliacao_media>score_driver || (hash_rides_drivers_city[i]->avaliacao_media==score_driver && atoi(hash_rides_drivers_city[i]->id)>condutor))){
-            condutor=atoi(hash_rides_drivers_city[i]->id);
-            score_driver = hash_rides_drivers_city[i]->avaliacao_media;
-            aux=i;
-        }
-    }
-
-    if(hash_rides_drivers_city[aux]!=NULL) hash_rides_drivers_city[aux]->avaliacao_media-=10;
-
-    return hash_rides_drivers_city[aux];
+rides_driver_city *procura_rides_driver_city(int ind){
+    return hash_rides_drivers_city[ind];
 }
 
+int compareCity(const void *elem1, const void *elem2){
+    rides_driver_city **rdc1 = (rides_driver_city**)elem1;
+    rides_driver_city **rdc2 = (rides_driver_city**)elem2;               
 
+    
+    if((*rdc1)->avaliacao_media > (*rdc2)->avaliacao_media) {
+        return 1;
+    } else if ((*rdc1)->avaliacao_media < (*rdc2)->avaliacao_media) {
+        return -1;
+    } else if (atoi((*rdc1)->id) > atoi((*rdc2)->id)) {
+        return 1;
+    } else return -1;
+  
+}
 
 void free_hash_rides_driver_city(){
     register int i;

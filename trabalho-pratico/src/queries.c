@@ -111,9 +111,8 @@ void querie2(char *line,char *file){
 
 // Função responsável pela execução da querie 3.
 void querie3(char *line,char *file){
-
     rides_user *ru;
-
+    int ind = N_LINHAS_USERS-1;
     chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
                                 // para que seja possível nela os ficheiros .txt de output das queries
     
@@ -124,13 +123,14 @@ void querie3(char *line,char *file){
     int n_utilizadores=atoi(line);
 
     while(n_utilizadores!=0){
-        ru = procura_rides_users();
-        if(ru==NULL)break;
-            fprintf(NewFile,"%s;%s;%d\n",ru->username,ru->nome,ru->distancia+1000);
-            n_utilizadores--;
+        ru = procura_rides_users(ind);    
+        
+        fprintf(NewFile,"%s;%s;%d\n",ru->username,ru->nome,ru->distancia);
+        
+        n_utilizadores--;
+        ind--;
     }
-    restore_hash_rides_users();
-
+    //restore_hash_rides_users();
 
     fclose(NewFile);            //Fecha o ficheiro criado
     chdir("trabalho-pratico");  // Volta à diretoria principal
@@ -270,13 +270,20 @@ void querie7(char *line,char *file){
     city[j]='\0';
 
     rides_driver_city *rdc;
+    
     insert_hash_rides_drivers_city(city);
+    sortQ7();
+
+    int ind = N_LINHAS_DRIVERS-1;
 
     while(n_condutores!=0){
-        rdc=procura_rides_driver_city();
-        if(rdc==NULL)break;
-        fprintf(NewFile,"%s;%s;%.3f\n",rdc->id,rdc->nome,rdc->avaliacao_media+10);
-        n_condutores--;      
+
+        rdc=procura_rides_driver_city(ind);
+        
+        fprintf(NewFile,"%s;%s;%.3f\n",rdc->id,rdc->nome,rdc->avaliacao_media);
+        
+        n_condutores--;
+        ind--;
     }
     free_hash_rides_driver_city();
 

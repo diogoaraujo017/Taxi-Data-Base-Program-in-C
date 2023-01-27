@@ -36,6 +36,8 @@ int main(int argc, char* argv[]){
     read_store(file_u,'u');
     read_store(file_r,'r');
 
+    sortQ3();
+
     // Esta função trata os inputs e envia os mesmos para a respetiva querie.
     read_exe_queries(file_txt);
 
