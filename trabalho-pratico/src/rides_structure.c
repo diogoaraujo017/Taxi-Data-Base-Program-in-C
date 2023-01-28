@@ -383,11 +383,15 @@ rides_gender *procura_rides_gender(){
 
 
 void free_hash_rides_gender(){
-    int i;
+    register int i;
     for(i=0;i<N_LINHAS_GENDER;i++){
-        free(hash_rides_gender[i]);
+        if(hash_rides_gender[i]!=NULL){
+            free(hash_rides_gender[i]);
+            hash_rides_gender[i]=NULL;
+        }
     }
 }
+
 
 
 //// RIDES_DATE /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -52,7 +52,6 @@ int main(int argc, char* argv[]){
     free_hash_rides();
     free_hash_rides_drivers();
     free_hash_rides_users();
-    free_hash_rides_gender();
     free_hash_rides_date();
 
     return 0;

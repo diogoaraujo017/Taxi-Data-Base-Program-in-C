@@ -322,7 +322,7 @@ void querie8(char *line,char *file){
         if(rg==NULL)break;
         fprintf(NewFile,"%s;%s;%s;%s\n",rg->id_condutor,rg->nome_condutor,rg->username_utilizador,rg->nome_utilizador);
     }
-
+    free_hash_rides_gender();
     free(aux);
 
     fclose(NewFile);            //Fecha o ficheiro criado
