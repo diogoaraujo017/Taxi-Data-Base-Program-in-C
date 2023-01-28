@@ -93,17 +93,18 @@ void querie2(char *line,char *file){
     FILE * NewFile;
     NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write
 
-
+    int ind=N_LINHAS_DRIVERS-1;
     int n_condutores=atoi(line);
 
     while(n_condutores!=0){
-        rd = procura_rides_driver();
-        if(rd==NULL) break;
-        fprintf(NewFile,"%s;%s;%.3f\n",rd->driver,rd->nome,(rd->score_driver)+10);
-        n_condutores--;
-    }
-    restore_hash_rides_drivers();
 
+        rd = procura_rides_driver(ind);
+
+        fprintf(NewFile,"%s;%s;%.3f\n",rd->driver,rd->nome,(rd->score_driver));
+
+        n_condutores--;
+        ind--;
+    }
 
     fclose(NewFile);            //Fecha o ficheiro criado
     chdir("trabalho-pratico");  // Volta à diretoria principal
@@ -130,7 +131,6 @@ void querie3(char *line,char *file){
         n_utilizadores--;
         ind--;
     }
-    //restore_hash_rides_users();
 
     fclose(NewFile);            //Fecha o ficheiro criado
     chdir("trabalho-pratico");  // Volta à diretoria principal

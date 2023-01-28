@@ -57,6 +57,24 @@ void free_hash_rides(){
 
 rides_driver *hash_rides_drivers[N_LINHAS_DRIVERS];
 
+
+void sortQ2(){
+    int i;
+    for (i=0;i < N_LINHAS_DRIVERS;i++){
+         if(hash_rides_drivers[i]==NULL){
+            rides_driver *rd = malloc(sizeof(rides_driver));
+            rd->score_driver = 0;
+            rd->date = "01/01/1000";
+            rd->driver = "1000000";
+
+            hash_rides_drivers[i] = rd;
+         }
+    }
+
+    qsort(hash_rides_drivers, N_LINHAS_DRIVERS, sizeof(rides_driver*), compareDrivers);
+}
+
+
 bool insert_hash_rides_drivers(char *data,char *condutor,double avaliacao_media){
 
     int linha_hash = atoi (condutor)-1;
@@ -91,32 +109,28 @@ bool insert_hash_rides_drivers(char *data,char *condutor,double avaliacao_media)
         
 }
 
-rides_driver *procura_rides_driver(){
-     double aval=0;
-     char* data="00/00/0000";
-     register int i,aux=0,id=0;
-     for(i=0;i<N_LINHAS_DRIVERS;i++){
-         if(hash_rides_drivers[i]!=NULL){
-             if((hash_rides_drivers[i]->score_driver>aval) || (hash_rides_drivers[i]->score_driver==aval && calculaData(hash_rides_drivers[i]->date,data)==0) || (hash_rides_drivers[i]->score_driver==aval && calculaData(hash_rides_drivers[i]->date,data)==(-1) && (atoi(hash_rides_drivers[i]->driver)<id))){
-                 data = hash_rides_drivers[i]->date;  
-                 aval = hash_rides_drivers[i]->score_driver;
-                 aux = i;
-                 id = atoi(hash_rides_drivers[i]->driver);
-             }
-         }
-     }
-     if(hash_rides_drivers[aux]!=NULL) hash_rides_drivers[aux]->score_driver-=10;
 
-     return hash_rides_drivers[aux];
- }
-
-void restore_hash_rides_drivers(){
-
-    register int i;
-    for(i=0;i<N_LINHAS_DRIVERS;i++)
-        if(hash_rides_drivers[i]!=NULL && hash_rides_drivers[i]->score_driver<0) hash_rides_drivers[i]->score_driver+=10;
+rides_driver *procura_rides_driver(int ind){
+    return hash_rides_drivers[ind];
 }
 
+int compareDrivers(const void *elem1, const void *elem2){
+    rides_driver **rd1 = (rides_driver**)elem1;
+    rides_driver **rd2 = (rides_driver**)elem2;               
+
+    if((*rd1)->score_driver > (*rd2)->score_driver) {
+        return 1;
+    } else if ((*rd1)->score_driver < (*rd2)->score_driver) {
+        return -1;
+    } else if (calculaData((*rd1)->date, (*rd2)->date) == 0) {
+        return 1;
+    } else if (calculaData((*rd2)->date, (*rd1)->date) == 0) {
+        return -1;
+    } else if (atoi((*rd1)->driver) < atoi((*rd2)->driver)){
+        return 1;
+    } else return -1;
+  
+}
 
 
 void free_hash_rides_drivers(){
@@ -204,13 +218,6 @@ int compareUsers(const void *elem1, const void *elem2){
         return -1;
     } else return 1;
   
-}
-
-void restore_hash_rides_users(){
-
-    register int i;
-    for(i=0;i<N_LINHAS_USERS;i++)
-        if(hash_rides_users[i]!=NULL && hash_rides_users[i]->distancia<0) hash_rides_users[i]->distancia+=1000;
 }
 
 

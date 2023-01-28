@@ -14,9 +14,10 @@ bool insert_hash_rides(char *id,char *dt,char *dr,char *user,char *c,int dist,do
 rides *procura_rides(int id);
 void free_hash_rides();
 
+void sortQ2();
 bool insert_hash_rides_drivers(char *data,char *condutor,double avaliacao_media);
-rides_driver *procura_rides_driver();
-void restore_hash_rides_drivers();
+rides_driver *procura_rides_driver(int ind);
+int compareDrivers(const void *elem1, const void *elem2);
 void free_hash_rides_drivers();
 
 
