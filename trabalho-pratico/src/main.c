@@ -47,7 +47,7 @@ int main(int argc, char* argv[]){
     sortQ3();
 
     // Esta função trata os inputs e envia os mesmos para a respetiva querie.
-    read_exe_queries("/home/codemaster/Desktop/LI3/grupo-32/trabalho-pratico/input/t.txt");
+    read_exe_queries(file_txt);
 
 
     free(file_d);
