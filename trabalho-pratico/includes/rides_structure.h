@@ -4,10 +4,10 @@
 #include <stdbool.h>
 #include "parsing.h"
 
-#define N_LINHAS 15000000
-#define N_LINHAS_DRIVERS 150000
-#define N_LINHAS_USERS 1500000
-#define N_LINHAS_GENDER 10000
+extern int n_linhas;
+extern int n_linhas_drivers; 
+extern int n_linhas_users; 
+extern int n_linhas_gender;
 
 
 bool insert_hash_rides(char *id,char *dt,char *dr,char *user,char *c,int dist,double su,double sd,double tip);
@@ -33,6 +33,7 @@ rides_driver_city *procura_rides_driver_city(int ind);
 int compareCity(const void *elem1, const void *elem2);
 void free_hash_rides_driver_city();
 
+void init_hash_rides_gender(int aux);
 bool insert_hash_rides_gender(char genero,int idade);
 rides_gender *procura_rides_gender();
 void free_hash_rides_gender();
@@ -40,5 +41,7 @@ void free_hash_rides_gender();
 bool insert_hash_rides_date(char *date1,char *date2);
 rides_date *procura_rides_date();
 void free_hash_rides_date();
+
+void allocate_rides();
 
 #endif

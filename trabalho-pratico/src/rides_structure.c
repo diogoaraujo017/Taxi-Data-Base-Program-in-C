@@ -11,7 +11,7 @@
 
 
 // Hash Table das rides com a key das rides.
-rides *hash_rides[N_LINHAS];
+rides **hash_rides;
 
 bool insert_hash_rides(char *id,char *dt,char *dr,char *user,char *c,int dist,double su,double sd,double tip){
     rides *r = malloc(sizeof(rides));
@@ -40,7 +40,7 @@ rides *procura_rides(int id){
 
 void free_hash_rides(){
     int i;
-    for(i=0;i<N_LINHAS;i++){
+    for(i=0;i<n_linhas;i++){
         if(hash_rides[i]!=NULL){
             free(hash_rides[i]->id);
             free(hash_rides[i]->date);
@@ -50,17 +50,18 @@ void free_hash_rides(){
         }
             free(hash_rides[i]);
     }
+    free(hash_rides);
 }
 
 
 //// DRIVERS //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-rides_driver *hash_rides_drivers[N_LINHAS_DRIVERS];
+rides_driver **hash_rides_drivers;
 
 
 void sortQ2(){
     int i;
-    for (i=0;i < N_LINHAS_DRIVERS;i++){
+    for (i=0;i < n_linhas_drivers;i++){
          if(hash_rides_drivers[i]==NULL){
             rides_driver *rd = malloc(sizeof(rides_driver));
             rd->score_driver = 0;
@@ -71,7 +72,7 @@ void sortQ2(){
          }
     }
 
-    qsort(hash_rides_drivers, N_LINHAS_DRIVERS, sizeof(rides_driver*), compareDrivers);
+    qsort(hash_rides_drivers, n_linhas_drivers, sizeof(rides_driver*), compareDrivers);
 }
 
 
@@ -135,19 +136,20 @@ int compareDrivers(const void *elem1, const void *elem2){
 
 void free_hash_rides_drivers(){
     int i;
-    for(i=0;i<N_LINHAS_DRIVERS;i++){
+    for(i=0;i<n_linhas_drivers;i++){
         free(hash_rides_drivers[i]);
     }
+    free(hash_rides_drivers);
 }
 
 
 //// USERS ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-rides_user *hash_rides_users[N_LINHAS_USERS];
+rides_user **hash_rides_users;
 
 void sortQ3(){
     int i;
-    for (i=0;i < N_LINHAS_USERS;i++){
+    for (i=0;i < n_linhas_users;i++){
          if(hash_rides_users[i]==NULL){
             rides_user *ru = malloc(sizeof(rides_user));
             ru->distancia = 0;
@@ -159,7 +161,7 @@ void sortQ3(){
          }
     }
 
-    qsort(hash_rides_users, N_LINHAS_USERS, sizeof(rides_user*), compareUsers);
+    qsort(hash_rides_users, n_linhas_users, sizeof(rides_user*), compareUsers);
 }
 
 bool insert_hash_rides_users(int distance,char *date,char *user){
@@ -169,9 +171,9 @@ bool insert_hash_rides_users(int distance,char *date,char *user){
 
     if(u==NULL || strcmp(u->account_status,"inactive")==0) return true;
 
-    for (i=0;i < N_LINHAS_USERS;i++){
+    for (i=0;i < n_linhas_users;i++){
 
-        linha_hash = (i + aux) % N_LINHAS_USERS;
+        linha_hash = (i + aux) % n_linhas_users;
 
         if (hash_rides_users[linha_hash] == NULL){
             rides_user *ru = malloc(sizeof(rides_user));
@@ -223,19 +225,20 @@ int compareUsers(const void *elem1, const void *elem2){
 
 void free_hash_rides_users(){
     int i;
-    for(i=0;i<N_LINHAS_USERS;i++){
+    for(i=0;i<n_linhas_users;i++){
         free(hash_rides_users[i]);
     }
+    free(hash_rides_users);
 }
 
 
 //// DRIVERS CITY  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-rides_driver_city *hash_rides_drivers_city[N_LINHAS_DRIVERS];
+rides_driver_city **hash_rides_drivers_city;
 
 void sortQ7(){
     int i;
-    for (i=0;i < N_LINHAS_DRIVERS;i++){
+    for (i=0;i < n_linhas_drivers;i++){
          if(hash_rides_drivers_city[i]==NULL){
             rides_driver_city *rdc = malloc(sizeof(rides_driver_city));
             rdc->avaliacao_media = 0;
@@ -248,14 +251,14 @@ void sortQ7(){
          }
     }
 
-    qsort(hash_rides_drivers_city, N_LINHAS_DRIVERS, sizeof(rides_driver_city*), compareCity);
+    qsort(hash_rides_drivers_city, n_linhas_drivers, sizeof(rides_driver_city*), compareCity);
 }
 
 bool insert_hash_rides_drivers_city(char* city){
     register int i;
     int id_driver;
     drivers *d;
-    for(i=0;i<N_LINHAS;i++){
+    for(i=0;i<n_linhas;i++){
         if(hash_rides[i]!=NULL){
 
             d = procura_hash_drivers(hash_rides[i]->driver);
@@ -311,7 +314,7 @@ int compareCity(const void *elem1, const void *elem2){
 
 void free_hash_rides_driver_city(){
     register int i;
-    for(i=0;i<N_LINHAS_DRIVERS;i++){
+    for(i=0;i<n_linhas_drivers;i++){
         if(hash_rides_drivers_city[i]!=NULL){
             free(hash_rides_drivers_city[i]);
             hash_rides_drivers_city[i]=NULL;
@@ -322,25 +325,43 @@ void free_hash_rides_driver_city(){
 
 //// RIDES_GENDER /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-rides_gender *hash_rides_gender[N_LINHAS_GENDER];
+rides_gender **hash_rides_gender;
+
+void init_hash_rides_gender(int aux){
+    int i;
+
+    for(i=aux;i<n_linhas_gender;i++){
+        hash_rides_gender[i]=NULL;
+    } 
+}
 
 bool insert_hash_rides_gender(char genero,int idade){
-    register int i,j;
+    int i, j, cont=0;
     drivers *d;
     users *u;
-    for(i=0;i<N_LINHAS;i++){
+    
+    for(i=0;i<n_linhas;i++){
         if(hash_rides[i]!=NULL){
 
             d = procura_hash_drivers(hash_rides[i]->driver);
             u = procura_hash_users(hash_rides[i]->user);
+            
             if(d!=NULL && u!=NULL){
+                
                 if(strcmp(u->account_status,"active")==0 && strcmp(d->account_status,"active")==0 && d->gender[0]==genero && u->gender[0]==genero && calculaIdade(u->account_creation)>=idade && calculaIdade(d->account_creation)>=idade){
+                    
+                    cont++;
+                    
+                    if(cont>=n_linhas_gender-1) {
+                        n_linhas_gender = n_linhas_gender*5;
+                        hash_rides_gender = realloc(hash_rides_gender,n_linhas_gender*sizeof(rides_gender*));
+                        init_hash_rides_gender(cont-1);
+                    }
 
-                    for(j=0;j<N_LINHAS_GENDER;j++){
+                    for(j=0;j<n_linhas_gender;j++){
                         if(hash_rides_gender[j]==NULL) break;
                     }
             
-
                     rides_gender *rg = malloc(sizeof(rides_gender));
                     rg->id_condutor=d->id;
                     rg->nome_condutor=d->name;
@@ -350,6 +371,7 @@ bool insert_hash_rides_gender(char genero,int idade){
                     rg->data_user=u->account_creation;
                     rg->isValid=1;
                     rg->id_viagem=hash_rides[i]->id;
+                    
                     hash_rides_gender[j]=rg;
                 }
             }
@@ -365,7 +387,7 @@ rides_gender *procura_rides_gender(){
     int data_registo_user,data_registo_driver;
     int end=0,id_atual=99999999;
     
-    for(i=0;i<N_LINHAS_GENDER;i++){
+    for(i=0;i<n_linhas_gender;i++){
 
         if(hash_rides_gender[i]!=NULL){
 
@@ -391,7 +413,7 @@ rides_gender *procura_rides_gender(){
 
 void free_hash_rides_gender(){
     register int i;
-    for(i=0;i<N_LINHAS_GENDER;i++){
+    for(i=0;i<n_linhas_gender;i++){
         if(hash_rides_gender[i]!=NULL){
             free(hash_rides_gender[i]);
             hash_rides_gender[i]=NULL;
@@ -399,20 +421,18 @@ void free_hash_rides_gender(){
     }
 }
 
-
-
 //// RIDES_DATE /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-rides_date *hash_rides_date[N_LINHAS_DRIVERS];
+rides_date **hash_rides_date;
 
 bool insert_hash_rides_date(char *date1,char *date2){
     register int i,j;
     
-    for(i=0;i<N_LINHAS;i++){
+    for(i=0;i<n_linhas;i++){
 
         if(hash_rides[i]!=NULL && (hash_rides[i]->tip != 0.0) && calculaData(hash_rides[i]->date,date1)<=0 && calculaData(date2,hash_rides[i]->date)<=0){
 
-         for(j=0;j<N_LINHAS_DRIVERS;j++){
+         for(j=0;j<n_linhas_drivers;j++){
                 if(hash_rides_date[j]==NULL) break;
             }
 
@@ -436,7 +456,7 @@ rides_date *procura_rides_date(){
     char* recent_date = "00/00/0000";
     int dist=0,end=0,id_atual=0;
 
-    for(i=0;i<N_LINHAS_DRIVERS;i++){
+    for(i=0;i<n_linhas_drivers;i++){
 
         if(hash_rides_date[i]!=NULL && hash_rides_date[i]->isValid==1 && (dist<hash_rides_date[i]->distance || (dist==hash_rides_date[i]->distance && calculaData(hash_rides_date[i]->date,recent_date)<=0) || (dist==hash_rides_date[i]->distance && calculaData(hash_rides_date[i]->date,recent_date)==-1 && atoi(hash_rides_date[i]->id_viagem)>id_atual))){
                 
@@ -457,13 +477,29 @@ rides_date *procura_rides_date(){
 
 void free_hash_rides_date(){
     int i;
-    for(i=0;i<N_LINHAS_DRIVERS;i++){
+    for(i=0;i<n_linhas_drivers;i++){
         free(hash_rides_date[i]);
     }
+    free(hash_rides_date);
+    free(hash_rides_drivers_city);
+    free(hash_rides_gender);
 }
 
 
+void allocate_rides(){ 
+    int i;
+    
+    hash_rides = (rides**)malloc(n_linhas*sizeof(rides*));
+    hash_rides_drivers = (rides_driver**)malloc(n_linhas_drivers*sizeof(rides_driver*));
+    hash_rides_users = (rides_user**)malloc(n_linhas_users*sizeof(rides_user*));
+    hash_rides_drivers_city = (rides_driver_city**)malloc(n_linhas_drivers*sizeof(rides_driver_city*));
+    hash_rides_gender = (rides_gender**)malloc(n_linhas_gender*sizeof(rides_gender*));
+    hash_rides_date = (rides_date**)malloc(n_linhas_users*sizeof(rides_date*));
 
+    for(i=0;i<n_linhas_gender;i++){
+        hash_rides_gender[i]=NULL;
+    } 
+}
 
 
 

@@ -9,7 +9,7 @@
 
 
 // Hash table dos users
-users *hash_table_users[N_LINHAS_USERS];
+users **hash_table_users;
 
 
 // Associa um número da hash a cada linha criando uma key que mais tarde pode ser utilizada para
@@ -20,7 +20,7 @@ unsigned int hash_users(char *username){
     for (i = 0; username[i]!='\0'; i++)
     {
         num_hash += username[i];
-        num_hash = (num_hash * username[i]) % N_LINHAS_USERS;
+        num_hash = (num_hash * username[i]) % n_linhas_users;
     }
     return num_hash;
 }
@@ -40,8 +40,8 @@ bool insert_hash_users(char *us,char *n,char *g,char *b,char *ac,char *as){
     u->account_status = as;
     int aux = hash_users(us);
     register int i,next_position;
-    for (i=0;i < N_LINHAS_USERS;i++){
-        next_position = (i + aux) % N_LINHAS_USERS;
+    for (i=0;i < n_linhas_users;i++){
+        next_position = (i + aux) % n_linhas_users;
     
         if ((hash_table_users[next_position] == NULL)){
             hash_table_users[next_position] = u;
@@ -58,9 +58,9 @@ bool insert_hash_users(char *us,char *n,char *g,char *b,char *ac,char *as){
 users *procura_hash_users(char *username){
     register int i,next_position;
     int aux = hash_users(username);
-    for (i = 0; i < N_LINHAS_USERS; i++){
+    for (i = 0; i < n_linhas_users; i++){
         // Calcula a possível key
-        next_position = (i + aux) % N_LINHAS_USERS;
+        next_position = (i + aux) % n_linhas_users;
         // Verifica se o user que está nessa posição da hash table e o que estamos à procura são iguais
         if (hash_table_users[next_position]!=NULL && strcmp(hash_table_users[next_position]->username, username)==0){
             return hash_table_users[next_position];
@@ -71,7 +71,7 @@ users *procura_hash_users(char *username){
 
 void free_hash_users(){
     int i;
-    for(i=0;i<N_LINHAS_USERS;i++){
+    for(i=0;i<n_linhas_users;i++){
         if(hash_table_users[i]!=NULL){
             free(hash_table_users[i]->account_creation);
             free(hash_table_users[i]->account_status);
@@ -82,4 +82,8 @@ void free_hash_users(){
         }
             free(hash_table_users[i]);
     }
+}
+
+void allocate_users(){ 
+    hash_table_users = (users**)malloc(n_linhas_users*sizeof(users*));
 }

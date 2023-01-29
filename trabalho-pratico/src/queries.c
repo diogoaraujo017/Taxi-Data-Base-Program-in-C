@@ -35,7 +35,7 @@ void querie1(char *line,char *file){
             else if (strcmp(d->car_class,"green")==0) {carType[0]=4.00;carType[1]=0.79;}
             else if (strcmp(d->car_class,"premium")==0) {carType[0]=5.20;carType[1]=0.94;}
             
-            for(i=0;i<N_LINHAS;i++){
+            for(i=0;i<n_linhas;i++){
                  r = procura_rides(i);
                  if(r!=NULL){
 
@@ -55,7 +55,7 @@ void querie1(char *line,char *file){
         u = procura_hash_users(line);                         // Procura o driver na hash table dos users
         if(u!=NULL && (strcmp((u->account_status),"active")==0)){  // Verifica se o user existe e tem a conta ativa
             
-            for(i=0;i<N_LINHAS;i++){
+            for(i=0;i<n_linhas;i++){
                  r1 = procura_rides(i);
                  if(r1!=NULL){
 
@@ -93,7 +93,7 @@ void querie2(char *line,char *file){
     FILE * NewFile;
     NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write
 
-    int ind=N_LINHAS_DRIVERS-1;
+    int ind=n_linhas_drivers-1;
     int n_condutores=atoi(line);
 
     while(n_condutores!=0){
@@ -113,7 +113,7 @@ void querie2(char *line,char *file){
 // Função responsável pela execução da querie 3.
 void querie3(char *line,char *file){
     rides_user *ru;
-    int ind = N_LINHAS_USERS-1;
+    int ind = n_linhas_users-1;
     chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
                                 // para que seja possível nela os ficheiros .txt de output das queries
     
@@ -148,7 +148,7 @@ void querie4(char *line,char *file){
     FILE * NewFile;
     NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write.
     
-     for(i=0;i<N_LINHAS;i++){
+     for(i=0;i<n_linhas;i++){
                  r = procura_rides(i);
                  if(r!=NULL){
                     if(strcmp(r->city,line)==0){
@@ -187,7 +187,7 @@ void querie5(char *line,char *file){
     FILE * NewFile;
     NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write.
     
-     for(i=0;i<N_LINHAS;i++){
+     for(i=0;i<n_linhas;i++){
                  r = procura_rides(i);
                  if(r!=NULL){
                     if(calculaData(r->date,data1)<=0 && calculaData(data2,r->date)<=0){
@@ -230,7 +230,7 @@ void querie6(char *line,char *file){
     FILE * NewFile;
     NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write.
     
-     for(i=0;i<N_LINHAS;i++){
+     for(i=0;i<n_linhas;i++){
                  r = procura_rides(i);
                  if (r!=NULL){
                     if((strcmp(r->city,cidade)==0) && (calculaData(r->date,data1)<=0) && (calculaData(data2,r->date)<=0)){
@@ -274,7 +274,7 @@ void querie7(char *line,char *file){
     insert_hash_rides_drivers_city(city);
     sortQ7();
 
-    int ind = N_LINHAS_DRIVERS-1;
+    int ind = n_linhas_drivers-1;
 
     while(n_condutores!=0){
 
@@ -317,11 +317,14 @@ void querie8(char *line,char *file){
 
     insert_hash_rides_gender(genero,idade);
 
-    for(i=0;i<N_LINHAS_GENDER;i++){
+    for(i=0;i<n_linhas_gender;i++){
         rg=procura_rides_gender();
+        
         if(rg==NULL)break;
+        
         fprintf(NewFile,"%s;%s;%s;%s\n",rg->id_condutor,rg->nome_condutor,rg->username_utilizador,rg->nome_utilizador);
     }
+    
     free_hash_rides_gender();
     free(aux);
 
@@ -349,7 +352,7 @@ void querie9(char *line,char *file){
 
     insert_hash_rides_date(date1,date2);
 
-    for(i=0;i<N_LINHAS_DRIVERS;i++){
+    for(i=0;i<n_linhas_drivers;i++){
         
         rd=procura_rides_date();
         

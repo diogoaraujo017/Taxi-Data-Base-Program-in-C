@@ -30,6 +30,13 @@ int main(int argc, char* argv[]){
     char *file_txt = malloc (100*sizeof(char));
     strcpy(file_txt,argv[2]);
 
+
+    count_lines(file_d,file_u,file_r);
+    
+    allocate_drivers();
+    allocate_users();
+    allocate_rides();
+
     // Estas funções são responsáveis pelo parsing de cada linha dos ficheiros .csv. Para além disso,
     // também inserem os valores lidos (organizados numa struct) para a hash table, linha a linha. 
     read_store(file_d,'d');
@@ -40,7 +47,7 @@ int main(int argc, char* argv[]){
     sortQ3();
 
     // Esta função trata os inputs e envia os mesmos para a respetiva querie.
-    read_exe_queries(file_txt);
+    read_exe_queries("/home/codemaster/Desktop/LI3/grupo-32/trabalho-pratico/input/t.txt");
 
 
     free(file_d);
@@ -63,10 +70,6 @@ int main(int argc, char* argv[]){
 // Inicializar todos os pointers, dar init na main
 // Nao utilizar o pointer original. fazer copias
 // Modo iterativo
-// Otimizar Querie 8.
-// Regist variaveis i
 // Make file TIME
 // Inicializar os apontadores
-// Linhas automaticamente, tirar os defines
-// Profiling
 // Tipos opacos

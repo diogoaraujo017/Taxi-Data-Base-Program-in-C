@@ -7,5 +7,6 @@
 bool insert_hash_drivers(char *id,char *n,char *b,char *g,char *cc,char *c,char *ac,char *as);
 drivers *procura_hash_drivers (char *id);
 void free_hash_drivers();
+void allocate_drivers();
 
 #endif

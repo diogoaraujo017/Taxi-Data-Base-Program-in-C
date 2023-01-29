@@ -8,6 +8,42 @@
 #include <stdlib.h>
 #include "func_auxiliares.h"
 
+
+int n_linhas;
+int n_linhas_drivers; 
+int n_linhas_users; 
+int n_linhas_gender;
+
+void count_lines(char *drivers,char *users,char *rides){
+  int d=0, u=0, r=0; 
+  char line[1];
+ 
+  FILE *file;
+  file = fopen(drivers, "r");
+  while (fgets(line, 1, file)!=NULL){
+            d++;
+        }
+  fclose(file);
+
+  file = fopen(users, "r");
+  while (fgets(line, 1, file)!=NULL){
+            u++;
+        }
+  fclose(file);
+
+  file = fopen(rides, "r");
+  while (fgets(line, 1, file)!=NULL){
+             r++;
+        }
+  fclose(file);
+
+  n_linhas=r*5;
+  n_linhas_drivers=d*5; 
+  n_linhas_users=u*5;
+  n_linhas_gender=r/1000;
+}
+
+
 // Esta função é responsável pelo parsing do ficheiro drivers.csv. Funciona da seguinte forma:
 // É aberto o fichero drivers.csv e em seguida é lida linha a linha do ficheiro e colocada na função
 // analisa_linha_drivers para um melhor tratamento dos dados.

@@ -9,7 +9,7 @@
 
 
 // Hash table dos drivers
-drivers *hash_table_drivers[N_LINHAS_DRIVERS];
+drivers **hash_table_drivers;
 
 
 // Esta função insere uma determinada linha na hash_table se essa linha não estiver ocupada.
@@ -46,7 +46,7 @@ drivers *procura_hash_drivers(char *id){
 
 void free_hash_drivers(){
     int i;
-    for(i=0;i<N_LINHAS_DRIVERS;i++){
+    for(i=0;i<n_linhas_drivers;i++){
         if(hash_table_drivers[i]!=NULL){
             free(hash_table_drivers[i]->account_creation);
             free(hash_table_drivers[i]->account_status);
@@ -59,4 +59,8 @@ void free_hash_drivers(){
         }
             free(hash_table_drivers[i]);
     }
+}
+
+void allocate_drivers(){ 
+    hash_table_drivers = (drivers**)malloc(n_linhas_drivers*sizeof(drivers*));
 }
