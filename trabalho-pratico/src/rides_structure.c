@@ -486,34 +486,62 @@ void free_hash_rides_date(){
 }
 
 
-void allocate_rides(){ 
-    int i;
-    
-    hash_rides = (rides**)malloc(n_linhas*sizeof(rides*));
-    hash_rides_drivers = (rides_driver**)malloc(n_linhas_drivers*sizeof(rides_driver*));
-    hash_rides_users = (rides_user**)malloc(n_linhas_users*sizeof(rides_user*));
-    hash_rides_drivers_city = (rides_driver_city**)malloc(n_linhas_drivers*sizeof(rides_driver_city*));
-    hash_rides_gender = (rides_gender**)malloc(n_linhas_gender*sizeof(rides_gender*));
-    hash_rides_date = (rides_date**)malloc(n_linhas_users*sizeof(rides_date*));
 
-    for(i=0;i<n_linhas_gender;i++){
-        hash_rides_gender[i]=NULL;
+void allocate_rides(){ 
+    hash_rides = (rides**)malloc(n_linhas*sizeof(rides*));
+
+    int i;
+    for(i=0;i<n_linhas;i++){
+        hash_rides[i]=NULL;
     } 
 }
 
 
+void allocate_rides_drivers(){
+    hash_rides_drivers = (rides_driver**)malloc(n_linhas_drivers*sizeof(rides_driver*));
+        
+    int i;
+    for(i=0;i<n_linhas_drivers;i++){
+        hash_rides_drivers[i]=NULL;
+    }
+}
 
 
+void allocate_rides_users(){
+    hash_rides_users = (rides_user**)malloc(n_linhas_users*sizeof(rides_user*));
+
+    int i;
+    for(i=0;i<n_linhas_users;i++){
+        hash_rides_users[i]=NULL;
+    }
+}
 
 
+void allocate_rides_drivers_city(){
+    hash_rides_drivers_city = (rides_driver_city**)malloc(n_linhas_drivers*sizeof(rides_driver_city*));
+
+    int i;
+    for(i=0;i<n_linhas_drivers;i++){
+        hash_rides_drivers_city[i]=NULL;
+    }
+}
 
 
+void allocate_rides_drivers_gender(){
+    hash_rides_gender = (rides_gender**)malloc(n_linhas_gender*sizeof(rides_gender*));
+
+    int i;
+    for(i=0;i<n_linhas_gender;i++){
+        hash_rides_gender[i]=NULL;
+    }
+}
 
 
+void allocate_rides_date(){
+    hash_rides_date = (rides_date**)malloc(n_linhas_users*sizeof(rides_date*));
 
-
-
-
-
-
-
+    int i;
+    for(i=0;i<n_linhas_drivers;i++){
+        hash_rides_date[i]=NULL;
+    }
+}

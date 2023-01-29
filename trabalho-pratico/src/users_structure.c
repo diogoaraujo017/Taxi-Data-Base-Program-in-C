@@ -11,6 +11,14 @@
 // Hash table dos users
 users **hash_table_users;
 
+void allocate_users(){ 
+    hash_table_users = (users**)malloc(n_linhas_users*sizeof(users*));
+    
+    int i;
+    for(i=0;i<n_linhas_users;i++){
+        hash_table_users[i]=NULL;
+    }
+}
 
 // Associa um número da hash a cada linha criando uma key que mais tarde pode ser utilizada para
 // procurar esse user na hash table
@@ -82,8 +90,5 @@ void free_hash_users(){
         }
             free(hash_table_users[i]);
     }
-}
-
-void allocate_users(){ 
-    hash_table_users = (users**)malloc(n_linhas_users*sizeof(users*));
+    free(hash_table_users);
 }

@@ -36,6 +36,11 @@ int main(int argc, char* argv[]){
     allocate_drivers();
     allocate_users();
     allocate_rides();
+    allocate_rides_drivers();
+    allocate_rides_users();
+    allocate_rides_drivers_city();
+    allocate_rides_drivers_gender();
+    allocate_rides_date();
 
     // Estas funções são responsáveis pelo parsing de cada linha dos ficheiros .csv. Para além disso,
     // também inserem os valores lidos (organizados numa struct) para a hash table, linha a linha. 

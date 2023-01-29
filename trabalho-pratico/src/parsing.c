@@ -16,23 +16,23 @@ int n_linhas_gender;
 
 void count_lines(char *drivers,char *users,char *rides){
   int d=0, u=0, r=0; 
-  char line[1];
+  char line[250];
  
   FILE *file;
   file = fopen(drivers, "r");
-  while (fgets(line, 1, file)!=NULL){
+  while (fgets(line, 250, file)!=NULL){
             d++;
         }
   fclose(file);
 
   file = fopen(users, "r");
-  while (fgets(line, 1, file)!=NULL){
+  while (fgets(line, 250, file)!=NULL){
             u++;
         }
   fclose(file);
 
   file = fopen(rides, "r");
-  while (fgets(line, 1, file)!=NULL){
+  while (fgets(line, 250, file)!=NULL){
              r++;
         }
   fclose(file);

@@ -11,6 +11,14 @@
 // Hash table dos drivers
 drivers **hash_table_drivers;
 
+void allocate_drivers(){ 
+    hash_table_drivers = (drivers**)malloc(n_linhas_drivers*sizeof(drivers*));
+    
+    int i;
+    for(i=0;i<n_linhas_drivers;i++){
+        hash_table_drivers[i]=NULL;
+    }
+}
 
 // Esta função insere uma determinada linha na hash_table se essa linha não estiver ocupada.
 // Uma linha está ocupada quando não está a NULL e vice-versa, daí a importância da função
@@ -59,8 +67,5 @@ void free_hash_drivers(){
         }
             free(hash_table_drivers[i]);
     }
-}
-
-void allocate_drivers(){ 
-    hash_table_drivers = (drivers**)malloc(n_linhas_drivers*sizeof(drivers*));
+    free(hash_table_drivers);
 }
