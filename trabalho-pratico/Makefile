@@ -2,10 +2,17 @@ CC=gcc
 
 CFLAGS=-Wall -Iincludes -g
 
-programa-principal: src/main.o src/drivers_structure.o src/users_structure.o src/rides_structure.o src/queries.o src/parsing.o src/func_auxiliares.o
+all: programa-principal programa-testes
+
+programa-principal: src/programa-principal.o src/drivers_structure.o src/users_structure.o src/rides_structure.o src/queries.o src/parsing.o src/func_auxiliares.o
 	$(CC) $^ $(CFLAGS)  -o $@
 
-src/main.o: src/main.c
+programa-testes: src/programa-testes.o src/drivers_structure.o src/users_structure.o src/rides_structure.o src/queries.o src/parsing.o src/func_auxiliares.o
+	$(CC) $^ $(CFLAGS)  -o $@
+
+src/programa-principal.o: src/programa-principal.c
+
+src/programa-testes.o: src/programa-testes.c
 
 src/drivers_structure.o: src/drivers_structure.c
 
@@ -23,3 +30,6 @@ src/func_auxiliares.o: src/func_auxiliares.c
 
 clean:
 	rm -f programa-principal src/*.o
+
+
+	rm -f programa-testes src/*.o

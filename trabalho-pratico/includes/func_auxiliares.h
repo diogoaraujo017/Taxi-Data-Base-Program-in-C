@@ -14,4 +14,8 @@ int check_score(char *score);
 int check_tip(char *tip);
 int check_account(char* status);
 int check_class(char *car);
+double time_hash(void (*func)(char*, char),char *dir, char file_aux);
+double time_query(void (*func)(char*, char*),char *line,char *file);
+void check_output(int input, char *outputs);
+
 #endif

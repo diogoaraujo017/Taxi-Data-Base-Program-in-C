@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include "func_auxiliares.h"
 #include <ctype.h>
+#include <time.h>
+#include <unistd.h>
 
 
 int calculaData (char *line,char *line2){
@@ -133,3 +135,75 @@ int check_class(char *car){
     return 0;
 }
 
+
+
+double time_hash(void (*func)(char*, char),char *dir, char file_aux){
+  clock_t start = clock();
+  func(dir,file_aux);
+  clock_t end = clock();
+  return (double)(end - start) / CLOCKS_PER_SEC;
+}
+
+
+double time_query(void (*func)(char*, char*),char *line,char *file){
+  clock_t start = clock();
+  func(line,file);
+  clock_t end = clock();
+  return (double)(end - start) / CLOCKS_PER_SEC;
+}
+
+
+
+int correct=0;
+int incorrect=0;
+
+
+
+void check_output(int input, char *outputs){
+
+    int buffsize =  1024;
+    chdir("Resultados/"); 
+
+    char buffer [50];
+    snprintf(buffer, sizeof (buffer), "command%d_output.txt",input);
+
+    char buffer2 [50];
+    snprintf(buffer2, sizeof (buffer2), "%s/command%d_output.txt",outputs,input);
+    
+    FILE *fp1 = fopen(buffer, "rb");
+
+    FILE *fp2 = fopen(buffer2, "rb");
+
+
+    char buf1[buffsize], buf2[buffsize];
+    size_t n1, n2;
+
+    do {
+    n1 = fread(buf1, 1, buffsize, fp1);
+    if (n1 == 0 && ferror(fp1)) {
+      perror("Error reading file 1");
+      return;
+    }
+    n2 = fread(buf2, 1, buffsize, fp2);
+    if (n2 == 0 && ferror(fp2)) {
+      perror("Error reading file 2");
+      return;
+    }
+    if (n1 != n2 || memcmp(buf1, buf2, n1)) {
+      printf("\033[0;31m");
+      printf("[INCORRECT]\n");
+      printf("\033[0m");
+      incorrect++;
+      return;
+    }
+
+  } while (n1 == buffsize && n2 == buffsize);
+
+    printf("\033[0;32m");
+    printf("[CORRECT]\n");
+    printf("\033[0m");
+    correct++;
+
+    chdir("trabalho-pratico");
+
+}
