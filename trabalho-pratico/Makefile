@@ -2,10 +2,12 @@ CC=gcc
 
 CFLAGS=-Wall -Iincludes -g
 
+LDFLAGS = -lncurses
+
 all: programa-principal programa-testes
 
-programa-principal: src/programa-principal.o src/drivers_structure.o src/users_structure.o src/rides_structure.o src/queries.o src/parsing.o src/func_auxiliares.o
-	$(CC) $^ $(CFLAGS)  -o $@
+programa-principal: src/programa-principal.o src/interactive_mode.o src/drivers_structure.o src/users_structure.o src/rides_structure.o src/queries.o src/parsing.o src/func_auxiliares.o
+	$(CC) $^ $(LDFLAGS) $(CFLAGS)  -o $@
 
 programa-testes: src/programa-testes.o src/drivers_structure.o src/users_structure.o src/rides_structure.o src/queries.o src/parsing.o src/func_auxiliares.o
 	$(CC) $^ $(CFLAGS)  -o $@
@@ -13,6 +15,8 @@ programa-testes: src/programa-testes.o src/drivers_structure.o src/users_structu
 src/programa-principal.o: src/programa-principal.c
 
 src/programa-testes.o: src/programa-testes.c
+
+src/interactive_mode.o: src/interactive_mode.c
 
 src/drivers_structure.o: src/drivers_structure.c
 

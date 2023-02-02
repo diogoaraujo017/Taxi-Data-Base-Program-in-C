@@ -164,10 +164,10 @@ void check_output(int input, char *outputs){
     int buffsize =  1024;
     chdir("Resultados/"); 
 
-    char buffer [50];
+    char buffer [250];
     snprintf(buffer, sizeof (buffer), "command%d_output.txt",input);
 
-    char buffer2 [50];
+    char buffer2 [250];
     snprintf(buffer2, sizeof (buffer2), "%s/command%d_output.txt",outputs,input);
     
     FILE *fp1 = fopen(buffer, "rb");

@@ -14,24 +14,27 @@ int n_linhas_drivers;
 int n_linhas_users; 
 int n_linhas_gender;
 
-void count_lines(char *drivers,char *users,char *rides){
+int count_lines(char *drivers,char *users,char *rides){
   int d=0, u=0, r=0; 
   char line[250];
  
   FILE *file;
   file = fopen(drivers, "r");
+  if(file==NULL) return 1;
   while (fgets(line, 250, file)!=NULL){
             d++;
         }
   fclose(file);
 
   file = fopen(users, "r");
+  if(file==NULL) return 1;  
   while (fgets(line, 250, file)!=NULL){
             u++;
         }
   fclose(file);
 
   file = fopen(rides, "r");
+  if(file==NULL) return 1;  
   while (fgets(line, 250, file)!=NULL){
              r++;
         }
@@ -41,6 +44,8 @@ void count_lines(char *drivers,char *users,char *rides){
   n_linhas_drivers=d*5; 
   n_linhas_users=u*5;
   n_linhas_gender=r/1000;
+
+  return 0;
 }
 
 

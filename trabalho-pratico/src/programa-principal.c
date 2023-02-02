@@ -7,6 +7,7 @@
 #include "users_structure.h"
 #include "parsing.h"
 #include <stdlib.h>
+#include "interactive_mode.h"
 
 
 // MODO: Batch -> Neste modo, o programa é executado com dois argumentos, o primero é o caminho
@@ -14,6 +15,14 @@
 // caminho para um ficheiro de texto que contém uma lista de comandos (queries) a serem executados.
 int main(int argc, char* argv[]){
     
+
+    if(argc<=1){
+        interactive();
+        return 0;
+    }
+
+
+
     // Criação do path para o ficheiro drivers.csv.
     char *file_d = malloc (100*sizeof(char));
     strcpy(file_d,argv[1]);
@@ -74,5 +83,4 @@ int main(int argc, char* argv[]){
 
 // Tipos opacos
 // Modo iterativo
-// Q8 male/female if/analisa_linhas
 // Inicializar os apontadores

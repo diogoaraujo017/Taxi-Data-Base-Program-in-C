@@ -482,3 +482,70 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
     fclose(File1);
 
 }
+
+
+
+
+
+int read_exe_queries_interativo(char *file){
+
+    
+    char line[150];
+    char querie;
+    int i;
+
+        querie = file[0];       // O primeiro dígito da linha é o número da querie correspondente
+        if(file[1]!=' ') return 1;
+
+        for(i=2;file[i]!='\0';i++){         // Este for loop faz a distinção do resto do input
+            line[i-2] = file[i];           // para mais tarde ser fornecido as funções que 
+        }                                   // executam as queries.
+
+        line[i-2] = '\0';
+
+        switch (querie)
+        {
+        case '1':
+           querie1(line,"command_output_interativo.txt");
+           break;
+
+        case '2':
+           querie2(line,"command_output_interativo.txt");
+           break;
+
+        case '3':
+           querie3(line,"command_output_interativo.txt");
+           break;
+
+        case '4':
+           querie4(line,"command_output_interativo.txt");
+           break;
+           
+        case '5':
+           querie5(line,"command_output_interativo.txt");
+           break;
+
+        case '6':
+           querie6(line,"command_output_interativo.txt");
+           break;   
+
+        case '7':
+           querie7(line,"command_output_interativo.txt");
+           break; 
+
+        case '8':
+           querie8(line,"command_output_interativo.txt");
+           break; 
+
+        case '9':
+           querie9(line,"command_output_interativo.txt");
+           break; 
+             
+        default:
+           return 1;
+           break;
+        }
+        
+    return 0;
+  
+}
