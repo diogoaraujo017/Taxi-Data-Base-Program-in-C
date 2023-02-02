@@ -8,6 +8,5 @@ typedef struct _win_st WINDOW;
 void interactive();
 int interact_program(int highlight, WINDOW *win, int querie_possible);
 int programa_main (char *file);
-void go_back (int linha_inicial, FILE* file);
 
 #endif
