@@ -10,16 +10,24 @@
 #include <stdlib.h>
 #include "func_auxiliares.h"
 
-// Função responsável pela execução da query 1.
-void querie1(char *line,char *file){
-    drivers *d,*d1;
-    users *u;  
-    rides *r,*r1; 
+// Função responsável pela execução da querie 1.
+void querie1(char *line,char *file){ 
+
     int i,numero_viagens=0;
     double carType[2];
     double avaliacao_media=0.000,total_auferido=0.000,total_gasto=0.000;
 
+    char *name_driver = NULL, *birth_day_driver = NULL, *gender_driver = NULL, 
+         *car_class_driver = NULL, *city_driver = NULL, *account_creation_driver = NULL, 
+         *account_status_driver = NULL;
     
+    char *name_user = NULL, *gender_user = NULL, *birth_day_user = NULL, 
+         *account_creation_user = NULL, *account_status_user = NULL;
+    
+    char *date_ride = NULL, *driver_ride = NULL, *user_ride = NULL, *city_ride = NULL; 
+    int distance_ride = 0; 
+    double score_user_ride = 0.000, score_driver_ride = 0.000, tip_ride = 0.000;
+
     chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
                                 // para que seja possível nela os ficheiros .txt de output das queries
     
@@ -28,45 +36,52 @@ void querie1(char *line,char *file){
     
 
     if(line[0]=='0') {                                        // O input da querie é um id (corresponde a um driver)
-        d = procura_hash_drivers(line);                       // Procura o driver na hash table dos users
-        if(d!=NULL && (strcmp((d->account_status),"active")==0)){  // Verifica se o driver existe e tem a conta ativa
+                            
+        getDriverFields(&line, &name_driver, &birth_day_driver, &gender_driver, &car_class_driver, &city_driver, &account_creation_driver, &account_status_driver); 
+
+        if(name_driver!=NULL && (strcmp((account_status_driver),"active")==0)){  // Verifica se o driver existe e tem a conta ativa
             
-            if (strcmp(d->car_class,"basic")==0) {carType[0]=3.25;carType[1]=0.62;}
-            else if (strcmp(d->car_class,"green")==0) {carType[0]=4.00;carType[1]=0.79;}
-            else if (strcmp(d->car_class,"premium")==0) {carType[0]=5.20;carType[1]=0.94;}
+            if (strcmp(car_class_driver,"basic")==0) {carType[0]=3.25;carType[1]=0.62;}
+            else if (strcmp(car_class_driver,"green")==0) {carType[0]=4.00;carType[1]=0.79;}
+            else if (strcmp(car_class_driver,"premium")==0) {carType[0]=5.20;carType[1]=0.94;}
             
             for(i=0;i<n_linhas;i++){
-                 r = procura_rides(i);
-                 if(r!=NULL){
 
-                    if(strcmp(r->driver,line)==0){
-                        avaliacao_media += r->score_driver;
+                 getRideFields(&i, &date_ride, &driver_ride, &user_ride, &city_ride, &distance_ride, &score_user_ride, &score_driver_ride, &tip_ride);
+
+                 if(date_ride!=NULL){
+
+                    if(strcmp(driver_ride,line)==0){
+                        avaliacao_media += score_driver_ride;
                         numero_viagens++;
-                        total_auferido += carType[0] + carType[1]*r->distance + r->tip;
+                        total_auferido += carType[0] + carType[1]*distance_ride + tip_ride;
                     }
                  }
                }
-            if(numero_viagens!=0) fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",d->name,d->gender[0],calculaIdade(d->birth_day),avaliacao_media/numero_viagens,numero_viagens,total_auferido);
+            if(numero_viagens!=0) fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",name_driver,gender_driver[0],calculaIdade(birth_day_driver),avaliacao_media/numero_viagens,numero_viagens,total_auferido);
         }
     }
 
-
-    else {                                                  // O input da querie é um username (corresponde a um user)                    
-        u = procura_hash_users(line);                         // Procura o driver na hash table dos users
-        if(u!=NULL && (strcmp((u->account_status),"active")==0)){  // Verifica se o user existe e tem a conta ativa
+    else {                                                  // O input da querie é um username (corresponde a um user)                                            
+        getUserFields(&line, &name_user, &gender_user, &birth_day_user, &account_creation_user, &account_status_user);
+        if(name_user!=NULL && (strcmp((account_status_user),"active")==0)){  // Verifica se o user existe e tem a conta ativa
             
             for(i=0;i<n_linhas;i++){
-                 r1 = procura_rides(i);
-                 if(r1!=NULL){
+                 
+                 getRideFields(&i, &date_ride, &driver_ride, &user_ride, &city_ride, &distance_ride, &score_user_ride, &score_driver_ride, &tip_ride);
 
-                    if(strcmp(r1->user,line)==0){
-                        d1 = procura_hash_drivers(r1->driver);
-                        if(d1==NULL) return;
-                        if (strcmp(d1->car_class,"basic")==0) total_gasto += 3.25 + 0.62*r1->distance + r1->tip;
-                        else if (strcmp(d1->car_class,"green")==0) total_gasto += 4.00 + 0.79*r1->distance + r1->tip;
-                        else if (strcmp(d1->car_class,"premium")==0) total_gasto += 5.20 + 0.94*r1->distance + r1->tip;
+                 if(date_ride!=NULL){
 
-                        avaliacao_media += r1->score_user;
+                    if(strcmp(user_ride,line)==0){
+                   
+                        getDriverFields(&driver_ride, &name_driver, &birth_day_driver, &gender_driver, &car_class_driver, &city_driver, &account_creation_driver, &account_status_driver); 
+
+                        if(name_driver==NULL) return;
+                        if (strcmp(car_class_driver,"basic")==0) total_gasto += 3.25 + 0.62*distance_ride + tip_ride;
+                        else if (strcmp(car_class_driver,"green")==0) total_gasto += 4.00 + 0.79*distance_ride + tip_ride;
+                        else if (strcmp(car_class_driver,"premium")==0) total_gasto += 5.20 + 0.94*distance_ride + tip_ride;
+
+                        avaliacao_media += score_user_ride;
                         numero_viagens++;
                      
                     
@@ -74,7 +89,7 @@ void querie1(char *line,char *file){
                  }
                }
          
-         if(numero_viagens!=0) fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",u->name,u->gender[0],calculaIdade(u->birth_day),avaliacao_media/numero_viagens,numero_viagens,total_gasto);
+         if(numero_viagens!=0) fprintf(NewFile,"%s;%c;%d;%.3f;%d;%.3f\n",name_user,gender_user[0],calculaIdade(birth_day_user),avaliacao_media/numero_viagens,numero_viagens,total_gasto);
         }
     }     
 
@@ -82,10 +97,12 @@ void querie1(char *line,char *file){
     chdir("trabalho-pratico");  // Volta à diretoria principal
 }
 
-// Função responsável pela execução da query 2.
+// Função responsável pela execução da querie 2.
 void querie2(char *line,char *file){
-
-    rides_driver *rd;
+    
+    char *date = NULL, *driver = NULL, *nome = NULL; 
+    double score_driver = 0.000, score_total = 0.000;
+    int numero_viagens = 0;
 
     chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
                                 // para que seja possível nela os ficheiros .txt de output das queries
@@ -98,9 +115,9 @@ void querie2(char *line,char *file){
 
     while(n_condutores!=0){
 
-        rd = procura_rides_driver(ind);
+        getRideDriverFields(&ind , &date, &driver, &score_driver, &nome, &numero_viagens, &score_total);
 
-        fprintf(NewFile,"%s;%s;%.3f\n",rd->driver,rd->nome,(rd->score_driver));
+        fprintf(NewFile,"%s;%s;%.3f\n", driver, nome, score_driver);
 
         n_condutores--;
         ind--;
@@ -110,9 +127,12 @@ void querie2(char *line,char *file){
     chdir("trabalho-pratico");  // Volta à diretoria principal
 }
 
-// Função responsável pela execução da query 3.
+// Função responsável pela execução da querie 3.
 void querie3(char *line,char *file){
-    rides_user *ru;
+    
+    char *date = NULL, *username = NULL, *nome = NULL;
+    int distancia = 0;
+    
     int ind = n_linhas_users-1;
     chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
                                 // para que seja possível nela os ficheiros .txt de output das queries
@@ -124,9 +144,10 @@ void querie3(char *line,char *file){
     int n_utilizadores=atoi(line);
 
     while(n_utilizadores!=0){
-        ru = procura_rides_users(ind);    
         
-        fprintf(NewFile,"%s;%s;%d\n",ru->username,ru->nome,ru->distancia);
+        getRideUserFields(&ind, &distancia, &date, &username, &nome);   
+        
+        fprintf(NewFile,"%s;%s;%d\n",username, nome, distancia);
         
         n_utilizadores--;
         ind--;
@@ -136,10 +157,18 @@ void querie3(char *line,char *file){
     chdir("trabalho-pratico");  // Volta à diretoria principal
 }
 
-// Função responsável pela execução da query 4.
+// Função responsável pela execução da querie 4.
 void querie4(char *line,char *file){
-    rides *r;
-    drivers *d;
+    
+    char *name_driver = NULL, *birth_day_driver = NULL, *gender_driver = NULL, 
+         *car_class_driver = NULL, *city_driver = NULL, *account_creation_driver = NULL, 
+         *account_status_driver = NULL;
+    
+    char *date_ride = NULL, *driver_ride = NULL, *user_ride = NULL, 
+         *city_ride = NULL; 
+    int distance_ride = 0; 
+    double score_user_ride = 0.000, score_driver_ride = 0.000, tip_ride = 0.000;
+    
     double preco_medio=0.000;
     int i, numero_viagens=0;
 
@@ -149,14 +178,16 @@ void querie4(char *line,char *file){
     NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write.
     
      for(i=0;i<n_linhas;i++){
-                 r = procura_rides(i);
-                 if(r!=NULL){
-                    if(strcmp(r->city,line)==0){
-                        d = procura_hash_drivers(r->driver);
-                        if(d!=NULL){
-                            if (strcmp(d->car_class,"basic")==0) preco_medio += 3.25 + 0.62*r->distance;
-                            else if (strcmp(d->car_class,"green")==0) preco_medio += 4.00 + 0.79*r->distance;
-                            else if (strcmp(d->car_class,"premium")==0) preco_medio += 5.20 + 0.94*r->distance;
+                 getRideFields(&i, &date_ride, &driver_ride, &user_ride, &city_ride, &distance_ride, &score_user_ride, &score_driver_ride, &tip_ride); 
+                 if(date_ride!=NULL){
+                    if(strcmp(city_ride,line)==0){
+
+                        getDriverFields(&driver_ride, &name_driver, &birth_day_driver, &gender_driver, &car_class_driver, &city_driver, &account_creation_driver, &account_status_driver);
+
+                        if(name_driver!=NULL){
+                            if (strcmp(car_class_driver,"basic")==0) preco_medio += 3.25 + 0.62*distance_ride;
+                            else if (strcmp(car_class_driver,"green")==0) preco_medio += 4.00 + 0.79*distance_ride;
+                            else if (strcmp(car_class_driver,"premium")==0) preco_medio += 5.20 + 0.94*distance_ride;
                      
                         numero_viagens++;
                         }
@@ -171,10 +202,17 @@ void querie4(char *line,char *file){
         chdir("trabalho-pratico");  // Volta à diretoria principal
 }
 
-// Função responsável pela execução da query 5.
+// Função responsável pela execução da querie 5.
 void querie5(char *line,char *file){
-    rides *r;
-    drivers *d;
+    
+    char *name_driver = NULL, *birth_day_driver = NULL, *gender_driver = NULL, 
+         *car_class_driver = NULL, *city_driver = NULL, *account_creation_driver = NULL, 
+         *account_status_driver = NULL; 
+    
+    char *date_ride = NULL, *driver_ride = NULL, *user_ride = NULL, *city_ride = NULL; 
+    int distance_ride = 0; 
+    double score_user_ride = 0.000, score_driver_ride = 0.000, tip_ride = 0.000;
+
     double preco_medio=0.000;
     int i,numero_viagens=0;
     char data1[10],data2[10];
@@ -188,14 +226,18 @@ void querie5(char *line,char *file){
     NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write.
     
      for(i=0;i<n_linhas;i++){
-                 r = procura_rides(i);
-                 if(r!=NULL){
-                    if(calculaData(r->date,data1)<=0 && calculaData(data2,r->date)<=0){
-                        d = procura_hash_drivers(r->driver);
-                        if(d!=NULL){
-                            if (strcmp(d->car_class,"basic")==0) preco_medio += 3.25 + 0.62*r->distance;
-                            else if (strcmp(d->car_class,"green")==0) preco_medio += 4.00 + 0.79*r->distance;
-                            else if (strcmp(d->car_class,"premium")==0) preco_medio += 5.20 + 0.94*r->distance;
+                 
+                 getRideFields(&i, &date_ride, &driver_ride, &user_ride, &city_ride, &distance_ride, &score_user_ride, &score_driver_ride, &tip_ride);
+
+                 if(date_ride!=NULL){
+                    if(calculaData(date_ride,data1)<=0 && calculaData(data2,date_ride)<=0){
+                        
+                        getDriverFields(&driver_ride, &name_driver, &birth_day_driver, &gender_driver, &car_class_driver, &city_driver, &account_creation_driver, &account_status_driver);
+
+                        if(name_driver!=NULL){
+                            if (strcmp(car_class_driver,"basic")==0) preco_medio += 3.25 + 0.62*distance_ride;
+                            else if (strcmp(car_class_driver,"green")==0) preco_medio += 4.00 + 0.79*distance_ride;
+                            else if (strcmp(car_class_driver,"premium")==0) preco_medio += 5.20 + 0.94*distance_ride;
                      
                         numero_viagens++;
                         }
@@ -210,10 +252,13 @@ void querie5(char *line,char *file){
         chdir("trabalho-pratico");  // Volta à diretoria principal
 }
 
-// Função responsável pela execução da query 6.
+// Função responsável pela execução da querie 6.
 void querie6(char *line,char *file){
     
-    rides *r;
+    char *date_ride = NULL, *driver_ride = NULL, *user_ride = NULL, *city_ride = NULL; 
+    int distance_ride = 0; 
+    double score_user_ride = 0.000, score_driver_ride = 0.000, tip_ride = 0.000;
+
     double dist=0;
     int i,numero_viagens=0;
     char cidade[20],data1[10],data2[10];
@@ -231,10 +276,12 @@ void querie6(char *line,char *file){
     NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write.
     
      for(i=0;i<n_linhas;i++){
-                 r = procura_rides(i);
-                 if (r!=NULL){
-                    if((strcmp(r->city,cidade)==0) && (calculaData(r->date,data1)<=0) && (calculaData(data2,r->date)<=0)){
-                        dist += r->distance;
+                 
+                 getRideFields(&i, &date_ride, &driver_ride, &user_ride, &city_ride, &distance_ride, &score_user_ride, &score_driver_ride, &tip_ride);
+
+                 if (date_ride!=NULL){
+                    if((strcmp(city_ride,cidade)==0) && (calculaData(date_ride,data1)<=0) && (calculaData(data2,date_ride)<=0)){
+                        dist += distance_ride;
                         numero_viagens++;
                     }
                  }
@@ -246,7 +293,7 @@ void querie6(char *line,char *file){
         chdir("trabalho-pratico");  // Volta à diretoria principal
 }
 
-// Função responsável pela execução da query 7.
+// Função responsável pela execução da querie 7.
 void querie7(char *line,char *file){
 
     chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
@@ -269,7 +316,10 @@ void querie7(char *line,char *file){
     }
     city[j]='\0';
 
-    rides_driver_city *rdc;
+    char *id = NULL, *nome = NULL;
+    double avaliacao_media = 0.000, avaliacao_total = 0.000;
+    int numero_viagens = 0;
+    
     
     insert_hash_rides_drivers_city(city);
     sortQ7();
@@ -278,12 +328,16 @@ void querie7(char *line,char *file){
 
     while(n_condutores!=0){
 
-        rdc=procura_rides_driver_city(ind);
-        if(strcmp(rdc->nome,"null")==0) break;
-        fprintf(NewFile,"%s;%s;%.3f\n",rdc->id,rdc->nome,rdc->avaliacao_media);
+        getRideDriverCityFields(&ind, &avaliacao_media, &id, &numero_viagens, &nome, &avaliacao_total);
+
+        if(strcmp(nome,"null")==0) break;
+
+        fprintf(NewFile,"%s;%s;%.3f\n", id, nome, avaliacao_media);
+        
         n_condutores--;
         ind--;
     }
+
     free_hash_rides_driver_city();
 
     free(aux);
@@ -294,7 +348,7 @@ void querie7(char *line,char *file){
 
     
 }
-// Função responsável pela execução da query 8.
+// Função responsável pela execução da querie 8.
 void querie8(char *line,char *file){
 
     chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
@@ -313,16 +367,19 @@ void querie8(char *line,char *file){
     aux[j]='\0';
     idade = atoi(aux);
 
-    rides_gender *rg;
+    char *id_condutor = NULL, *nome_condutor = NULL, *username_utilizador = NULL, 
+         *nome_utilizador = NULL, *data_driver = NULL, *data_user = NULL, *id_viagem = NULL; 
+    int isValid = 0;
 
     insert_hash_rides_gender(genero,idade);
 
     for(i=0;i<n_linhas_gender;i++){
-        rg=procura_rides_gender();
         
-        if(rg==NULL)break;
+        getRideGenderFields(&id_condutor, &nome_condutor, &username_utilizador, &nome_utilizador, &data_driver, &data_user, &id_viagem, &isValid);
         
-        fprintf(NewFile,"%s;%s;%s;%s\n",rg->id_condutor,rg->nome_condutor,rg->username_utilizador,rg->nome_utilizador);
+        if(nome_condutor==NULL)break;
+        
+        fprintf(NewFile,"%s;%s;%s;%s\n", id_condutor, nome_condutor, username_utilizador, nome_utilizador);
     }
     
     free_hash_rides_gender();
@@ -333,7 +390,7 @@ void querie8(char *line,char *file){
 
 }
 
-// Função responsável pela execução da query 9.
+// Função responsável pela execução da querie 9.
 void querie9(char *line,char *file){
 
     chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
@@ -348,17 +405,19 @@ void querie9(char *line,char *file){
     strncpy(date1,line,10);
     strncpy(date2,line+11,10);
 
-    rides_date *rd;
-
+    char *date = NULL, *id = NULL, *city = NULL, *id_viagem = NULL;
+    int distance = 0, isValid = 0;
+    double tip = 0.000;
+    
     insert_hash_rides_date(date1,date2);
 
     for(i=0;i<n_linhas_drivers;i++){
         
-        rd=procura_rides_date();
+        getRideDateFields(&distance, &date, &id, &city, &tip, &id_viagem, &isValid);
         
-        if(rd==NULL) break;
+        if(date==NULL) break;
         
-        fprintf(NewFile,"%s;%s;%d;%s;%.3f\n",rd->id,rd->date,rd->distance,rd->city,rd->tip);
+        fprintf(NewFile,"%s;%s;%d;%s;%.3f\n", id, date, distance, city, tip);
     }
 
     fclose(NewFile);            //Fecha o ficheiro criado
@@ -394,7 +453,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
         querie = line[0];       // O primeiro dígito da linha é o número da querie correspondente
     
         for(i=2;line[i]!='\0';i++){         // Este for loop faz a distinção do resto do input
-            line2[i-2] = line[i];           // para mais tarde ser fornecido às funções que 
+            line2[i-2] = line[i];           // para mais tarde ser fornecido as funções que 
         }                                   // executam as queries.
 
         line2[i-3] = '\0';
@@ -402,7 +461,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
         switch (querie)
         {
         case '1':
-           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
+           if(checkTime==0){
                 printf("Input %d [Query 1]: %fs ", input, time_query(querie1,line2,buffer));
                 check_output(input, outputs);
            }
@@ -410,7 +469,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
            break;
 
         case '2':
-           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
+           if(checkTime==0){
                 printf("Input %d [Query 2]: %fs ", input, time_query(querie2,line2,buffer));
                 check_output(input, outputs);
            }
@@ -418,7 +477,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
            break;
 
         case '3':
-           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
+           if(checkTime==0){
                 printf("Input %d [Query 3]: %fs ", input, time_query(querie3,line2,buffer));
                 check_output(input, outputs);
            }
@@ -426,7 +485,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
            break;
 
         case '4':
-           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
+           if(checkTime==0){
                 printf("Input %d [Query 4]: %fs ", input, time_query(querie4,line2,buffer));
                 check_output(input, outputs);
            }
@@ -434,7 +493,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
            break;
 
         case '5':
-           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
+           if(checkTime==0){
                 printf("Input %d [Query 5]: %fs ", input, time_query(querie5,line2,buffer));
                 check_output(input, outputs);
            }
@@ -442,7 +501,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
            break;
 
         case '6':
-           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
+           if(checkTime==0){
                 printf("Input %d [Query 6]: %fs ", input, time_query(querie6,line2,buffer));
                 check_output(input, outputs);
            }
@@ -450,7 +509,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
            break;
 
         case '7':
-           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
+           if(checkTime==0){
                 printf("Input %d [Query 7]: %fs ", input, time_query(querie7,line2,buffer));
                 check_output(input, outputs);
            }
@@ -458,7 +517,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
            break;
 
         case '8':
-           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
+           if(checkTime==0){
                 printf("Input %d [Query 8]: %fs ", input, time_query(querie8,line2,buffer));
                 check_output(input, outputs);
            }
@@ -466,7 +525,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
            break;
 
         case '9':
-           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
+           if(checkTime==0){
                 printf("Input %d [Query 9]: %fs ", input, time_query(querie9,line2,buffer));
                 check_output(input, outputs);
            }
@@ -486,11 +545,10 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
 
 
 
-// Função responsável pela leitura do input que o utilizador forneceu em relação à respetiva query
-// Esta função lê a linha e envia o input para uma das funções relativas
-// às queries para futuro tratamento dos dados.
+
 int read_exe_queries_interativo(char *file){
 
+    
     char line[150];
     char querie;
     int i;
@@ -499,7 +557,7 @@ int read_exe_queries_interativo(char *file){
         if(file[1]!=' ') return 1;
 
         for(i=2;file[i]!='\0';i++){         // Este for loop faz a distinção do resto do input
-            line[i-2] = file[i];            // para mais tarde ser fornecido às funções que 
+            line[i-2] = file[i];           // para mais tarde ser fornecido as funções que 
         }                                   // executam as queries.
 
         line[i-2] = '\0';
@@ -543,7 +601,7 @@ int read_exe_queries_interativo(char *file){
            break; 
              
         default:
-           return 1; // Este caso ocorre quando o input fornecido não é válido
+           return 1;
            break;
         }
         

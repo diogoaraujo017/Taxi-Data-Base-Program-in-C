@@ -7,6 +7,14 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+struct Users{
+    char *username;          // Username do user.
+    char *name;              // Nome do user.
+    char *gender;            // Sexo do user.
+    char *birth_day;         // Data de nascimento do user.
+    char *account_creation;  // Data da criacao da conta do user.
+    char *account_status;    // Status da conta do user.
+};
 
 // Hash table dos users
 users **hash_table_users;
@@ -76,6 +84,25 @@ users *procura_hash_users(char *username){
     }
     return NULL;
 }
+
+void getUserFields(char **username, char **name, char **gender, char **birth_day, char **account_creation, char **account_status) {
+  users *u = NULL;
+  u = procura_hash_users(*username);
+
+  if(u==NULL){
+      *name=NULL;
+      return;
+  }
+
+
+  *name = u->name;
+  *gender = u->gender;
+  *birth_day = u->birth_day;
+  *account_creation = u->account_creation;
+  *account_status = u->account_status;
+
+}
+
 
 void free_hash_users(){
     int i;

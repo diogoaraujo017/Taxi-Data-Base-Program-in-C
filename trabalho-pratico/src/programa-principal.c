@@ -82,5 +82,7 @@ int main(int argc, char* argv[]){
 
 // Coisas a fazer:
 
-// Tipos opacos
-// Inicializar os apontadores
+// Testes a pedir o path apenas depois de executar.
+// Inicializar os apontadores.
+// Passar tudo a ingles.
+// Fazer testes de tempo.

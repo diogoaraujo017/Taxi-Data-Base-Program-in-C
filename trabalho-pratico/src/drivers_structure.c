@@ -8,6 +8,17 @@
 #include <stdbool.h>
 
 
+struct Drivers{
+    char *id;                // Id do condutor.
+    char *name;              // Nome do condutor.
+    char *birth_day;         // Data de nascimento do condutor.
+    char *gender;            // Sexo do condutor.
+    char *car_class;         // Classe do carro do condutor.
+    char *city;              // Cidade de residencia do condutor.
+    char *account_creation;  // Data de criação da conta do condutor.
+    char *account_status;    // Status da conta do condutor.
+};
+
 // Hash table dos drivers
 drivers **hash_table_drivers;
 
@@ -41,16 +52,27 @@ bool insert_hash_drivers(char *id,char *n,char *b,char *g,char *cc,char *c,char 
     return true;
     }
 
+void getDriverFields(char **id, char **name, char **birth_day,
+                     char **gender, char **car_class, char **city, char **account_creation,
+                     char **account_status) {
+  
+  drivers *d = NULL;
+  d = hash_table_drivers[atoi(*id)-1];
+  
+  if(d==NULL){
+      *name=NULL;
+      return;
+  }
 
+  *name = d->name;
+  *birth_day = d->birth_day;
+  *gender = d->gender;
+  *car_class = d->car_class;
+  *city = d->city;
+  *account_creation = d->account_creation;
+  *account_status = d->account_status;
 
-// Procura um determinado driver na hash table. Esta função é bastante rápida a executar, mesmo
-// existindo muitas linhas de hash, devido à existência de keys que estão associadas, uma a cada
-// input colocado na hash table. Se encontrar a função dará return à linha da hash correspondente
-// em forma de struct, caso contrário dará return a NULL.
-drivers *procura_hash_drivers(char *id){
-    return hash_table_drivers[atoi(id)-1];
 }
-
 
 void free_hash_drivers(){
     int i;
