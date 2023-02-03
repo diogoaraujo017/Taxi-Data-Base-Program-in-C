@@ -15,15 +15,15 @@
 int programa_main (char *file){
 
      // Criação do path para o ficheiro drivers.csv.
-    char *file_d = malloc (100*sizeof(char));
+    char *file_d = malloc (250*sizeof(char));
     strcpy(file_d,file);
     strcat(file_d,"/drivers.csv");
     // Criação do path para o ficheiro users.csv.
-    char *file_u = malloc (100*sizeof(char));
+    char *file_u = malloc (250*sizeof(char));
     strcpy(file_u,file);
     strcat(file_u,"/users.csv");
     // Criação do path para o ficheiro rides.csv.
-    char *file_r = malloc (100*sizeof(char));
+    char *file_r = malloc (250*sizeof(char));
     strcpy(file_r,file);
     strcat(file_r,"/rides.csv");
 
@@ -82,7 +82,7 @@ int move_pages(FILE *File, WINDOW *win){
                 int pag=1;
                 rewind(File); // Recomeça a leitura do ficheiro
                 move(27,5);
-                printw("  RESET (BACKSPACE)"); // Escreve esta mensagem na tela para judar o utilizador a perceber como interagir com o programa
+                printw("  MENU (BACKSPACE)"); // Escreve esta mensagem na tela para judar o utilizador a perceber como interagir com o programa
                 refresh();
                 move(10,0);
 
@@ -200,7 +200,7 @@ int interact_program(int highlight, WINDOW *win, int querie_possible){
     if(highlight==1){   // SE A OPÇÃO ESCOLHIDA FOR INSERIR AS QUERIES
 
         if(querie_possible==0){ // Este caso acontece se o utilizador tentar inserir as queries antes dos ficheiros .csv
-            printw("YOU NEED TO INSERT .CSV FILES FIRST!");
+            printw("YOU NEED TO INSERT DATA FILES FIRST!");
             refresh();
             napms(1000); // O programa dá freeze durante 1 segundo
             move(10,0);
@@ -210,12 +210,12 @@ int interact_program(int highlight, WINDOW *win, int querie_possible){
             return 0;
         }
         move(10,0);
-        printw("-> Insert querie: "); // Input para esclarecer o utilizador em relação a como interagir com o programa
-        char *input_q = malloc(50);
+        printw(">> INSERT QUERY: "); // Input para esclarecer o utilizador em relação a como interagir com o programa
+        char *input_q = malloc(250);
         int ch_q;
         echo();
         curs_set(1); // Ativa o cursor
-        for (i = 0; i < 50 - 1 && (ch_q = getch()) != '\n'; i++) // Este for loop lê o input introduzido pelo user e guarda-p no array input_q
+        for (i = 0; i < 250 - 1 && (ch_q = getch()) != '\n'; i++) // Este for loop lê o input introduzido pelo user e guarda-p no array input_q
         input_q[i] = ch_q;
         input_q[i] = '\0';
         curs_set(0); // Remove o cursor
@@ -225,17 +225,17 @@ int interact_program(int highlight, WINDOW *win, int querie_possible){
         refresh();
         
         
-        if (read_exe_queries_interativo(input_q)==0){ // Isto acontece quando o path para os ficheiros .csv existe e é válido
+        if (read_exe_queries_interactive(input_q)==0){ // Isto acontece quando o path para os ficheiros .csv existe e é válido
 
             chdir("Resultados/"); // Muda para a diretoria onde se encontra o ficheiro de output das queries
             FILE* File;
             File = fopen("command_output_interativo.txt","r"); // Abre o ficheiro do output da querie correspondente
 
             if(fgetc(File)==EOF){ // Caso o ficheiro de resultados estiver vazio, escrevemos na consola que a querie não mostra output
-                printw("Query has no output!");
+                printw("QUERY HAS NO OUTPUT!");
                 remove("command_output_interativo.txt"); // Elimina o ficheiro e dá reset ao programa
                 move(15,5);
-                printw("  RESET (BACKSPACE)"); // Escreve esta mensagem na tela para judar o utilizador a perceber como interagir com o programa
+                printw("  MENU (BACKSPACE)"); // Escreve esta mensagem na tela para judar o utilizador a perceber como interagir com o programa
                 refresh();
                 while(wgetch(win)!=KEY_BACKSPACE); // Espera até que o utilizador faça a única coisa possível que é utilizar a tecla backspace
                 for(int i=9;i<30;i++){
@@ -249,8 +249,8 @@ int interact_program(int highlight, WINDOW *win, int querie_possible){
 
             rewind(File); // Faz com que as funções de leitura no ficheiro .txt comece novamente para inserir tudo corretamente
             
-            move(9,2); // Escreve na 9ª coluna e 2ª linha do terminal a mensagem de texto
-            printw("Outputs:");
+            move(9,0); // Escreve na 9ª coluna e 2ª linha do terminal a mensagem de texto
+            printw("OUTPUTS:");
             move(10,0);
 
             while(1){
@@ -273,17 +273,17 @@ int interact_program(int highlight, WINDOW *win, int querie_possible){
 
 
     if(highlight==0){   // SE A OPÇÃO ESCOLHIDA FOR INSERIR OS FICHEIROS .CSV
-        printw("-> Insert path to files .csv: ");
-        char *input = malloc(200);
+        printw(">> INSERT PATH TO DATA FILES: ");
+        char *input = malloc(250);
         int ch;
         echo();
         curs_set(1);
-        for (i = 0; i < 200 - 1 && (ch = getch()) != '\n'; i++) // Função de leitura do input do utilizador e guardada no array input
+        for (i = 0; i < 250 - 1 && (ch = getch()) != '\n'; i++) // Função de leitura do input do utilizador e guardada no array input
         input[i] = ch;
         input[i] = '\0';
         noecho();
         curs_set(0);
-        mvwprintw(win, 2, 16, "[...]"); // Mostra a mensagem ao utilizador indicando que o ficheiro está a ser validado e carregado
+        mvwprintw(win, 2, 23, "[...]"); // Mostra a mensagem ao utilizador indicando que o ficheiro está a ser validado e carregado
         wclrtoeol(win); // Atualiza a janela
         wrefresh(win);
         clrtoeol();
@@ -294,7 +294,7 @@ int interact_program(int highlight, WINDOW *win, int querie_possible){
             return 1;
         }
         else{ 
-        mvwprintw(win, 2, 16, "[LOADED]"); // Mostra a mensagem ao utilizador indicando que o ficheiro foi carregado com sucesso
+        mvwprintw(win, 2, 23, "[LOADED]"); // Mostra a mensagem ao utilizador indicando que o ficheiro foi carregado com sucesso
         wrefresh(win);
         }
     }
@@ -309,22 +309,20 @@ void interactive (){
 
     noecho();  // Não mostra o input
     int height = 7;
-    int width = 40;
+    int width = 100;
     int start_y = 2;
 
-    int cols=getmaxx(stdscr); // Esta função permite saber qual é o tamanho na horizontal do terminal para centrar a janela
-
-    WINDOW *win = newwin(height, width, start_y, (cols-40)/2);  // Tamanho e proporções da janela
+    WINDOW *win = newwin(height, width, start_y, 0);  // Tamanho e proporções da janela
     box(win, 0, 0);
     refresh();
     move(10,0);
     wrefresh(win);
     keypad(win,true);  // Podemos usar as setas
-    mvwprintw(win, 0, 12.5, "MODO INTERATIVO"); // Nome do bloco
+    mvwprintw(win, 0, 5, "GRUPO-32"); // Nome do bloco
     curs_set(0);  // Remove o cursor
     raw(); // Faz com que não seja permitido dar kill ao programa com atalhos
 
-    const char *options[]={"FILES .CSV","QUERIES","EXIT"};
+    const char *options[]={"INSERT DATA FILES","EXECUTE QUERIES","EXIT"};
     int choice;
     int highlight = 0;
     int i;

@@ -9,8 +9,12 @@
 #include <stdbool.h>
 #include "func_auxiliares.h"
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// RIDES  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 struct Rides{
+    
     char *id;
     char *date;
     char *driver;
@@ -20,32 +24,53 @@ struct Rides{
     double score_user;
     double score_driver;
     double tip;     
+
 };
 
 // Hash Table das rides com a key das rides.
 rides **hash_rides;
 
-bool insert_hash_rides(char *id,char *dt,char *dr,char *user,char *c,int dist,double su,double sd,double tip){
+void allocate_rides(){ 
+    
+    int i;
+
+    hash_rides = (rides**)malloc(n_lines*sizeof(rides*));
+
+    for(i=0; i < n_lines; i++){
+
+        hash_rides[i]=NULL;
+    } 
+}
+
+bool insert_hash_rides(char *id,char *date,char *driver_id,char *username,char *city,int distance,
+                       double score_user,double score_driver,double tip){
+    
     rides *r = malloc(sizeof(rides));
-    r->id=id;
-    r->date=dt;
-    r->driver=dr;
-    r->user=user;
-    r->city=c;
-    r->distance=dist;
-    r->score_user=su;
-    r->score_driver=sd;
-    r->tip=tip;   
+    
+    r->id = id;
+    r->date = date;
+    r->driver = driver_id;
+    r->user = username;
+    r->city = city;
+    r->distance = distance;
+    r->score_user = score_user;
+    r->score_driver = score_driver;
+    r->tip = tip;   
     
     hash_rides[atoi(id)-1] = r;
+    
     return true;
 }
 
-void getRideFields(int *id, char **date, char **driver, char **user, char **city, int *distance, double *score_user, double *score_driver, double *tip) {
+void getRideFields(int *id, char **date, char **driver, char **user, char **city, int *distance, 
+                   double *score_user, double *score_driver, double *tip) {
+  
   rides *r = NULL;
-  r =  hash_rides[*id];
+  
+  r = hash_rides[*id];
   
   if(r==NULL){
+  
       *date=NULL;
       return;
   }
@@ -61,39 +86,67 @@ void getRideFields(int *id, char **date, char **driver, char **user, char **city
 }
 
 void free_hash_rides(){
+    
     int i;
-    for(i=0;i<n_linhas;i++){
+    
+    for(i=0;i<n_lines;i++){
+    
         if(hash_rides[i]!=NULL){
+    
             free(hash_rides[i]->id);
             free(hash_rides[i]->date);
             free(hash_rides[i]->driver);
             free(hash_rides[i]->user);
             free(hash_rides[i]->city);
         }
+    
             free(hash_rides[i]);
     }
+    
     free(hash_rides);
 }
 
 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //// DRIVERS //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 struct Rides_driver{
+    
     char *date;
     char *driver;
     double score_driver;
     char *nome;
     int numero_viagens;
     double score_total;
+
 };
 
 rides_driver **hash_rides_drivers;
 
-void sortQ2(){
+void allocate_rides_drivers(){
+    
     int i;
-    for (i=0;i < n_linhas_drivers;i++){
+    
+    hash_rides_drivers = (rides_driver**)malloc(n_lines_drivers*sizeof(rides_driver*));
+        
+    for(i=0; i < n_lines_drivers; i++){
+        
+        hash_rides_drivers[i]=NULL;
+    }
+}
+
+void sortQ2(){
+    
+    int i;
+    
+    for (i=0; i < n_lines_drivers; i++){
+    
          if(hash_rides_drivers[i]==NULL){
+    
             rides_driver *rd = malloc(sizeof(rides_driver));
+    
             rd->score_driver = 0;
             rd->date = "01/01/1000";
             rd->driver = "1000000";
@@ -102,41 +155,46 @@ void sortQ2(){
          }
     }
 
-    qsort(hash_rides_drivers, n_linhas_drivers, sizeof(rides_driver*), compareDrivers);
+    qsort(hash_rides_drivers, n_lines_drivers, sizeof(rides_driver*), compareDrivers);
 }
 
 
-bool insert_hash_rides_drivers(char *data,char *condutor,double avaliacao_media){
+bool insert_hash_rides_drivers(char *data,char *driver,double score_driver){
     
     char *name_driver = NULL, *birth_day_driver = NULL, *gender_driver = NULL, 
          *car_class_driver = NULL, *city_driver = NULL, *account_creation_driver = NULL, 
          *account_status_driver = NULL; 
 
-    int linha_hash = atoi (condutor)-1;
+    int linha_hash = atoi(driver)-1;
 
     if (hash_rides_drivers[linha_hash] == NULL){
 
-        getDriverFields(&condutor, &name_driver, &birth_day_driver, &gender_driver, &car_class_driver, &city_driver, &account_creation_driver, &account_status_driver); 
+        getDriverFields(&driver, &name_driver, &birth_day_driver, &gender_driver, 
+                        &car_class_driver, &city_driver, &account_creation_driver, 
+                        &account_status_driver); 
 
         if(name_driver==NULL || !strcmp(account_status_driver,"inactive")) return true;
 
         rides_driver *rd = malloc(sizeof(rides_driver));
+        
         rd->date = data;
-        rd->driver = condutor;
-        rd->score_driver = avaliacao_media;
+        rd->driver = driver;
+        rd->score_driver = score_driver;
         rd->numero_viagens = 1;
-        rd->score_total=avaliacao_media;
+        rd->score_total = score_driver;
         rd->nome = name_driver;
 
         hash_rides_drivers[linha_hash] = rd;
+        
         return true;
     }
 
-    
-            
-    if((calculaData(data,hash_rides_drivers[linha_hash]->date)==0)) hash_rides_drivers[linha_hash]->date = data;
-           
-    hash_rides_drivers[linha_hash]->score_total += avaliacao_media;
+    if((calculateData(data,hash_rides_drivers[linha_hash]->date)==0)){ 
+          
+        hash_rides_drivers[linha_hash]->date = data;
+    }   
+
+    hash_rides_drivers[linha_hash]->score_total += score_driver;
     hash_rides_drivers[linha_hash]->numero_viagens ++;
     hash_rides_drivers[linha_hash]->score_driver = hash_rides_drivers[linha_hash]->score_total/hash_rides_drivers[linha_hash]->numero_viagens;
 
@@ -144,11 +202,15 @@ bool insert_hash_rides_drivers(char *data,char *condutor,double avaliacao_media)
         
 }
 
-void getRideDriverFields(int *id,char **date, char **driver, double *score_driver, char **nome, int *numero_viagens, double *score_total) {
+void getRideDriverFields(int *id,char **date, char **driver, double *score_driver, char **nome, 
+                         int *numero_viagens, double *score_total) {
+  
   rides_driver *rd = NULL;
+  
   rd =  hash_rides_drivers[*id];
   
   if(rd==NULL){
+  
       *date=NULL;
       return;
   }
@@ -163,6 +225,7 @@ void getRideDriverFields(int *id,char **date, char **driver, double *score_drive
 }
 
 int compareDrivers(const void *elem1, const void *elem2){
+    
     rides_driver **rd1 = (rides_driver**)elem1;
     rides_driver **rd2 = (rides_driver**)elem2;               
 
@@ -170,9 +233,9 @@ int compareDrivers(const void *elem1, const void *elem2){
         return 1;
     } else if ((*rd1)->score_driver < (*rd2)->score_driver) {
         return -1;
-    } else if (calculaData((*rd1)->date, (*rd2)->date) == 0) {
+    } else if (calculateData((*rd1)->date, (*rd2)->date) == 0) {
         return 1;
-    } else if (calculaData((*rd2)->date, (*rd1)->date) == 0) {
+    } else if (calculateData((*rd2)->date, (*rd1)->date) == 0) {
         return -1;
     } else if (atoi((*rd1)->driver) < atoi((*rd2)->driver)){
         return 1;
@@ -182,29 +245,54 @@ int compareDrivers(const void *elem1, const void *elem2){
 
 
 void free_hash_rides_drivers(){
+    
     int i;
-    for(i=0;i<n_linhas_drivers;i++){
+    
+    for(i=0;i<n_lines_drivers;i++){
+    
         free(hash_rides_drivers[i]);
     }
+    
     free(hash_rides_drivers);
 }
 
 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //// USERS ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 struct Rides_user{
+    
     int distancia;
     char *date;
     char *username;
     char *nome;
+
 };
 
 rides_user **hash_rides_users;
 
-void sortQ3(){
+void allocate_rides_users(){
+    
     int i;
-    for (i=0;i < n_linhas_users;i++){
+
+    hash_rides_users = (rides_user**)malloc(n_lines_users*sizeof(rides_user*));
+
+    for(i=0; i < n_lines_users; i++){
+
+        hash_rides_users[i]=NULL;
+    }
+}
+
+void sortQ3(){
+    
+    int i;
+    
+    for (i=0;i < n_lines_users;i++){
+         
          if(hash_rides_users[i]==NULL){
+            
             rides_user *ru = malloc(sizeof(rides_user));
             ru->distancia = 0;
             ru->date = "01/01/1000";
@@ -212,79 +300,93 @@ void sortQ3(){
             ru->nome = "null";
 
             hash_rides_users[i] = ru;
+         
          }
+    
     }
 
-    qsort(hash_rides_users, n_linhas_users, sizeof(rides_user*), compareUsers);
+    qsort(hash_rides_users, n_lines_users, sizeof(rides_user*), compareUsers);
 }
 
 bool insert_hash_rides_users(int distance,char *date,char *user){
-    register int i, linha_hash=0;
+    
+    int i, line_hash=0;
+    
     int aux = hash_users(user);
 
     char *name_user = NULL, *gender_user = NULL, *birth_day_user = NULL, 
          *account_creation_user = NULL, *account_status_user = NULL;
 
-    getUserFields(&user, &name_user, &gender_user, &birth_day_user, &account_creation_user, &account_status_user);
+    getUserFields(&user, &name_user, &gender_user, &birth_day_user, 
+                  &account_creation_user, &account_status_user);
 
     if(name_user==NULL || strcmp(account_status_user,"inactive")==0) return true;
 
-    for (i=0;i < n_linhas_users;i++){
+    for (i=0; i < n_lines_users; i++){
 
-        linha_hash = (i + aux) % n_linhas_users;
+        line_hash = (i + aux) % n_lines_users;
 
-        if (hash_rides_users[linha_hash] == NULL){
+        if (hash_rides_users[line_hash] == NULL){
+            
             rides_user *ru = malloc(sizeof(rides_user));
             ru->distancia = distance;
             ru->date = date;
             ru->username = user;
             ru->nome = name_user;
 
-            hash_rides_users[linha_hash] = ru;
+            hash_rides_users[line_hash] = ru;
+            
             return true;
         }
         
-        if(strcmp(hash_rides_users[linha_hash]->username,user)==0) {
+        if(strcmp(hash_rides_users[line_hash]->username,user)==0) {
 
-            if((calculaData(date,hash_rides_users[linha_hash]->date)==0)) hash_rides_users[linha_hash]->date = date;
+            if((calculateData(date,hash_rides_users[line_hash]->date)==0)){
+             
+                 hash_rides_users[line_hash]->date = date;
+            }
 
-            hash_rides_users[linha_hash]->distancia += distance;
+            hash_rides_users[line_hash]->distancia += distance;
 
             return true;
         }
+    
     }
     
     return false;
 }
 
-void getRideUserFields(int *ind, int *distancia, char **date, char **username, char **nome) {
+void getRideUserFields(int *ind, int *distance, char **date, char **username, char **name) {
+  
   rides_user *ru = NULL;
+  
   ru =  hash_rides_users[*ind];
   
   if(ru==NULL){
+  
       *date=NULL;
       return;
   }
 
-  *distancia = ru->distancia;
+  *distance = ru->distancia;
   *date = ru->date;
   *username = ru->username;
-  *nome = ru->nome;
+  *name = ru->nome;
 
 }
 
 int compareUsers(const void *elem1, const void *elem2){
+    
     rides_user **ru1 = (rides_user**)elem1;
     rides_user **ru2 = (rides_user**)elem2;               
 
-    
     if((*ru1)->distancia > (*ru2)->distancia) {
         return 1;
     } else if ((*ru1)->distancia < (*ru2)->distancia) {
         return -1;
-    } else if (calculaData((*ru1)->date, (*ru2)->date) == 0) {
+    } else if (calculateData((*ru1)->date, (*ru2)->date) == 0) {
         return 1;
-    } else if (calculaData((*ru2)->date, (*ru1)->date) == 0) {
+    } else if (calculateData((*ru2)->date, (*ru1)->date) == 0) {
         return -1;
     } else if (strcmp((*ru2)->username, (*ru1)->username)<0){
         return -1;
@@ -294,58 +396,91 @@ int compareUsers(const void *elem1, const void *elem2){
 
 
 void free_hash_rides_users(){
+    
     int i;
-    for(i=0;i<n_linhas_users;i++){
+    
+    for(i=0;i<n_lines_users;i++){
+    
         free(hash_rides_users[i]);
     }
+    
     free(hash_rides_users);
 }
 
 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //// DRIVERS CITY  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 struct Rides_driver_city{
-    double avaliacao_media;
+    
+    double average_score;
     char *id;
-    int numero_viagens;
-    char *nome;
-    double avaliacao_total;
+    int trip_counter;
+    char *name;
+    double total_score;
+
 };
 
 rides_driver_city **hash_rides_drivers_city;
 
-void sortQ7(){
+void allocate_rides_drivers_city(){
+    
     int i;
-    for (i=0;i < n_linhas_drivers;i++){
-         if(hash_rides_drivers_city[i]==NULL){
-            rides_driver_city *rdc = malloc(sizeof(rides_driver_city));
-            rdc->avaliacao_media = 0;
-            rdc->id = "0";
-            rdc->numero_viagens = 0;
-            rdc->nome = "null";
-            rdc->avaliacao_media = 0.000;
 
+    hash_rides_drivers_city = (rides_driver_city**)malloc(n_lines_drivers*sizeof(rides_driver_city*));
+
+    for(i=0; i < n_lines_drivers; i++){
+
+        hash_rides_drivers_city[i]=NULL;
+    }
+}
+
+
+void sortQ7(){
+    
+    int i;
+    
+    for (i=0;i < n_lines_drivers;i++){
+    
+        if(hash_rides_drivers_city[i]==NULL){
+    
+            rides_driver_city *rdc = malloc(sizeof(rides_driver_city));
+            rdc->average_score = 0.000;
+            rdc->id = "0";
+            rdc->trip_counter = 0;
+            rdc->name = "null";
+            rdc->total_score = 0.000;
+
+    
             hash_rides_drivers_city[i] = rdc;
-         }
+        }
+    
     }
 
-    qsort(hash_rides_drivers_city, n_linhas_drivers, sizeof(rides_driver_city*), compareCity);
+    qsort(hash_rides_drivers_city, n_lines_drivers, sizeof(rides_driver_city*), compareCity);
 }
 
 bool insert_hash_rides_drivers_city(char* city){
+    
     int i;
     int id_driver = 0;
-    char *name_driver = NULL, *birth_day_driver = NULL, *gender_driver = NULL, *car_class_driver = NULL, 
-         *city_driver = NULL, *account_creation_driver = NULL, *account_status_driver = NULL;
+    
+    char *name_driver = NULL, *birth_day_driver = NULL, *gender_driver = NULL, 
+         *car_class_driver = NULL, *city_driver = NULL, *account_creation_driver = NULL, 
+         *account_status_driver = NULL;
 
-    for(i=0;i<n_linhas;i++){
+    for(i=0; i < n_lines; i++){
+        
         if(hash_rides[i]!=NULL){
 
-            getDriverFields(&hash_rides[i]->driver, &name_driver, &birth_day_driver, &gender_driver, &car_class_driver, &city_driver, &account_creation_driver, &account_status_driver);
+            getDriverFields(&hash_rides[i]->driver, &name_driver, &birth_day_driver, 
+                            &gender_driver, &car_class_driver, &city_driver, 
+                            &account_creation_driver, &account_status_driver);
 
             if(name_driver!=NULL){
-
-            
+ 
                 id_driver = atoi(hash_rides[i]->driver)-1;
 
                 if(strcmp(account_status_driver,"active")==0 && strcmp(hash_rides[i]->city,city)==0){
@@ -353,18 +488,21 @@ bool insert_hash_rides_drivers_city(char* city){
                     if(hash_rides_drivers_city[id_driver]==NULL){
 
                         rides_driver_city *rdc = malloc(sizeof(rides_driver_city));
-                        rdc->numero_viagens=1;
-                        rdc->id=hash_rides[i]->driver;
-                        rdc->avaliacao_media=hash_rides[i]->score_driver;
-                        rdc->nome=name_driver;
-                        rdc->avaliacao_total=hash_rides[i]->score_driver;
+                        
+                        rdc->trip_counter = 1;
+                        rdc->id = hash_rides[i]->driver;
+                        rdc->average_score = hash_rides[i]->score_driver;
+                        rdc->name = name_driver;
+                        rdc->total_score = hash_rides[i]->score_driver;
+                        
                         hash_rides_drivers_city[id_driver]=rdc;
                     }
 
-                    else{
-                        hash_rides_drivers_city[id_driver]->numero_viagens++;
-                        hash_rides_drivers_city[id_driver]->avaliacao_total+=hash_rides[i]->score_driver;
-                        hash_rides_drivers_city[id_driver]->avaliacao_media=hash_rides_drivers_city[id_driver]->avaliacao_total/hash_rides_drivers_city[id_driver]->numero_viagens;
+                    else {
+                        
+                        hash_rides_drivers_city[id_driver]->trip_counter++;
+                        hash_rides_drivers_city[id_driver]->total_score += hash_rides[i]->score_driver;
+                        hash_rides_drivers_city[id_driver]->average_score = hash_rides_drivers_city[id_driver]->total_score/hash_rides_drivers_city[id_driver]->trip_counter;
                     }
                 }
             }
@@ -373,50 +511,66 @@ bool insert_hash_rides_drivers_city(char* city){
     return true;
 }
 
-void getRideDriverCityFields(int *ind, double *avaliacao_media, char **id, int *numero_viagens, char **nome, double *avaliacao_total) {
+void getRideDriverCityFields(int *ind, double *average_score, char **id, int *trip_counter, 
+                             char **name, double *total_score) {
+  
   rides_driver_city *rdc = NULL;
+  
   rdc =  hash_rides_drivers_city[*ind];
   
   if(rdc==NULL){
+      
       *id=NULL;
       return;
   }
 
-  *avaliacao_media = rdc->avaliacao_media;
+  *average_score = rdc->average_score;
   *id = rdc->id;
-  *numero_viagens = rdc->numero_viagens;
-  *nome = rdc->nome;
-  *avaliacao_total = rdc->avaliacao_total;
+  *trip_counter = rdc->trip_counter;
+  *name = rdc->name;
+  *total_score = rdc->total_score;
+
 }
 
 int compareCity(const void *elem1, const void *elem2){
+    
     rides_driver_city **rdc1 = (rides_driver_city**)elem1;
     rides_driver_city **rdc2 = (rides_driver_city**)elem2;               
 
-    
-    if((*rdc1)->avaliacao_media > (*rdc2)->avaliacao_media) {
+    if((*rdc1)->average_score > (*rdc2)->average_score) {
         return 1;
-    } else if ((*rdc1)->avaliacao_media < (*rdc2)->avaliacao_media) {
+    } else if ((*rdc1)->average_score < (*rdc2)->average_score) {
         return -1;
     } else if (atoi((*rdc1)->id) > atoi((*rdc2)->id)) {
         return 1;
     } else return -1;
-  
+
 }
 
 void free_hash_rides_driver_city(){
-    register int i;
-    for(i=0;i<n_linhas_drivers;i++){
+    
+    int i;
+    
+    for(i=0; i < n_lines_drivers; i++){
+    
         if(hash_rides_drivers_city[i]!=NULL){
+    
             free(hash_rides_drivers_city[i]);
+            
             hash_rides_drivers_city[i]=NULL;
         }
     }
+
 }
 
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //// RIDES_GENDER /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 struct Rides_gender{
+    
     char *id_condutor;
     char *nome_condutor;
     char *username_utilizador;
@@ -425,14 +579,29 @@ struct Rides_gender{
     char *data_user;
     char *id_viagem;
     int isValid;
+
 };
 
 rides_gender **hash_rides_gender;
 
-void init_hash_rides_gender(int aux){
+void allocate_rides_drivers_gender(){
+    
     int i;
 
-    for(i=aux;i<n_linhas_gender;i++){
+    hash_rides_gender = (rides_gender**)malloc(n_lines_gender*sizeof(rides_gender*));
+
+    for(i=0; i < n_lines_gender; i++){
+        
+        hash_rides_gender[i]=NULL;
+    }
+}
+
+void init_hash_rides_gender(int aux){
+
+    int i;
+
+    for(i=aux; i <n_lines_gender; i++){
+       
         hash_rides_gender[i]=NULL;
     } 
 }
@@ -446,7 +615,7 @@ bool insert_hash_rides_gender(char genero,int idade){
     char *name_user = NULL, *gender_user = NULL, *birth_day_user = NULL, 
          *account_creation_user = NULL, *account_status_user = NULL;
     
-    for(i=0;i<n_linhas;i++){
+    for(i=0;i<n_lines;i++){
         if(hash_rides[i]!=NULL){
 
             getDriverFields(&hash_rides[i]->driver, &name_driver, &birth_day_driver, &gender_driver, &car_class_driver, &city_driver, &account_creation_driver, &account_status_driver);
@@ -454,17 +623,17 @@ bool insert_hash_rides_gender(char genero,int idade){
 
             if(name_driver!=NULL && name_user!=NULL){
                 
-                if(strcmp(account_status_user,"active")==0 && strcmp(account_status_driver,"active")==0 && gender_driver[0]==genero && gender_user[0]==genero && calculaIdade(account_creation_user)>=idade && calculaIdade(account_creation_driver)>=idade){
+                if(strcmp(account_status_user,"active")==0 && strcmp(account_status_driver,"active")==0 && gender_driver[0]==genero && gender_user[0]==genero && calculateAge(account_creation_user)>=idade && calculateAge(account_creation_driver)>=idade){
                     
                     cont++;
                     
-                    if(cont>=n_linhas_gender-1) {
-                        n_linhas_gender = n_linhas_gender*5;
-                        hash_rides_gender = realloc(hash_rides_gender,n_linhas_gender*sizeof(rides_gender*));
+                    if(cont>=n_lines_gender-1) {
+                        n_lines_gender = n_lines_gender*5;
+                        hash_rides_gender = realloc(hash_rides_gender,n_lines_gender*sizeof(rides_gender*));
                         init_hash_rides_gender(cont-1);
                     }
 
-                    for(j=0;j<n_linhas_gender;j++){
+                    for(j=0;j<n_lines_gender;j++){
                         if(hash_rides_gender[j]==NULL) break;
                     }
             
@@ -486,25 +655,34 @@ bool insert_hash_rides_gender(char genero,int idade){
     return true;
 }
 
-rides_gender *procura_rides_gender(){
-    register int i,aux;
-    char* data_atual_user="00/00/2222";
-    char* data_atual_driver="00/00/2222";
-    int data_registo_user,data_registo_driver;
-    int end=0,id_atual=99999999;
+rides_gender *search_rides_gender(){
     
-    for(i=0;i<n_linhas_gender;i++){
+    int i, aux;
+    
+    char* date_actual_user = "00/00/2222";
+    char* date_actual_driver = "00/00/2222";
+    
+    int date_regist_user, date_regist_driver;
+    
+    int end = 0, id_actual = 99999999;
+    
+    for(i=0; i < n_lines_gender; i++){
 
         if(hash_rides_gender[i]!=NULL){
 
-            data_registo_user=calculaData(hash_rides_gender[i]->data_user,data_atual_user);
-            data_registo_driver=calculaData(hash_rides_gender[i]->data_driver,data_atual_driver);
+            date_regist_user = calculateData(hash_rides_gender[i]->data_user,date_actual_user);
+            date_regist_driver = calculateData(hash_rides_gender[i]->data_driver,date_actual_driver);
         
-            if (hash_rides_gender[i]->isValid==1 && (data_registo_driver==1 || (data_registo_driver==-1 && data_registo_user==1) || (data_registo_driver==-1 && data_registo_user==-1 && atoi(hash_rides_gender[i]->id_viagem)<id_atual))){
+            if (hash_rides_gender[i]->isValid==1 && (date_regist_driver==1 || (date_regist_driver==-1 
+                && date_regist_user==1) || (date_regist_driver==-1 && date_regist_user==-1 
+                && atoi(hash_rides_gender[i]->id_viagem)<id_actual))){
+                
                 end=1;
-                data_atual_user=hash_rides_gender[i]->data_user;
-                data_atual_driver=hash_rides_gender[i]->data_driver;
-                id_atual=atoi(hash_rides_gender[i]->id_viagem);
+                
+                date_actual_user = hash_rides_gender[i]->data_user;
+                date_actual_driver = hash_rides_gender[i]->data_driver;
+                id_actual = atoi(hash_rides_gender[i]->id_viagem);
+                
                 aux=i;
             }
         }
@@ -513,107 +691,153 @@ rides_gender *procura_rides_gender(){
     if(end==0) return NULL;
 
     hash_rides_gender[aux]->isValid=0;
+    
     return hash_rides_gender[aux];
 }
 
-void getRideGenderFields(char **id_condutor, char **nome_condutor, char **username_utilizador, char **nome_utilizador, char **data_driver, char **data_user, char **id_viagem, int *isValid) {
+void getRideGenderFields(char **driver_id, char **name_driver, char **username, 
+                         char **nome_user, char **date_driver, char **date_user, 
+                         char **id_trip, int *isValid) {
+  
   rides_gender *rg = NULL;
-  rg = procura_rides_gender();
+  
+  rg = search_rides_gender();
   
   if(rg==NULL){
-      *nome_condutor=NULL;
+      
+      *driver_id=NULL;
       return;
   }
 
-  *id_condutor = rg->id_condutor;
-  *nome_condutor = rg->nome_condutor;
-  *username_utilizador = rg->username_utilizador;
-  *nome_utilizador = rg->nome_utilizador;
-  *data_driver = rg->data_driver;
-  *data_user = rg->data_user;
-  *id_viagem = rg->id_viagem;
+  *driver_id = rg->id_condutor;
+  *name_driver = rg->nome_condutor;
+  *username = rg->username_utilizador;
+  *nome_user = rg->nome_utilizador;
+  *date_driver = rg->data_driver;
+  *date_user = rg->data_user;
+  *id_trip = rg->id_viagem;
   *isValid = rg->isValid;
 }
 
 
 void free_hash_rides_gender(){
-    register int i;
-    for(i=0;i<n_linhas_gender;i++){
+    
+    int i;
+    
+    for(i=0;i<n_lines_gender;i++){
+    
         if(hash_rides_gender[i]!=NULL){
+    
             free(hash_rides_gender[i]);
             hash_rides_gender[i]=NULL;
         }
     }
 }
 
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //// RIDES_DATE /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 struct Rides_date{
+    
     int distance;
     char *date;
     char *id;
     char *city;
     double tip;
-    char *id_viagem;
+    char *id_trip;
     int isValid;
+
 };
 
 rides_date **hash_rides_date;
 
-bool insert_hash_rides_date(char *date1,char *date2){
-    register int i,j;
+void allocate_rides_date(){
     
-    for(i=0;i<n_linhas;i++){
+    int i;
+    
+    hash_rides_date = (rides_date**)malloc(n_lines_users*sizeof(rides_date*));
 
-        if(hash_rides[i]!=NULL && (hash_rides[i]->tip != 0.0) && calculaData(hash_rides[i]->date,date1)<=0 && calculaData(date2,hash_rides[i]->date)<=0){
+    for(i=0; i < n_lines_drivers; i++){
+        
+        hash_rides_date[i]=NULL;
+    }
+}
 
-         for(j=0;j<n_linhas_drivers;j++){
+bool insert_hash_rides_date(char *date1,char *date2){
+    
+    int i,j;
+    
+    for(i=0; i < n_lines; i++){
+
+        if(hash_rides[i]!=NULL && (hash_rides[i]->tip != 0.0) && 
+          calculateData(hash_rides[i]->date,date1)<=0 && 
+          calculateData(date2,hash_rides[i]->date)<=0){
+
+            for(j=0; j < n_lines_drivers; j++){
+                
                 if(hash_rides_date[j]==NULL) break;
             }
 
-                rides_date *rd = malloc(sizeof(rides_date));
-                rd->distance=hash_rides[i]->distance;
-                rd->date=hash_rides[i]->date;
-                rd->id=hash_rides[i]->id;
-                rd->city=hash_rides[i]->city;
-                rd->tip=hash_rides[i]->tip;
-                rd->id_viagem=hash_rides[i]->id;
-                rd->isValid=1;
+            rides_date *rd = malloc(sizeof(rides_date));
+                
+            rd->distance = hash_rides[i]->distance;
+            rd->date = hash_rides[i]->date;
+            rd->id = hash_rides[i]->id;
+            rd->city = hash_rides[i]->city;
+            rd->tip = hash_rides[i]->tip;
+            rd->id_trip = hash_rides[i]->id;
+            rd->isValid = 1;
 
-                hash_rides_date[j]=rd;
-       }
+            hash_rides_date[j]=rd;
+        }
     }
+    
     return true;
 }
 
-rides_date *procura_rides_date(){
-    register int i,aux;
+rides_date *search_rides_date(){
+    
+    int i, aux;
+    
     char* recent_date = "00/00/0000";
-    int dist=0,end=0,id_atual=0;
+    int dist = 0, end = 0, id_actual = 0;
 
-    for(i=0;i<n_linhas_drivers;i++){
+    for(i=0; i < n_lines_drivers; i++){
 
-        if(hash_rides_date[i]!=NULL && hash_rides_date[i]->isValid==1 && (dist<hash_rides_date[i]->distance || (dist==hash_rides_date[i]->distance && calculaData(hash_rides_date[i]->date,recent_date)<=0) || (dist==hash_rides_date[i]->distance && calculaData(hash_rides_date[i]->date,recent_date)==-1 && atoi(hash_rides_date[i]->id_viagem)>id_atual))){
+        if(hash_rides_date[i]!=NULL && hash_rides_date[i]->isValid==1 && 
+          (dist<hash_rides_date[i]->distance || 
+          (dist==hash_rides_date[i]->distance && calculateData(hash_rides_date[i]->date,recent_date)<=0) || 
+          (dist==hash_rides_date[i]->distance && calculateData(hash_rides_date[i]->date,recent_date)==-1 && atoi(hash_rides_date[i]->id_trip)>id_actual))){
                 
-                end=1;
-                dist=hash_rides_date[i]->distance;
-                recent_date=hash_rides_date[i]->date;
-                id_atual=atoi(hash_rides_date[i]->id_viagem);
-                aux=i;
+                end = 1;
+                
+                dist = hash_rides_date[i]->distance;
+                recent_date = hash_rides_date[i]->date;
+                id_actual = atoi(hash_rides_date[i]->id_trip);
+                
+                aux = i;
         }
     }
  
     if(end==0) return NULL;
 
     hash_rides_date[aux]->isValid=0;
+    
     return hash_rides_date[aux];
 }
 
-void getRideDateFields(int *distance, char **date, char **id, char **city, double *tip, char **id_viagem, int *isValid) {
+void getRideDateFields(int *distance, char **date, char **id, char **city, double *tip, 
+                       char **id_trip, int *isValid) {
+  
   rides_date *rd = NULL;
-  rd = procura_rides_date();
+  
+  rd = search_rides_date();
   
   if(rd==NULL){
+      
       *date=NULL;
       return;
   }
@@ -623,15 +847,19 @@ void getRideDateFields(int *distance, char **date, char **id, char **city, doubl
   *id = rd->id;
   *city = rd->city;
   *tip = rd->tip;
-  *id_viagem = rd->id_viagem;
+  *id_trip = rd->id_trip;
   *isValid = rd->isValid;
 }
 
 void free_hash_rides_date(){
+    
     int i;
-    for(i=0;i<n_linhas_drivers;i++){
+    
+    for(i=0;i<n_lines_drivers;i++){
+    
         free(hash_rides_date[i]);
     }
+    
     free(hash_rides_date);
     free(hash_rides_drivers_city);
     free(hash_rides_gender);
@@ -639,61 +867,6 @@ void free_hash_rides_date(){
 
 
 
-void allocate_rides(){ 
-    hash_rides = (rides**)malloc(n_linhas*sizeof(rides*));
-
-    int i;
-    for(i=0;i<n_linhas;i++){
-        hash_rides[i]=NULL;
-    } 
-}
 
 
-void allocate_rides_drivers(){
-    hash_rides_drivers = (rides_driver**)malloc(n_linhas_drivers*sizeof(rides_driver*));
-        
-    int i;
-    for(i=0;i<n_linhas_drivers;i++){
-        hash_rides_drivers[i]=NULL;
-    }
-}
 
-
-void allocate_rides_users(){
-    hash_rides_users = (rides_user**)malloc(n_linhas_users*sizeof(rides_user*));
-
-    int i;
-    for(i=0;i<n_linhas_users;i++){
-        hash_rides_users[i]=NULL;
-    }
-}
-
-
-void allocate_rides_drivers_city(){
-    hash_rides_drivers_city = (rides_driver_city**)malloc(n_linhas_drivers*sizeof(rides_driver_city*));
-
-    int i;
-    for(i=0;i<n_linhas_drivers;i++){
-        hash_rides_drivers_city[i]=NULL;
-    }
-}
-
-
-void allocate_rides_drivers_gender(){
-    hash_rides_gender = (rides_gender**)malloc(n_linhas_gender*sizeof(rides_gender*));
-
-    int i;
-    for(i=0;i<n_linhas_gender;i++){
-        hash_rides_gender[i]=NULL;
-    }
-}
-
-
-void allocate_rides_date(){
-    hash_rides_date = (rides_date**)malloc(n_linhas_users*sizeof(rides_date*));
-
-    int i;
-    for(i=0;i<n_linhas_drivers;i++){
-        hash_rides_date[i]=NULL;
-    }
-}

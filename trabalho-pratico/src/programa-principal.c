@@ -19,27 +19,26 @@ int main(int argc, char* argv[]){
     // argumentos estamos nesse modo. Quando isto acontece é disponibilizado ao utilizador um menu interativo com todas
     // as informações necessárias para a execução de cada query
     if(argc<=1){
+        
         interactive();
         return 0;
     }
 
-
     // Criação do path para o ficheiro drivers.csv.
-    char *file_d = malloc (100*sizeof(char));
+    char *file_d = malloc (250*sizeof(char));
     strcpy(file_d,argv[1]);
     strcat(file_d,"/drivers.csv");
     // Criação do path para o ficheiro users.csv.
-    char *file_u = malloc (100*sizeof(char));
+    char *file_u = malloc (250*sizeof(char));
     strcpy(file_u,argv[1]);
     strcat(file_u,"/users.csv");
     // Criação do path para o ficheiro rides.csv.
-    char *file_r = malloc (100*sizeof(char));
+    char *file_r = malloc (250*sizeof(char));
     strcpy(file_r,argv[1]);
     strcat(file_r,"/rides.csv");
     // Criação do path para o ficheiro dos inputs.
-    char *file_txt = malloc (100*sizeof(char));
+    char *file_txt = malloc (250*sizeof(char));
     strcpy(file_txt,argv[2]);
-
 
     count_lines(file_d,file_u,file_r);
     
@@ -64,7 +63,6 @@ int main(int argc, char* argv[]){
     // Esta função trata os inputs e envia os mesmos para a respetiva querie.
     read_exe_queries(file_txt,1,NULL);
 
-
     free(file_d);
     free(file_u);
     free(file_r);
@@ -86,3 +84,4 @@ int main(int argc, char* argv[]){
 // Inicializar os apontadores.
 // Passar tudo a ingles.
 // Fazer testes de tempo.
+// Time the whole program.

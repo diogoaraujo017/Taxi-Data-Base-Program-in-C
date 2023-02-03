@@ -5,17 +5,28 @@
 #define IDADE_MES 10
 #define IDADE_ANO 2022
 
-int calculaData (char *line,char *line2);
-int calculaIdade (char *line);
-char* converte(char *str);
+int calculateData (char *line,char *line2);
+
+int calculateAge (char *line);
+
+char* convert(char *str);
+
 int check_data(char *date);
+
 int check_distance(char *distance);
+
 int check_score(char *score);
+
 int check_tip(char *tip);
+
 int check_account(char* status);
+
 int check_class(char *car);
+
 double time_hash(void (*func)(char*, char),char *dir, char file_aux);
+
 double time_query(void (*func)(char*, char*),char *line,char *file);
+
 void check_output(int input, char *outputs);
 
 #endif

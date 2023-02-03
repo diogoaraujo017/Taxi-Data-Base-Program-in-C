@@ -9,16 +9,18 @@
 #include "func_auxiliares.h"
 
 
-int n_linhas;
-int n_linhas_drivers; 
-int n_linhas_users; 
-int n_linhas_gender;
+int n_lines;
+int n_lines_drivers; 
+int n_lines_users; 
+int n_lines_gender;
 
 int count_lines(char *drivers,char *users,char *rides){
+  
   int d=0, u=0, r=0; 
   char line[250];
  
   FILE *file;
+
   file = fopen(drivers, "r");
   if(file==NULL) return 1;
   while (fgets(line, 250, file)!=NULL){
@@ -40,10 +42,10 @@ int count_lines(char *drivers,char *users,char *rides){
         }
   fclose(file);
 
-  n_linhas=r*5;
-  n_linhas_drivers=d*5; 
-  n_linhas_users=u*5;
-  n_linhas_gender=r/1000;
+  n_lines=r*5;
+  n_lines_drivers=d*5; 
+  n_lines_users=u*5;
+  n_lines_gender=r/1000;
 
   return 0;
 }
@@ -53,25 +55,27 @@ int count_lines(char *drivers,char *users,char *rides){
 // É aberto o fichero drivers.csv e em seguida é lida linha a linha do ficheiro e colocada na função
 // analisa_linha_drivers para um melhor tratamento dos dados.
 void read_store(char *dir, char file_aux){
+    
     FILE *file;
     char line[250];
+
     file = fopen(dir, "r");
 
     fgets(line, 250, file);
 
     if (file_aux == 'd'){
         while (fgets(line, 250, file)!=NULL){
-            analisa_linha_drivers(line);
+            analyze_line_drivers(line);
         }
     }
     else if (file_aux == 'u'){
         while (fgets(line, 250, file)!=NULL){
-            analisa_linha_users(line);
+            analyze_line_users(line);
         }
     }
     else if (file_aux == 'r'){
         while (fgets(line, 250, file)!=NULL){
-            analisa_linha_rides(line);
+            analyze_line_rides(line);
         }
     }
 
@@ -85,12 +89,13 @@ void read_store(char *dir, char file_aux){
 // à existência dos ';' que separam todos os parâmetros. Em seguida, é necessário inserir
 // todos os parâmetros relativos ao driver (apenas do ficheiro drivers.csv) na hash table através 
 // da função insert_hash_drivers.
-void analisa_linha_drivers(char *line){
+void analyze_line_drivers(char *line){
+    
     char *id,*name,*birth_date,*gender,*car_class,*license_plate,*city,*acc_creation,*acc_status;
-    int tamanho_info = 35;
+    int size_info = 35;
 
     id=malloc(14);
-    name=malloc(tamanho_info);
+    name=malloc(size_info);
     birth_date=malloc(12);
     gender=malloc(3);
     car_class=malloc(10);
@@ -103,6 +108,7 @@ void analisa_linha_drivers(char *line){
     sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^\n]", id,name,birth_date,gender,car_class,license_plate,city,acc_creation,acc_status);
 
     if(acc_status[0]=='!' || check_data(birth_date) ==1 || check_data(acc_creation) ==1 || check_account(acc_status)==1 || check_class(car_class)==1){
+        
         free(id);
         free(name);
         free(birth_date);
@@ -111,12 +117,14 @@ void analisa_linha_drivers(char *line){
         free(license_plate);
         free(city);
         free(acc_status);       
+        
         return;
     }
+    
     free(license_plate);
 
     //Função que insere todos os parâmetros do driver(apenas do ficheiro drivers.csv) na hash table 
-    insert_hash_drivers(id,name,birth_date,gender,converte(car_class),city,acc_creation,converte(acc_status));
+    insert_hash_drivers(id,name,birth_date,gender,convert(car_class),city,acc_creation,convert(acc_status));
 }
 
 
@@ -127,12 +135,13 @@ void analisa_linha_drivers(char *line){
 // à existência dos ';' que separam todos os parâmetros. Em seguida, é necessário inserir
 // todos os parâmetros relativos ao user (apenas do ficheiro users.csv) na hash table através 
 // da função insert_hash_users.
-void analisa_linha_users(char *line){
+void analyze_line_users(char *line){
+    
     char *username,*name,*gender,*birth_date,*acc_creation,*pay_method,*acc_status;
-    int tamanho_info = 35;
+    int size_info = 35;
 
-    username=malloc(tamanho_info);
-    name=malloc(tamanho_info);
+    username=malloc(size_info);
+    name=malloc(size_info);
     gender=malloc(3);
     birth_date=malloc(12);
     acc_creation=malloc(12);
@@ -143,6 +152,7 @@ void analisa_linha_users(char *line){
     sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^\n]", username,name,gender,birth_date,acc_creation,pay_method,acc_status);
 
     if(acc_status[0]=='!' || check_data(birth_date) ==1 || check_account(acc_status)==1){
+        
         free(username);
         free(name);
         free(gender);
@@ -150,12 +160,14 @@ void analisa_linha_users(char *line){
         free(acc_creation);
         free(pay_method);
         free(acc_status);
+        
         return;
     }
+    
     free(pay_method);
 
     //Função que insere todos os parâmetros do user (apenas do ficheiro users.csv) na hash table 
-    insert_hash_users(username,name,gender,birth_date,acc_creation,converte(acc_status));
+    insert_hash_users(username,name,gender,birth_date,acc_creation,convert(acc_status));
 
 
 }
@@ -169,14 +181,15 @@ void analisa_linha_users(char *line){
 // à existência dos ';' que separam todos os parâmetros. Em seguida, é necessário inserir
 // todos os parâmetros relativos à ride (apenas do ficheiro rides.csv) nas hash tables através 
 // das funções insert_rides_drivers e insert_rides_users.
-void analisa_linha_rides(char *line){
+void analyze_line_rides(char *line){
+    
     char *id,*date,*driver,*user,*city,*distance,*score_user,*score_driver,*tip,*ptr;
-    int tamanho_info = 35;
+    int size_info = 35;
 
     id=malloc(14);
     date=malloc(12);
     driver=malloc(14); 
-    user=malloc(tamanho_info);
+    user=malloc(size_info);
     city=malloc(12);
     distance=malloc(6);
     score_user=malloc(6);
@@ -187,6 +200,7 @@ void analisa_linha_rides(char *line){
     sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;]", id,date,driver,user,city,distance,score_user,score_driver,tip);
 
     if(tip[0]=='!' || check_data(date) ==1 || check_distance(distance)==1 || check_score(score_user)==1 || check_score(score_driver)==1|| check_tip(tip)==1){
+        
         free(id);
         free(date);
         free(driver);
@@ -196,10 +210,9 @@ void analisa_linha_rides(char *line){
         free(score_user);
         free(score_driver);
         free(tip);
+        
         return;
     }
-
-
 
     int distance_int = atoi(distance); 
     double score_user_double = atoi(score_user);

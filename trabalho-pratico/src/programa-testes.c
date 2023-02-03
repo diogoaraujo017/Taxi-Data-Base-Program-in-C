@@ -20,24 +20,33 @@ extern int incorrect; // Determina o número de queries que estão com o output 
 // para a pasta onde se encontram os ficheiros que contêm o output correto de cada query
 int main(int argc, char* argv[]){
     
+    printf("\n\n          >> PROGRAM TESTS <<");
+    
+    printf ("\n\n-----------------------------------------\n\n");
+    
+    printf(">> INSERT PATH TO DATA FILES: ");
+    char *data = malloc (250*sizeof(char));
+    scanf("%s",data);
+    printf("\n>> INSERT PATH TO QUERY INPUTS: ");
+    char *inputs = malloc (250*sizeof(char));
+    scanf("%s",inputs);
+    printf("\n>> INSERT PATH TO QUERY OUTPUTS: ");
+    char *outputs = malloc (250*sizeof(char));
+    scanf("%s",outputs);
+
+    clock_t start_main = clock();
     // Criação do path para o ficheiro drivers.csv.
     char *file_d = malloc (100*sizeof(char));
-    strcpy(file_d,argv[1]);
+    strcpy(file_d,data);
     strcat(file_d,"/drivers.csv");
     // Criação do path para o ficheiro users.csv.
     char *file_u = malloc (100*sizeof(char));
-    strcpy(file_u,argv[1]);
+    strcpy(file_u,data);
     strcat(file_u,"/users.csv");
     // Criação do path para o ficheiro rides.csv.
     char *file_r = malloc (100*sizeof(char));
-    strcpy(file_r,argv[1]);
+    strcpy(file_r,data);
     strcat(file_r,"/rides.csv");
-    // Criação do path para o ficheiro dos inputs.
-    char *file_txt = malloc (100*sizeof(char));
-    strcpy(file_txt,argv[2]);
-    // Criação do path para o ficheiro dos inputs.
-    char *outputs = malloc (100*sizeof(char));
-    strcpy(outputs,argv[3]);
 
     count_lines(file_d,file_u,file_r);
     
@@ -53,19 +62,18 @@ int main(int argc, char* argv[]){
     // Estas funções são responsáveis pelo parsing de cada linha dos ficheiros .csv. Para além disso,
     // também inserem os valores lidos (organizados numa struct) para a hash table, linha a linha. 
     //double a = time_it_takes(read_store,file_d,'d');
-    printf("\nTime hash table drivers: %fs\n", time_hash(read_store,file_d,'d'));
-    printf("Time hash table users: %fs\n", time_hash(read_store,file_u,'u'));
+    printf ("\n-----------------------------------------\n\n");
+    printf("Time hash table drivers: %fs\n\n", time_hash(read_store,file_d,'d'));
+    printf("Time hash table users: %fs\n\n", time_hash(read_store,file_u,'u'));
     printf("Time hash table rides: %fs\n\n", time_hash(read_store,file_r,'r'));
     printf ("-----------------------------------------\n\n");
 
     sortQ2();
     sortQ3();
 
-
-
     clock_t start = clock();
     // Esta função trata os inputs e envia os mesmos para a respetiva querie.
-    read_exe_queries(file_txt,0,outputs);
+    read_exe_queries(inputs,0,outputs);
     clock_t end = clock();
     printf("\nExecuted all queries in %f seconds.\n\n",(double)(end - start) / CLOCKS_PER_SEC);
 
@@ -79,7 +87,9 @@ int main(int argc, char* argv[]){
     free(file_d);
     free(file_u);
     free(file_r);
-    free(file_txt);
+    free(data);
+    free(outputs);
+    free(inputs);
     
     free_hash_drivers();
     free_hash_users();
@@ -91,17 +101,12 @@ int main(int argc, char* argv[]){
     printf ("-----------------------------------------\n\n");
     struct rusage usage;
     getrusage(RUSAGE_SELF, &usage);
-    printf("Memory usage: %ld MegaBytes\n", usage.ru_maxrss/1000);
+    printf("Memory usage: %ld MegaBytes\n\n", usage.ru_maxrss/1000);
+    printf ("-----------------------------------------\n\n");
 
-
+    clock_t end_main = clock();
+    printf("Executed the entire program in %f seconds.\n\n",(double)(end_main - start_main) / CLOCKS_PER_SEC);
 
     return 0;
 }
 
-// Coisas a fazer:
-
-// Inicializar todos os pointers, dar init na main
-// Nao utilizar o pointer original. fazer copias
-// Make file TIME
-// Inicializar os apontadores
-// Tipos opacos

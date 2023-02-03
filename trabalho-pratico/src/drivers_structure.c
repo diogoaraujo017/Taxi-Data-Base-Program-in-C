@@ -9,6 +9,7 @@
 
 
 struct Drivers{
+
     char *id;                // Id do condutor.
     char *name;              // Nome do condutor.
     char *birth_day;         // Data de nascimento do condutor.
@@ -17,18 +18,21 @@ struct Drivers{
     char *city;              // Cidade de residencia do condutor.
     char *account_creation;  // Data de criação da conta do condutor.
     char *account_status;    // Status da conta do condutor.
+
 };
 
 // Hash table dos drivers
 drivers **hash_table_drivers;
 
 void allocate_drivers(){ 
-    hash_table_drivers = (drivers**)malloc(n_linhas_drivers*sizeof(drivers*));
-    
     int i;
-    for(i=0;i<n_linhas_drivers;i++){
+    
+    hash_table_drivers = (drivers**)malloc(n_lines_drivers*sizeof(drivers*));
+    
+    for(i=0;i<n_lines_drivers;i++){
         hash_table_drivers[i]=NULL;
     }
+
 }
 
 // Esta função insere uma determinada linha na hash_table se essa linha não estiver ocupada.
@@ -36,31 +40,39 @@ void allocate_drivers(){
 // init_hash_table_drivers. Se a linha for adicionada com sucesso a função dará return a true,
 // não dando qualquer problema, caso contrário dará return a false significando que a 
 // função não conseguiu adicionar a linha.
-bool insert_hash_drivers(char *id,char *n,char *b,char *g,char *cc,char *c,char *ac,char *as){
+bool insert_hash_drivers(char *id,char *name,char *birth_day,
+                         char *gender,char *car_class,char *city,char *account_creation,
+                         char *account_status){
+
     drivers *d = malloc(sizeof(drivers));
+    
     d->id = id;
-    d->name = n;
-    d->gender = g;
-    d->birth_day = b;
-    d->account_creation = ac;
-    d->car_class = cc;
-    d->city=c;
-    d->account_status = as;
+    d->name = name;
+    d->gender = gender;
+    d->birth_day = birth_day;
+    d->car_class = car_class;
+    d->city=city;
+    d->account_creation=account_creation;
+    d->account_status = account_status;
 
     hash_table_drivers[atoi(id)-1] = d;
 
     return true;
-    }
+
+}
 
 void getDriverFields(char **id, char **name, char **birth_day,
                      char **gender, char **car_class, char **city, char **account_creation,
                      char **account_status) {
   
   drivers *d = NULL;
+  
   d = hash_table_drivers[atoi(*id)-1];
   
   if(d==NULL){
+  
       *name=NULL;
+      
       return;
   }
 
@@ -75,9 +87,13 @@ void getDriverFields(char **id, char **name, char **birth_day,
 }
 
 void free_hash_drivers(){
+    
     int i;
-    for(i=0;i<n_linhas_drivers;i++){
+    
+    for(i=0;i<n_lines_drivers;i++){
+        
         if(hash_table_drivers[i]!=NULL){
+        
             free(hash_table_drivers[i]->account_creation);
             free(hash_table_drivers[i]->account_status);
             free(hash_table_drivers[i]->birth_day);
@@ -86,8 +102,13 @@ void free_hash_drivers(){
             free(hash_table_drivers[i]->gender);
             free(hash_table_drivers[i]->id);
             free(hash_table_drivers[i]->name);
+        
         }
+        
             free(hash_table_drivers[i]);
+    
     }
+    
     free(hash_table_drivers);
+
 }
