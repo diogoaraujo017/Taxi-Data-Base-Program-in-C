@@ -10,6 +10,7 @@
 #include "parsing.h"
 #include <unistd.h>
 
+
 // Função muito parecida à main, recebe como input o path para os ficheiros .csv e cria as hash tables correspondentes
 int programa_main (char *file){
 
@@ -26,7 +27,8 @@ int programa_main (char *file){
     strcpy(file_r,file);
     strcat(file_r,"/rides.csv");
 
-    if(count_lines(file_d,file_u,file_r)==1){ // Caso o input for inválido aparece uma mensagem de erro no terminal e o programa reinicia
+    // Caso o input for inválido aparece uma mensagem de erro no terminal e o programa reinicia
+    if(count_lines(file_d,file_u,file_r)==1){
         printw("INVALID PATH FILE!");
         refresh();
         napms(1000);
@@ -36,6 +38,7 @@ int programa_main (char *file){
         return 1;
     };
     
+    // É alocado espaço para as hash_tables
     allocate_drivers();
     allocate_users();
     allocate_rides();
@@ -51,15 +54,130 @@ int programa_main (char *file){
     read_store(file_u,'u');
     read_store(file_r,'r');
 
+    // Funções de ordenação das hash correspondentes às queries 2 e 3
     sortQ2();
     sortQ3();
 
+
+    // Libertar espaço dos apontadores
     free(file_d);
     free(file_u);
     free(file_r);
 
     return 0;
 
+}
+
+
+ // Função responsável pelo mecanismo de controlar as páginas com as setas
+int move_pages(FILE *File, WINDOW *win){
+
+                char buffer[250];
+                int linha_atraso=-1;
+                int cont=0;
+                int botao;
+                int skip=0;
+                int flag=0;
+                int repeticoes=0;
+                int pag=1;
+                rewind(File); // Recomeça a leitura do ficheiro
+                move(27,5);
+                printw("  RESET (BACKSPACE)"); // Escreve esta mensagem na tela para judar o utilizador a perceber como interagir com o programa
+                refresh();
+                move(10,0);
+
+                while(fgets(buffer, 250, File)!=NULL){ // Este while executa enquanto a função de leitura tiver linhas do .txt para ler
+            
+                if(linha_atraso==cont){ // Este é o caso em que queremos mostrar os 15 outputs anterioes usando a seta para a esquerda
+                        move(repeticoes+10,0);
+                        printw("%s",buffer);
+                        refresh();
+                        cont++;
+
+                        repeticoes++;
+                        
+                        if(repeticoes == 15){ // Quando ele fizer este processo 15 vezes, para porque apenas imprimimos na tela 15 linhas de output em cada página
+                            repeticoes=0;
+                            linha_atraso=-2;
+                            skip=0; // Alinha o contador para o if seguinte
+                        }
+                    linha_atraso++;
+                }
+                else { // Caso mais comum em que não é utilizado a seta para trás
+
+                if(((cont)%15==0 && cont !=0) || skip==1){ // Se existirem mais de 15 linhas de output no ficheiro .txt, então será necessário criar páginas para facilitar a visualização dos outputs
+                    skip=0;
+                    move(26,5);
+                    printw("(<-) START | NEXT (->)"); // Escreve esta mensagem na tela para judar o utilizador a perceber como interagir com o programa
+                    move(10,0);
+                    refresh();
+                    
+                    botao=wgetch(win); // Função que lê a tecla que o utilizador primiu
+                
+                    if(botao==KEY_RIGHT){ // Se a tecla for a seta para a direita, então será necessário avançar uma página para a frente
+                        pag++;
+                        for(int i=0;i<16;i++){  
+                            move(i+10,0);
+                            clrtoeol();
+                        }
+
+                        refresh();
+                        move(10,0);
+                        flag=0;
+                    }
+
+                    if(botao==KEY_LEFT && pag==1) flag=1;
+                    else if(botao==KEY_LEFT && pag>1){ // Se a tecla for a seta para a esquerda, então será necessário recomeçar e ir para a primeira página
+                            rewind(File); // Recomeça a leitura do ficheiro
+                            for(int i=0;i<16;i++){
+                                move(i+10,0);
+                                clrtoeol();
+                            }  
+
+                            refresh();
+                            move(10,0);
+                            pag--;
+
+                            linha_atraso=0;
+
+                            cont=0;
+                            flag=1;
+
+                    }
+                }
+
+                    if(botao==KEY_BACKSPACE){ // Se a tecla for a seta para o backspace, então será necessário apagar todo o output escrito e preparar o programa para proximas iterações com o utilizador
+                        for(int i=0;i<30;i++){ // Apaga todas as linas de output
+                        move(i+9,0);
+                        clrtoeol();
+                        }
+                        flag=0;
+                        refresh();
+                        return 1;
+                    }
+
+                    if(flag==0){ // Aqui são onde os outputs da query são mostrados ao utlizador
+                        printw("%s",buffer);
+                        refresh();
+                        cont++;
+                    }
+                }
+                }
+
+            while(1){ // Se a tecla for a seta para o backspace, então será necessário apagar todo o output escrito e preparar o programa para proximas iterações com o utilizador
+                botao=wgetch(win); // Lê a tecla primita pelo utilizador
+                if(botao==KEY_LEFT) return 0;
+                if(botao==KEY_BACKSPACE){
+                    for(int i=0;i<30;i++){ // Apaga todas as linas de output
+                    move(i+9,0);
+                    clrtoeol();
+                    }
+                    refresh();
+                    return 1;
+                }
+            }
+
+        return 0;
 }
 
 
@@ -91,13 +209,8 @@ int interact_program(int highlight, WINDOW *win, int querie_possible){
             
             return 0;
         }
-
-        int pag=1;
-        int flag=0;
-        int linha_atraso=-1;
-        int repeticoes=0;
         move(10,0);
-        printw("-> Insert querie: ");
+        printw("-> Insert querie: "); // Input para esclarecer o utilizador em relação a como interagir com o programa
         char *input_q = malloc(50);
         int ch_q;
         echo();
@@ -114,20 +227,22 @@ int interact_program(int highlight, WINDOW *win, int querie_possible){
         
         if (read_exe_queries_interativo(input_q)==0){ // Isto acontece quando o path para os ficheiros .csv existe e é válido
 
-            int botao;
-            char buffer[250];
-            int cont=0;
             chdir("Resultados/"); // Muda para a diretoria onde se encontra o ficheiro de output das queries
             FILE* File;
             File = fopen("command_output_interativo.txt","r"); // Abre o ficheiro do output da querie correspondente
 
             if(fgetc(File)==EOF){ // Caso o ficheiro de resultados estiver vazio, escrevemos na consola que a querie não mostra output
                 printw("Query has no output!");
-                refresh(); // Refresca a tela
-                napms(1000); // Espera 1 segundo até executar a próxima instrução
-                move(10,0);
                 remove("command_output_interativo.txt"); // Elimina o ficheiro e dá reset ao programa
-                clrtoeol();
+                move(15,5);
+                printw("  RESET (BACKSPACE)"); // Escreve esta mensagem na tela para judar o utilizador a perceber como interagir com o programa
+                refresh();
+                while(wgetch(win)!=KEY_BACKSPACE); // Espera até que o utilizador faça a única coisa possível que é utilizar a tecla backspace
+                for(int i=9;i<30;i++){
+                    move(i,0);
+                    clrtoeol();
+                }
+                move(10,0);
                 refresh();
                 return 0;
             }
@@ -138,101 +253,8 @@ int interact_program(int highlight, WINDOW *win, int querie_possible){
             printw("Outputs:");
             move(10,0);
 
-            while(fgets(buffer, 250, File)!=NULL){ // Este while executa enquanto a função de leitura tiver linhas do .txt para ler
-            
-                if(linha_atraso==cont){ // Este é o caso em que queremos mostrar os 15 outputs anterioes usando a seta para a esquerda
-                        move((cont)%15+10,0);
-                        printw("%s",buffer,cont);
-                        refresh();
-                        cont++;
-
-                        repeticoes++;
-                        
-                        if(repeticoes == 15){ // Quando ele fizer este processo 15 vezes, para porque apenas imprimimos na tela 15 linhas de output em cada página
-                            repeticoes=0;
-                            linha_atraso=-2;
-                            while(cont%15!=0 && cont!=0)cont++; // Alinha o contador para o if seguinte
-                        }
-                    linha_atraso++;
-                }
-                else {
-
-                if(cont%15==0 && cont !=0){ // Se existirem mais de 15 linhas de output no ficheiro .txt, então será necessário criar páginas para facilitar a visualização dos outputs
-
-                    move(26,5);
-                    printw("(<-) PREVIOUS | NEXT (->)"); // Escreve esta mensagem na tela para judar o utilizador a perceber como interagir com o programa
-                    move(27,5);
-                    printw("    CLEAN (BACKSPACE)"); // Escreve esta mensagem na tela para judar o utilizador a perceber como interagir com o programa
-                    refresh();
-                    move(10,0);
-                    
-                    botao=wgetch(win); // Função que lê a tecla que o utilizador primiu
-                
-                    if(botao==KEY_RIGHT){ // Se a tecla for a seta para a direita, então será necessário avançar uma página para a frente
-                        pag++;
-                        for(int i=0;i<16;i++){  
-                            move(i+10,0);
-                            clrtoeol();
-                        }
-
-                        refresh();
-                        move(10,0);
-                        flag=0;
-                    }
-
-                    if(botao==KEY_LEFT && pag==1) flag=1;
-                    else if(botao==KEY_LEFT && pag>1){ // Se a tecla for a seta para a esquerda, então será necessário avançar uma página para trás
-                            rewind(File); // Recomeça a leitura do ficheiro
-                            for(int i=0;i<16;i++){
-                                move(i+10,0);
-                                clrtoeol();
-                            }  
-
-                            refresh();
-                            move(10,0);
-                            pag--;
-
-                            linha_atraso=cont-30;
-
-                            cont=0;
-                            flag=1;
-
-                    }
-                }
-
-                    if(botao==KEY_BACKSPACE){ // Se a tecla for a seta para o backspace, então será necessário apagar todo o output escrito e preparar o programa para proximas iterações com o utilizador
-                        for(int i=0;i<30;i++){ // Apaga todas as linas de output
-                        move(i+9,0);
-                        clrtoeol();
-                        }
-                        refresh();
-                        remove("command_output_interativo.txt"); // Apaga o ficheiro
-                        chdir("trabalho-pratico"); // Muda para a diretoria principal
-                        return 0;
-                    }
-
-                
-
-                    if(flag==0){ // Aqui são onde os outputs da query são mostrados ao utlizador
-
-                        printw("%s",buffer);
-                        refresh();
-                        cont++;
-                    }
-                    
-                }
-                }
-
-            while(1){ // Se a tecla for a seta para o backspace, então será necessário apagar todo o output escrito e preparar o programa para proximas iterações com o utilizador
-                botao=wgetch(win); // Lê a tecla primita pelo utilizador
-                if(botao==KEY_BACKSPACE){
-                    for(int i=0;i<30;i++){ // Apaga todas as linas de output
-                    move(i+9,0);
-                    clrtoeol();
-                    }
-                    refresh();
-                    break;
-                }
+            while(1){
+                if(move_pages(File,win)==1) break; // Isto acontece quando é premido o backspace pelo utilizador limpando a tela
             }
             remove("command_output_interativo.txt"); // Apaga o ficheiro
             chdir("trabalho-pratico"); // Muda para a diretoria principal
@@ -252,11 +274,11 @@ int interact_program(int highlight, WINDOW *win, int querie_possible){
 
     if(highlight==0){   // SE A OPÇÃO ESCOLHIDA FOR INSERIR OS FICHEIROS .CSV
         printw("-> Insert path to files .csv: ");
-        char *input = malloc(50);
+        char *input = malloc(200);
         int ch;
         echo();
         curs_set(1);
-        for (i = 0; i < 50 - 1 && (ch = getch()) != '\n'; i++) // Função de leitura do input do utilizador e guardada no array input
+        for (i = 0; i < 200 - 1 && (ch = getch()) != '\n'; i++) // Função de leitura do input do utilizador e guardada no array input
         input[i] = ch;
         input[i] = '\0';
         noecho();
@@ -280,7 +302,6 @@ int interact_program(int highlight, WINDOW *win, int querie_possible){
 }
 
 
-
 // Função principal chamada pela main responsável pelo modo iterativo
 void interactive (){ 
 
@@ -301,7 +322,7 @@ void interactive (){
     keypad(win,true);  // Podemos usar as setas
     mvwprintw(win, 0, 12.5, "MODO INTERATIVO"); // Nome do bloco
     curs_set(0);  // Remove o cursor
-    //raw(); // Faz com que não seja permitido dar kill ao programa com atalhos
+    raw(); // Faz com que não seja permitido dar kill ao programa com atalhos
 
     const char *options[]={"FILES .CSV","QUERIES","EXIT"};
     int choice;

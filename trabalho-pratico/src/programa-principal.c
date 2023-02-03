@@ -15,12 +15,13 @@
 // caminho para um ficheiro de texto que contém uma lista de comandos (queries) a serem executados.
 int main(int argc, char* argv[]){
     
-
+    // MODO: Interativo -> Neste modo, o programa é executado sem argumentos. Quando o ficheiro não contém 
+    // argumentos estamos nesse modo. Quando isto acontece é disponibilizado ao utilizador um menu interativo com todas
+    // as informações necessárias para a execução de cada query
     if(argc<=1){
         interactive();
         return 0;
     }
-
 
 
     // Criação do path para o ficheiro drivers.csv.
@@ -82,5 +83,4 @@ int main(int argc, char* argv[]){
 // Coisas a fazer:
 
 // Tipos opacos
-// Modo iterativo
 // Inicializar os apontadores

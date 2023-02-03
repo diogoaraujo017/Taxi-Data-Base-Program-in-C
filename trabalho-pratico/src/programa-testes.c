@@ -11,12 +11,13 @@
 #include <time.h>
 #include <sys/resource.h>
 
-extern int correct;
-extern int incorrect;
+extern int correct; // Determina o número de queries que estão com o output correto
+extern int incorrect; // Determina o número de queries que estão com o output incorreto
 
-// MODO: Batch -> Neste modo, o programa é executado com dois argumentos, o primero é o caminho
+// MODO: Teste -> Neste modo, o programa é executado com três argumentos, o primero é o caminho
 // para a pasta onde estão os ficheiros de entrada. Já o segundo corresponde ao
-// caminho para um ficheiro de texto que contém uma lista de comandos (queries) a serem executados.
+// caminho para um ficheiro de texto que contém uma lista de comandos (queries) a serem executados e o terceiro
+// para a pasta onde se encontram os ficheiros que contêm o output correto de cada query
 int main(int argc, char* argv[]){
     
     // Criação do path para o ficheiro drivers.csv.
@@ -101,7 +102,6 @@ int main(int argc, char* argv[]){
 
 // Inicializar todos os pointers, dar init na main
 // Nao utilizar o pointer original. fazer copias
-// Modo iterativo
 // Make file TIME
 // Inicializar os apontadores
 // Tipos opacos

@@ -8,7 +8,7 @@
 #include <time.h>
 #include <unistd.h>
 
-
+// Função responsável por comparar duas datas
 int calculaData (char *line,char *line2){
 
     int dia1,mes1,ano1;
@@ -69,12 +69,8 @@ char* converte(char *str){
     return str;
 }
 
-
-
-
-
-
-
+// Esta função é responsável por verificar se a data passada no ficheiro é válida através dos parâmetros necessários
+// Só é valida se tiver um tamanho total de 10, 2 separadores e se tiver 2 inteiros para dia e mes e 4 para o ano
 int check_data(char *date){
     if(strlen(date)!=10) return 1;
 
@@ -91,6 +87,8 @@ int check_data(char *date){
     return 0;
 }
 
+// Esta função é responsável por verificar se a distãncia passada no ficheiro é válida através dos parâmetros necessários
+// Só é valida se a distãncia for um número inteiro maior que 0
 int check_distance(char *distance){
     register int i;
     int n_digitos=strlen(distance);
@@ -104,6 +102,8 @@ int check_distance(char *distance){
     return 0;
 }
 
+// Esta função é responsável por verificar se o score passado no ficheiro é válida através dos parâmetros necessários
+// Só é valida se o score for um número inteiro maior que 0
 int check_score(char *score){
     register int i;
     int n_digitos=strlen(score);
@@ -115,6 +115,8 @@ int check_score(char *score){
     return 0;
 }
 
+// Esta função é responsável por verificar se a tip passada no ficheiro é válida através dos parâmetros necessários
+// Só é valida se a tip for um número inteiro ou decimal maior ou igual a 0
 int check_tip(char *tip){
     register int i;
     int n_digitos=strlen(tip);
@@ -125,18 +127,21 @@ int check_tip(char *tip){
     return 0;
 }
 
+// Esta função é responsável por verificar se a conta passada no ficheiro é válida através dos parâmetros necessários
+// Só é valida se a conta tiver o parâmetro active ou inactive
 int check_account(char* status){
     if(strcmp(converte(status),"active")!=0 && strcmp(converte(status),"inactive")!=0) return 1;
     return 0;
 }
 
+// Esta função é responsável por verificar se a classe passada no ficheiro é válida através dos parâmetros necessários
+// Só é valida se a classe tiver o parâmetro basic, green ou premium
 int check_class(char *car){
     if(strcmp(converte(car),"basic")!=0 && strcmp(converte(car),"green")!=0 && strcmp(converte(car),"premium")!=0) return 1;
     return 0;
 }
 
-
-
+// Esta função é responsável por determinar o tempo que as hash tables demoram a ser efetuadas
 double time_hash(void (*func)(char*, char),char *dir, char file_aux){
   clock_t start = clock();
   func(dir,file_aux);
@@ -144,7 +149,7 @@ double time_hash(void (*func)(char*, char),char *dir, char file_aux){
   return (double)(end - start) / CLOCKS_PER_SEC;
 }
 
-
+// Esta função é responsável por determinar o tempo que as queries demoram a ser efetuadas
 double time_query(void (*func)(char*, char*),char *line,char *file){
   clock_t start = clock();
   func(line,file);
@@ -152,13 +157,10 @@ double time_query(void (*func)(char*, char*),char *line,char *file){
   return (double)(end - start) / CLOCKS_PER_SEC;
 }
 
+int correct=0; // Determina o número de queries que estão com o output correto
+int incorrect=0; // Determina o número de queries que estão com o output incorreto
 
-
-int correct=0;
-int incorrect=0;
-
-
-
+// Esta função é responsável por determinar se dois ficheiros são iguais ou não
 void check_output(int input, char *outputs){
 
     int buffsize =  1024;
@@ -179,7 +181,7 @@ void check_output(int input, char *outputs){
     size_t n1, n2;
 
     do {
-    n1 = fread(buf1, 1, buffsize, fp1);
+    n1 = fread(buf1, 1, buffsize, fp1); 
     if (n1 == 0 && ferror(fp1)) {
       perror("Error reading file 1");
       return;
@@ -191,7 +193,7 @@ void check_output(int input, char *outputs){
     }
     if (n1 != n2 || memcmp(buf1, buf2, n1)) {
       printf("\033[0;31m");
-      printf("[INCORRECT]\n");
+      printf("[INCORRECT]\n"); // Print com cor vermelha
       printf("\033[0m");
       incorrect++;
       return;
@@ -200,7 +202,7 @@ void check_output(int input, char *outputs){
   } while (n1 == buffsize && n2 == buffsize);
 
     printf("\033[0;32m");
-    printf("[CORRECT]\n");
+    printf("[CORRECT]\n"); // Print com cor verde
     printf("\033[0m");
     correct++;
 

@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include "func_auxiliares.h"
 
-// Função responsável pela execução da querie 1.
+// Função responsável pela execução da query 1.
 void querie1(char *line,char *file){
     drivers *d,*d1;
     users *u;  
@@ -82,7 +82,7 @@ void querie1(char *line,char *file){
     chdir("trabalho-pratico");  // Volta à diretoria principal
 }
 
-// Função responsável pela execução da querie 2.
+// Função responsável pela execução da query 2.
 void querie2(char *line,char *file){
 
     rides_driver *rd;
@@ -110,7 +110,7 @@ void querie2(char *line,char *file){
     chdir("trabalho-pratico");  // Volta à diretoria principal
 }
 
-// Função responsável pela execução da querie 3.
+// Função responsável pela execução da query 3.
 void querie3(char *line,char *file){
     rides_user *ru;
     int ind = n_linhas_users-1;
@@ -136,7 +136,7 @@ void querie3(char *line,char *file){
     chdir("trabalho-pratico");  // Volta à diretoria principal
 }
 
-// Função responsável pela execução da querie 4.
+// Função responsável pela execução da query 4.
 void querie4(char *line,char *file){
     rides *r;
     drivers *d;
@@ -171,7 +171,7 @@ void querie4(char *line,char *file){
         chdir("trabalho-pratico");  // Volta à diretoria principal
 }
 
-// Função responsável pela execução da querie 5.
+// Função responsável pela execução da query 5.
 void querie5(char *line,char *file){
     rides *r;
     drivers *d;
@@ -210,7 +210,7 @@ void querie5(char *line,char *file){
         chdir("trabalho-pratico");  // Volta à diretoria principal
 }
 
-// Função responsável pela execução da querie 6.
+// Função responsável pela execução da query 6.
 void querie6(char *line,char *file){
     
     rides *r;
@@ -246,7 +246,7 @@ void querie6(char *line,char *file){
         chdir("trabalho-pratico");  // Volta à diretoria principal
 }
 
-// Função responsável pela execução da querie 7.
+// Função responsável pela execução da query 7.
 void querie7(char *line,char *file){
 
     chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
@@ -294,7 +294,7 @@ void querie7(char *line,char *file){
 
     
 }
-// Função responsável pela execução da querie 8.
+// Função responsável pela execução da query 8.
 void querie8(char *line,char *file){
 
     chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
@@ -333,7 +333,7 @@ void querie8(char *line,char *file){
 
 }
 
-// Função responsável pela execução da querie 9.
+// Função responsável pela execução da query 9.
 void querie9(char *line,char *file){
 
     chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
@@ -394,7 +394,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
         querie = line[0];       // O primeiro dígito da linha é o número da querie correspondente
     
         for(i=2;line[i]!='\0';i++){         // Este for loop faz a distinção do resto do input
-            line2[i-2] = line[i];           // para mais tarde ser fornecido as funções que 
+            line2[i-2] = line[i];           // para mais tarde ser fornecido às funções que 
         }                                   // executam as queries.
 
         line2[i-3] = '\0';
@@ -402,7 +402,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
         switch (querie)
         {
         case '1':
-           if(checkTime==0){
+           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
                 printf("Input %d [Query 1]: %fs ", input, time_query(querie1,line2,buffer));
                 check_output(input, outputs);
            }
@@ -410,7 +410,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
            break;
 
         case '2':
-           if(checkTime==0){
+           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
                 printf("Input %d [Query 2]: %fs ", input, time_query(querie2,line2,buffer));
                 check_output(input, outputs);
            }
@@ -418,7 +418,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
            break;
 
         case '3':
-           if(checkTime==0){
+           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
                 printf("Input %d [Query 3]: %fs ", input, time_query(querie3,line2,buffer));
                 check_output(input, outputs);
            }
@@ -426,7 +426,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
            break;
 
         case '4':
-           if(checkTime==0){
+           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
                 printf("Input %d [Query 4]: %fs ", input, time_query(querie4,line2,buffer));
                 check_output(input, outputs);
            }
@@ -434,7 +434,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
            break;
 
         case '5':
-           if(checkTime==0){
+           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
                 printf("Input %d [Query 5]: %fs ", input, time_query(querie5,line2,buffer));
                 check_output(input, outputs);
            }
@@ -442,7 +442,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
            break;
 
         case '6':
-           if(checkTime==0){
+           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
                 printf("Input %d [Query 6]: %fs ", input, time_query(querie6,line2,buffer));
                 check_output(input, outputs);
            }
@@ -450,7 +450,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
            break;
 
         case '7':
-           if(checkTime==0){
+           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
                 printf("Input %d [Query 7]: %fs ", input, time_query(querie7,line2,buffer));
                 check_output(input, outputs);
            }
@@ -458,7 +458,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
            break;
 
         case '8':
-           if(checkTime==0){
+           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
                 printf("Input %d [Query 8]: %fs ", input, time_query(querie8,line2,buffer));
                 check_output(input, outputs);
            }
@@ -466,7 +466,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
            break;
 
         case '9':
-           if(checkTime==0){
+           if(checkTime==0){ // Se esta condição for verdadeira significa que será contado o tempo em que a respetiva query é executada
                 printf("Input %d [Query 9]: %fs ", input, time_query(querie9,line2,buffer));
                 check_output(input, outputs);
            }
@@ -486,10 +486,11 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
 
 
 
-
+// Função responsável pela leitura do input que o utilizador forneceu em relação à respetiva query
+// Esta função lê a linha e envia o input para uma das funções relativas
+// às queries para futuro tratamento dos dados.
 int read_exe_queries_interativo(char *file){
 
-    
     char line[150];
     char querie;
     int i;
@@ -498,7 +499,7 @@ int read_exe_queries_interativo(char *file){
         if(file[1]!=' ') return 1;
 
         for(i=2;file[i]!='\0';i++){         // Este for loop faz a distinção do resto do input
-            line[i-2] = file[i];           // para mais tarde ser fornecido as funções que 
+            line[i-2] = file[i];            // para mais tarde ser fornecido às funções que 
         }                                   // executam as queries.
 
         line[i-2] = '\0';
@@ -542,7 +543,7 @@ int read_exe_queries_interativo(char *file){
            break; 
              
         default:
-           return 1;
+           return 1; // Este caso ocorre quando o input fornecido não é válido
            break;
         }
         
