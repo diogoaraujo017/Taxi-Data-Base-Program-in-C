@@ -8,13 +8,13 @@
 #include <time.h>
 #include <unistd.h>
 
-// Função responsável por comparar duas datas
+// Function responsible for comparing two dates
 int calculateData (char *line,char *line2){
 
     int day1,month1,year1;
     int day2,month2,year2;
     
-    //Divide a datas em dia, mês e ano.
+    // Divides the date into day, month and year
     day1 = (line[0]-'0')*10+(line[1]-'0');
     month1 = (line[3]-'0')*10+(line[4]-'0');
     year1 = (line[6]-'0')*1000+(line[7]-'0')*100+(line[8]-'0')*10+(line[9]-'0');
@@ -23,53 +23,53 @@ int calculateData (char *line,char *line2){
     month2 = (line2[3]-'0')*10+(line2[4]-'0');
     year2 = (line2[6]-'0')*1000+(line2[7]-'0')*100+(line2[8]-'0')*10+(line2[9]-'0');
     
-    //Da return a True se Data1 mais recente.
+    // It returns 0 if the first date is more recent than the other
     if (year1>year2) return 0;
     if (year1==year2 && month1>month2) return 0;
     if (year1==year2 && month1==month2 && day1>day2) return 0;
 
+    // It returns -1 if the first date is the same as the second date
     if (year1==year2 && month1==month2 && day1==day2) return (-1);
 
-    //Da return a False se Data2 mais recente.
+    // It returns 1 if the second date is more recent than the other
     return 1;
 }
 
-// A função calculaIdade calcula quantos anos passaram desde uma certa data.
+// Function calculates how many years have passes since the date in the define
 int calculateAge (char *line){
 
     int day,month,year;
     int age;
     
-    //Divide a data em dia, mês e ano.
+    // Divides the date into day, month and year
     day = (line[0]-'0')*10+(line[1]-'0');
     month = (line[3]-'0')*10+(line[4]-'0');
     year = (line[6]-'0')*1000+(line[7]-'0')*100+(line[8]-'0')*10+(line[9]-'0');
     
-    // Calcula a idade sem verificar se ele ja fez anos em 2022.
     age = IDADE_ANO-year-1;
     
-    // Condição que verifica se a pessoa ja fez anos no ano 2022.
+    // Conditon that verifies if the person has already has their birthday on the year 2022 (defined date)
     if (month<IDADE_MES || (month==IDADE_MES && day<=IDADE_DIA)){
         age++;                                              
     }
     return age;
 }
 
-// A função converte trasforma uma string que possa ter letras maiúsculas
-// numa string com apenas letras minúsculas.
+
+// This function converts a string that may have capital letters to a string with only lower case letters
 char* convert(char *str){
     
     int i;
     
     for (i = 0; str[i] != '\0'; i++) {
-        // Tranforma o carácter na posição i em minúsculo, caso ele seja maiúsculo.
         str[i] = tolower(str[i]);
     }
     return str;
 }
 
-// Esta função é responsável por verificar se a data passada no ficheiro é válida através dos parâmetros necessários
-// Só é valida se tiver um tamanho total de 10, 2 separadores e se tiver 2 inteiros para dia e mes e 4 para o ano
+// This function verifies if the data received as input is valid acording to the necessary parameters.
+// It is only valid if it has a size of 10, 2 separators (/) and if there are 2 integer number for the day and month
+// and 4 for the year
 int check_data(char *date){
     
     if(strlen(date)!=10) return 1;
@@ -87,8 +87,8 @@ int check_data(char *date){
     return 0;
 }
 
-// Esta função é responsável por verificar se a distãncia passada no ficheiro é válida através dos parâmetros necessários
-// Só é valida se a distãncia for um número inteiro maior que 0
+// This function verifies if the distance received as input is valid acording to the necessary parameters.
+// It is only valid if the number is an integer and bigger than zero
 int check_distance(char *distance){
     
     int i;
@@ -103,8 +103,8 @@ int check_distance(char *distance){
     return 0;
 }
 
-// Esta função é responsável por verificar se o score passado no ficheiro é válida através dos parâmetros necessários
-// Só é valida se o score for um número inteiro maior que 0
+// This function verifies if the score received as input is valid acording to the necessary parameters.
+// It is only valid if the score is an integer and bigger than zero
 int check_score(char *score){
     
     int i;
@@ -119,8 +119,8 @@ int check_score(char *score){
     return 0;
 }
 
-// Esta função é responsável por verificar se a tip passada no ficheiro é válida através dos parâmetros necessários
-// Só é valida se a tip for um número inteiro ou decimal maior ou igual a 0
+// This function verifies if the tip received as input is valid acording to the necessary parameters.
+// It is only valid if the number is an integer or a decimal and bigger or equal to zero
 int check_tip(char *tip){
     
     int i;
@@ -133,8 +133,9 @@ int check_tip(char *tip){
     return 0;
 }
 
-// Esta função é responsável por verificar se a conta passada no ficheiro é válida através dos parâmetros necessários
-// Só é valida se a conta tiver o parâmetro active ou inactive
+
+// This function verifies if the status received as input is valid acording to the necessary parameters.
+// It is only valid if the string is equal to active or inactive
 int check_account(char* status){
     
     if(strcmp(convert(status),"active")!=0 && strcmp(convert(status),"inactive")!=0) return 1;
@@ -142,8 +143,8 @@ int check_account(char* status){
     return 0;
 }
 
-// Esta função é responsável por verificar se a classe passada no ficheiro é válida através dos parâmetros necessários
-// Só é valida se a classe tiver o parâmetro basic, green ou premium
+// This function verifies if the class received as input is valid acording to the necessary parameters.
+// It is only valid if the string is equal to basic, green or premium
 int check_class(char *car){
     
     if(strcmp(convert(car),"basic")!=0 && strcmp(convert(car),"green")!=0 && strcmp(convert(car),"premium")!=0) return 1;
@@ -151,7 +152,7 @@ int check_class(char *car){
     return 0;
 }
 
-// Esta função é responsável por determinar o tempo que as hash tables demoram a ser efetuadas
+// This function is responsible for determining the time that the hash tables take to be executed
 double time_hash(void (*func)(char*, char),char *dir, char file_aux){
   
   clock_t start = clock();
@@ -162,7 +163,7 @@ double time_hash(void (*func)(char*, char),char *dir, char file_aux){
 
 }
 
-// Esta função é responsável por determinar o tempo que as queries demoram a ser efetuadas
+// This function is responsible for determining the time that the queries take to be executed
 double time_query(void (*func)(char*, char*),char *line,char *file){
   
   clock_t start = clock();
@@ -173,10 +174,10 @@ double time_query(void (*func)(char*, char*),char *line,char *file){
 
 }
 
-int correct=0; // Determina o número de queries que estão com o output correto
-int incorrect=0; // Determina o número de queries que estão com o output incorreto
+int correct=0; // Indicates the number of queries that have the correct output
+int incorrect=0; // Indicates the number of queries that have the incorrect output
 
-// Esta função é responsável por determinar se dois ficheiros são iguais ou não
+// This function is responsibe to determine if two files are equal to one another or not
 void check_output(int input, char *outputs){
 
     int buffsize =  1024;
@@ -213,7 +214,7 @@ void check_output(int input, char *outputs){
           if (n1 != n2 || memcmp(buf1, buf2, n1)) {
              
              printf("\033[0;31m");
-             printf("[INCORRECT]\n"); // Print com cor vermelha
+             printf("[INCORRECT]\n"); // Prints with color red
              printf("\033[0m");
              
              incorrect++;
@@ -224,11 +225,10 @@ void check_output(int input, char *outputs){
   } while (n1 == buffsize && n2 == buffsize);
 
     printf("\033[0;32m");
-    printf("[CORRECT]\n"); // Print com cor verde
+    printf("[CORRECT]\n"); // Prints with color red
     printf("\033[0m");
     
     correct++;
 
     chdir("trabalho-pratico");
-
 }
