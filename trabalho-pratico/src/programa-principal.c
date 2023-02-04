@@ -10,38 +10,40 @@
 #include "interactive_mode.h"
 
 
-// MODO: Batch -> Neste modo, o programa é executado com dois argumentos, o primero é o caminho
-// para a pasta onde estão os ficheiros de entrada. Já o segundo corresponde ao
-// caminho para um ficheiro de texto que contém uma lista de comandos (queries) a serem executados.
+// MODE: Batch -> In this mode, the program is executed with two arguments, the first one is the path
+// to the folder where the input files are. The second corresponds to the
+// path to a text file that contains a list of commands (queries) to be executed.
 int main(int argc, char* argv[]){
     
-    // MODO: Interativo -> Neste modo, o programa é executado sem argumentos. Quando o ficheiro não contém 
-    // argumentos estamos nesse modo. Quando isto acontece é disponibilizado ao utilizador um menu interativo com todas
-    // as informações necessárias para a execução de cada query
+    // MODE: Interactive -> In this mode, the program is executed without arguments. When the file does not contain
+    // arguments we land in this mode. When this happens, an interactive menu with all the
+    // the information needed to execute each query
     if(argc<=1){
         
         interactive();
         return 0;
     }
 
-    // Criação do path para o ficheiro drivers.csv.
+    // Creating the path for the driver's data file.
     char *file_d = malloc (250*sizeof(char));
     strcpy(file_d,argv[1]);
     strcat(file_d,"/drivers.csv");
-    // Criação do path para o ficheiro users.csv.
+    // Creating the path for the user's data file.
     char *file_u = malloc (250*sizeof(char));
     strcpy(file_u,argv[1]);
     strcat(file_u,"/users.csv");
-    // Criação do path para o ficheiro rides.csv.
+    // Creating the path for the rides data file.
     char *file_r = malloc (250*sizeof(char));
     strcpy(file_r,argv[1]);
     strcat(file_r,"/rides.csv");
-    // Criação do path para o ficheiro dos inputs.
+    // Creating the path for the query inputs file.
     char *file_txt = malloc (250*sizeof(char));
     strcpy(file_txt,argv[2]);
 
+    // Counting the lines in the data files
     count_lines(file_d,file_u,file_r);
     
+    // Allocating memory for the hash tables
     allocate_drivers();
     allocate_users();
     allocate_rides();
@@ -51,23 +53,26 @@ int main(int argc, char* argv[]){
     allocate_rides_drivers_gender();
     allocate_rides_date();
 
-    // Estas funções são responsáveis pelo parsing de cada linha dos ficheiros .csv. Para além disso,
-    // também inserem os valores lidos (organizados numa struct) para a hash table, linha a linha. 
+    // These functions are responsible for parsing each line of the data files. Furthermore,
+    // also inserts the read values ​​(organized in a struct) into the hash table, row by row.
     read_store(file_d,'d');
     read_store(file_u,'u');
     read_store(file_r,'r');
-
+    
+    // Sorting a couple of hash tables
     sortQ2();
     sortQ3();
 
-    // Esta função trata os inputs e envia os mesmos para a respetiva querie.
+    // This function treats the inputs and sends them to the respective query
     read_exe_queries(file_txt,1,NULL);
-
+    
+    // Freeing the strings used to open the data files.
     free(file_d);
     free(file_u);
     free(file_r);
     free(file_txt);
     
+    // Frreeing the memory allocated for the hash tables
     free_hash_drivers();
     free_hash_users();
     free_hash_rides();
@@ -80,8 +85,6 @@ int main(int argc, char* argv[]){
 
 // Coisas a fazer:
 
-// Testes a pedir o path apenas depois de executar.
 // Inicializar os apontadores.
-// Passar tudo a ingles.
-// Fazer testes de tempo.
-// Time the whole program.
+
+

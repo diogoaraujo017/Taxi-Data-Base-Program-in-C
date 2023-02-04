@@ -7,60 +7,68 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+
+
 struct Users{
     
-    char *username;          // Username do user.
-    char *name;              // Nome do user.
-    char *gender;            // Sexo do user.
-    char *birth_day;         // Data de nascimento do user.
-    char *account_creation;  // Data da criacao da conta do user.
-    char *account_status;    // Status da conta do user.
+    char *username;          // User's username
+    char *name;              // User's name
+    char *gender;            // User's gender
+    char *birth_day;         // User's birth day
+    char *account_creation;  // Date of the account creation
+    char *account_status;    // User's account status
 
 };
 
-// Hash table dos users
+
+
+// User's hash table
 users **hash_table_users;
 
+
+
+// This function allocates memory in the heap for the User's Hash Table
 void allocate_users(){ 
-    
     int i;
     
+    // Alocating the nedded space in the heap 
     hash_table_users = (users**)malloc(n_lines_users*sizeof(users*));
     
+    // Initializing the pointers in the hash table to NULL
     for(i = 0; i < n_lines_users; i++){
         hash_table_users[i]=NULL;
     }
 
 }
 
-// Associa um número da hash a cada linha criando uma key que mais tarde pode ser utilizada para
-// procurar esse user na hash table
+
+
+//  This function calculates an user's hash table key, using the user's username,
+// so we are able to store and search for a user.
 unsigned int hash_users(char *username){
-    
     unsigned int num_hash = 0;
     int i;
-
-    for (i = 0; username[i]!='\0'; i++){
-        
+    
+    //  For loop that calculates the key by iterating throught
+    // the user's username caracthers.
+    for (i = 0; username[i]!='\0'; i++){ 
         num_hash += username[i];
         num_hash = (num_hash * username[i]) % n_lines_users;
     }
-    
+    // Returning the key
     return num_hash;
 }
 
-// Esta função insere uma determinada linha na hash_table se essa linha não estiver ocupada.
-// Uma linha está ocupada quando não está a NULL e vice-versa, daí a importância da função
-// init_hash_table_users. Se a linha for adicionada com sucesso a função dará return a true,
-// não dando qualquer problema, caso contrário dará return a false significando que a 
-// função não conseguiu adicionar a linha.
+
+
+// Function that inserts the rides in an hash table spot.
 bool insert_hash_users(char *username,char *name,char *gender,char *birth_day,
                        char *account_creation,char *account_status){
     
     int i,next_position;
-
-    users *u = malloc(sizeof(users));
     
+    // Getting the data ready to be inserted
+    users *u = malloc(sizeof(users));
     u->username = username;
     u->name = name;
     u->gender = gender;
@@ -68,80 +76,89 @@ bool insert_hash_users(char *username,char *name,char *gender,char *birth_day,
     u->account_creation = account_creation;
     u->account_status = account_status;
     
+    // Calculating the first possible hahs table spot
     int aux = hash_users(username);
     
+    // For loop that searches for a spot to store the user
     for (i = 0;i < n_lines_users; i++){
         
+        // Calculating the next possible hash table spot.
         next_position = (i + aux) % n_lines_users;
     
+        // Checking if the user is able to be stored
         if ((hash_table_users[next_position] == NULL)){
-            
             hash_table_users[next_position] = u;
             return true;
         }
-    
     }
-    
+    // Return false if it was impossible to store the user
     return false;
 }
 
-// Procura um determinado user na hash table. Esta função é bastante rápida a executar, mesmo
-// existindo muitas linhas de hash, devido à existência de keys que estão associadas, uma a cada
-// input colocado na hash table. Se encontrar a função dará return à linha da hash correspondente
-// em forma de struct, caso contrário dará return a NULL.
+
+
+// This function searches for a certain user in the hash table
 users *search_hash_users(char *username){
-    
     int i, next_position;
+    
+    // Calculating the first possible spot
     int aux = hash_users(username);
     
+    // For loop that searches for a spot the user is stored in
     for (i = 0; i < n_lines_users; i++){
     
-        // Calcula a possível key
+        // Calculating the next possible hash table spot.
         next_position = (i + aux) % n_lines_users;
     
-        // Verifica se o user que está nessa posição da hash table e o que estamos à procura são iguais
+        // Verifying if the user is stored in that spot
         if (hash_table_users[next_position]!=NULL && strcmp(hash_table_users[next_position]->username, username)==0){
-            
+            // Returning the user information
             return hash_table_users[next_position];
         }
     
     }
-    
+    // Returning NULL if the user was not found
     return NULL;
 }
 
 
+
+//  This function is used, in different files, to get the respective user field.
+//  We have to use this function because our user struct is an opaque type, which means that the
+// other files in the project don't recognize the defenition of the struct. Therefore we have
+// to call this function so we're able to access the hash table content.
 void getUserFields(char **username, char **name, char **gender, char **birth_day,
                    char **account_creation, char **account_status){
   
+  // Getting the respective user
   users *u = NULL;
-  
   u = search_hash_users(*username);
-
+  
+  // Verifies if the user is NULL
   if(u==NULL){
       
       *name=NULL;
-      
       return;
   }
-
+  
+  // Updating the function arguments if r is not NULL
   *name = u->name;
   *gender = u->gender;
   *birth_day = u->birth_day;
   *account_creation = u->account_creation;
   *account_status = u->account_status;
-
 }
 
 
+
+// This function frees the memory that was allocaded before.
 void free_hash_users(){
-    
     int i;
     
     for(i=0;i<n_lines_users;i++){
     
         if(hash_table_users[i]!=NULL){
-    
+            // Freeing the contents of a certain hash table spot
             free(hash_table_users[i]->account_creation);
             free(hash_table_users[i]->account_status);
             free(hash_table_users[i]->birth_day);
@@ -150,8 +167,9 @@ void free_hash_users(){
             free(hash_table_users[i]->username);
     
         }
+            // Freeing a certain hash table spot        
             free(hash_table_users[i]);
     }
-
+    // Freeing the entire hash table
     free(hash_table_users);
 }
