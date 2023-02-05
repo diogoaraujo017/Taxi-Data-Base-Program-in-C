@@ -161,8 +161,10 @@ void query2(char *line,char *file){
         getRideDriverFields(&ind , &date, &driver, &score_driver, 
                             &name, &trip_counter, &score_total);
         
+        if(date!=NULL){
         fprintf(NewFile,"%s;%s;%.3f\n", driver, name, score_driver);
-        
+        }
+
         // Updating the arguments
         n_drivers--;
         ind--;
@@ -196,7 +198,9 @@ void query3(char *line,char *file){
         // Getting the the information of the current rides_user 
         getRideUserFields(&ind, &distance, &date, &username, &nome);   
         
+        if(date!=NULL){
         fprintf(NewFile,"%s;%s;%d\n",username, nome, distance);
+        }
         
         // Updating the arguments
         n_users--;
@@ -434,7 +438,7 @@ void query7(char *line,char *file){
         getRideDriverCityFields(&ind, &score_average, &id, &trip_counter, 
                                 &name, &total_score);
 
-        if(strcmp(name,"null")==0) break;
+        if(id==NULL) break;
 
         fprintf(NewFile,"%s;%s;%.3f\n", id, name, score_average);
         

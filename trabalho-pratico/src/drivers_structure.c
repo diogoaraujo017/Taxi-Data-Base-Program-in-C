@@ -83,7 +83,7 @@ void getDriverFields(char **id, char **name, char **birth_day,
   d = hash_table_drivers[atoi(*id)-1];
   
   // Verifies if the ride is NULL
-  if(d==NULL){
+  if(d==NULL ){
   
       *name=NULL;
       return;

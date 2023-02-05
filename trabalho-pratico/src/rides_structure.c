@@ -194,7 +194,8 @@ void sortQ2(){
             rides_driver *rd = malloc(sizeof(rides_driver));
             rd->score_driver = 0;
             rd->date = "01/01/1000";
-            rd->driver = "1000000";
+            rd->driver = "1000000000000";
+            rd->nome = "null";
 
             hash_rides_drivers[i] = rd;
          }
@@ -273,7 +274,7 @@ void getRideDriverFields(int *id,char **date, char **driver, double *score_drive
   rd =  hash_rides_drivers[*id];
   
   // Verifies if the rides_driver is NULL
-  if(rd==NULL){
+  if(strcmp(rd->nome,"null")==0 || rd==NULL){
   
       *date=NULL;
       return;
@@ -474,7 +475,7 @@ void getRideUserFields(int *ind, int *distance, char **date, char **username, ch
   ru =  hash_rides_users[*ind];
   
   // Verifies if the rides_user is NULL
-  if(ru==NULL){
+  if(strcmp(ru->nome,"null")==0 || ru==NULL){
   
       *date=NULL;
       return;
@@ -676,7 +677,7 @@ void getRideDriverCityFields(int *ind, double *average_score, char **id, int *tr
   rdc =  hash_rides_drivers_city[*ind];
   
   // Verifies if the rides_driver_city is NULL
-  if(rdc==NULL){
+  if(strcmp(rdc->name,"null")==0 || rdc==NULL){
       
       *id=NULL;
       return;
