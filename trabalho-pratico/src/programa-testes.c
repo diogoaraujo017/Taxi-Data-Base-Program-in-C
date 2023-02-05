@@ -52,15 +52,15 @@ int main(int argc, char* argv[]){
     clock_t start_main = clock();
 
     // Creating the path for the driver's data file.
-    char *file_d = malloc (100*sizeof(char));
+    char *file_d = malloc (250*sizeof(char));
     strcpy(file_d,data);
     strcat(file_d,"/drivers.csv");
     // Creating the path for the user's data file.
-    char *file_u = malloc (100*sizeof(char));
+    char *file_u = malloc (250*sizeof(char));
     strcpy(file_u,data);
     strcat(file_u,"/users.csv");
     // Creating the path for the rides data file.
-    char *file_r = malloc (100*sizeof(char));
+    char *file_r = malloc (250*sizeof(char));
     strcpy(file_r,data);
     strcat(file_r,"/rides.csv");
 
