@@ -1,6 +1,6 @@
 CC=gcc
 
-CFLAGS=-Wall -Iincludes -g
+CFLAGS=-Wall -Iincludes -g -O3
 
 LDFLAGS = -lncurses
 

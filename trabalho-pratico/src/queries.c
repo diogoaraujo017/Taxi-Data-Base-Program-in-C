@@ -17,7 +17,7 @@
 void query1(char *line,char *file){ 
 
     int i, trip_counter = 0;
-    double carType[2];
+    double carType[2] = {0.0, 0.0};
     double average_score = 0.000, total_payed = 0.000, total_spent = 0.000;
     
     // Creating the arguments that change when called in the get function.
@@ -32,7 +32,7 @@ void query1(char *line,char *file){
     int distance_ride = 0; 
     double score_user_ride = 0.000, score_driver_ride = 0.000, tip_ride = 0.000;
 
-    chdir("Resultados/");       // Opening the results directory
+    
     
     FILE * NewFile;
     NewFile = fopen(file, "w");  // Opening the output file, so the query is able to write the output
@@ -133,7 +133,8 @@ void query1(char *line,char *file){
     }     
 
     fclose(NewFile);            // Closing the output file
-    chdir("trabalho-pratico");  // Changes back the original directory
+    
+     
 }
 
 
@@ -146,8 +147,8 @@ void query2(char *line,char *file){
     double score_driver = 0.000, score_total = 0.000;
     int trip_counter = 0;
 
-    chdir("Resultados/");       // Opening the results directory
-    
+   
+
     FILE * NewFile;
     NewFile = fopen(file, "w");  // Opening the output file, so the query is able to write the output
 
@@ -171,7 +172,8 @@ void query2(char *line,char *file){
     }
 
     fclose(NewFile);            // Closing the output file
-    chdir("trabalho-pratico");  // Changes back the original directory
+  
+     
 }
 
 
@@ -182,8 +184,7 @@ void query3(char *line,char *file){
      // Creating the arguments that change when called in the get function.
     char *date = NULL, *username = NULL, *nome = NULL;
     int distance = 0;
-    
-    chdir("Resultados/");       // Opening the results directory
+   
     
     FILE * NewFile;
     NewFile = fopen(file, "w");  // Opening the output file, so the query is able to write the output
@@ -208,7 +209,8 @@ void query3(char *line,char *file){
     }
 
     fclose(NewFile);            // Closing the output file
-    chdir("trabalho-pratico");  // Changes back the original directory
+  
+     
 }
 
 
@@ -229,8 +231,8 @@ void query4(char *line,char *file){
     double price_average = 0.000;
     int i, trip_counter = 0;
 
-    chdir("Resultados/");       // Opening the results directory
-
+  
+    
     FILE * NewFile;
     NewFile = fopen(file, "w");  // Opening the output file, so the query is able to write the output
     
@@ -267,7 +269,7 @@ void query4(char *line,char *file){
 
 
     fclose(NewFile);            // Closing the output file
-    chdir("trabalho-pratico");  // Changes back the original directory
+ 
 }
 
 
@@ -288,12 +290,13 @@ void query5(char *line,char *file){
     int i, trip_counter = 0;
     
     // Calculating the dates passed in the argument
-    char data1[10],data2[10];
+    char data1[11],data2[11];
     strncpy(data1,line,10);
+    data1[10] = '\0';
     strncpy(data2,line+11,10);
+    data2[10] = '\0';
 
-    chdir("Resultados/");        // Opening the results directory
-
+    
     FILE * NewFile;
     NewFile = fopen(file, "w");  // Opening the output file, so the query is able to write the output
     
@@ -329,7 +332,9 @@ void query5(char *line,char *file){
     
 
     fclose(NewFile);            // Closing the output file
-    chdir("trabalho-pratico");  // Changes back the original directory
+    
+ 
+     
 }
 
 
@@ -354,12 +359,14 @@ void query6(char *line,char *file){
     city[i]='\0';
 
     // Calculating the dates passed in the argument
-    char date1[10],date2[10];
+    char date1[11],date2[11];
     strncpy(date1,line+i+1,10);
+    date1[10] = '\0';
     strncpy(date2,line+i+12,10);
+    date2[10] = '\0';
 
-    chdir("Resultados/");       // Opening the results directory
-
+ 
+    
     FILE * NewFile;
     NewFile = fopen(file, "w");  // Opening the output file, so the query is able to write the output
     
@@ -386,7 +393,8 @@ void query6(char *line,char *file){
     if(dist!=0) fprintf(NewFile,"%.3f\n",dist/trip_counter);
         
     fclose(NewFile);            // Closing the output file
-    chdir("trabalho-pratico");  // Changes back the original directory
+  
+     
 }
 
 
@@ -394,8 +402,7 @@ void query6(char *line,char *file){
 // Function responsible for executing query 7.
 void query7(char *line,char *file){
 
-    chdir("Resultados/");       // Esta função vai para a diretoria onde contêm a pasta resultados, 
-                                // para que seja possível nela os ficheiros .txt de output das queries
+   
     
     FILE * NewFile;
     NewFile = fopen(file, "w");  // Abre o ficheiro .txt de modo a poder dar write
@@ -453,7 +460,8 @@ void query7(char *line,char *file){
     free(city);
 
     fclose(NewFile);            // Closing the output file
-    chdir("trabalho-pratico");  // Changes back the original directory
+  
+     
 }
 
 
@@ -461,7 +469,7 @@ void query7(char *line,char *file){
 // Function responsible for executing query 8.
 void query8(char *line,char *file){
 
-    chdir("Resultados/");       // Opening the results directory
+  
     
     FILE * NewFile;
     NewFile = fopen(file, "w");  // Opening the output file, so the query is able to write the output
@@ -504,8 +512,7 @@ void query8(char *line,char *file){
     free(aux);
 
     fclose(NewFile);            // Closing the output file
-    chdir("trabalho-pratico");  // Changes back the original directory
-
+ 
 }
 
 
@@ -514,15 +521,16 @@ void query8(char *line,char *file){
 void query9(char *line,char *file){
     int i;
 
-    chdir("Resultados/");       // Opening the results directory
     
     FILE * NewFile;
     NewFile = fopen(file, "w");  // Opening the output file, so the query is able to write the output
 
     // Calculating the dates passed in the argument
-    char date1[10],date2[10];
+    char date1[11],date2[11];
     strncpy(date1,line,10);
+    date1[10] = '\0';
     strncpy(date2,line+11,10);
+    date2[10] = '\0';
     
     // Creating the arguments that change when called in the get function.
     char *date = NULL, *id = NULL, *city = NULL, *id_trip = NULL;
@@ -545,8 +553,7 @@ void query9(char *line,char *file){
     }
 
     fclose(NewFile);            // Closing the output file
-    chdir("trabalho-pratico");  // Changes back the original directory
-
+    
 }
 
 
@@ -563,6 +570,9 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
     FILE* File1;
     File1 = fopen(file,"r");
     
+    if (chdir("Resultados/") != 0);     // Changes to the main directory
+
+
     char line[150],line2[150];
     char query;
     
@@ -571,6 +581,7 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
     // Reads every line in the input's file
     while(fgets(line, 150, File1)!=NULL){
 
+        double aux;
         input++;
         char buffer [50];
 
@@ -592,7 +603,13 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
          
           case '1':
              if(checkTime==0){
-                  printf("Input %d [Query 1]: %fs ", input, time_query(query1,line2,buffer));
+                  aux = time_query(query1,line2,buffer);
+                  if(aux >=10){
+                    printf("\033[0;33m");
+                    printf("Input %d [Query 1]: %fs ", input, aux);
+                    printf("\033[0m");
+                  } 
+                  else printf("Input %d [Query 1]: %fs ", input, aux);
                   check_output(input, outputs);
              }
              else query1(line2, buffer);
@@ -600,7 +617,13 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
 
           case '2':
              if(checkTime==0){
-                  printf("Input %d [Query 2]: %fs ", input, time_query(query2,line2,buffer));
+                  aux = time_query(query2,line2,buffer);
+                  if(aux>=10){
+                    printf("\033[0;33m");
+                    printf("Input %d [Query 2]: %fs ", input, aux);
+                    printf("\033[0m");
+                  }
+                  else printf("Input %d [Query 2]: %fs ", input, aux);
                   check_output(input, outputs);
              }
              else query2(line2,buffer);
@@ -608,7 +631,13 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
 
           case '3':
              if(checkTime==0){
-                  printf("Input %d [Query 3]: %fs ", input, time_query(query3,line2,buffer));
+                  aux = time_query(query3,line2,buffer);
+                  if(aux>=10){
+                    printf("\033[0;33m");
+                    printf("Input %d [Query 3]: %fs ", input, aux);
+                    printf("\033[0m");
+                  }
+                  else printf("Input %d [Query 3]: %fs ", input, aux);
                   check_output(input, outputs);
              }
              else query3(line2,buffer);
@@ -616,7 +645,13 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
 
           case '4':
              if(checkTime==0){
-                  printf("Input %d [Query 4]: %fs ", input, time_query(query4,line2,buffer));
+                  aux = time_query(query4,line2,buffer);
+                  if(aux>=10){
+                    printf("\033[0;33m");
+                    printf("Input %d [Query 4]: %fs ", input, aux);
+                    printf("\033[0m");
+                  }
+                  else printf("Input %d [Query 4]: %fs ", input, aux);
                   check_output(input, outputs);
              }
              else query4(line2,buffer);
@@ -624,7 +659,13 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
 
           case '5':
              if(checkTime==0){
-                  printf("Input %d [Query 5]: %fs ", input, time_query(query5,line2,buffer));
+                  aux = time_query(query5,line2,buffer);
+                  if(aux>=10){
+                    printf("\033[0;33m");
+                    printf("Input %d [Query 5]: %fs ", input, aux);
+                    printf("\033[0m");
+                  }
+                  else printf("Input %d [Query 5]: %fs ", input, aux);
                   check_output(input, outputs);
              }
              else query5(line2,buffer);
@@ -632,7 +673,13 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
 
           case '6':
              if(checkTime==0){
-                  printf("Input %d [Query 6]: %fs ", input, time_query(query6,line2,buffer));
+                  aux = time_query(query6,line2,buffer);
+                  if(aux>=10){
+                    printf("\033[0;33m");
+                    printf("Input %d [Query 6]: %fs ", input, aux);
+                    printf("\033[0m");
+                  }
+                  else printf("Input %d [Query 6]: %fs ", input, aux);
                   check_output(input, outputs);
              }
              else query6(line2,buffer);
@@ -640,7 +687,13 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
 
           case '7':
              if(checkTime==0){
-                  printf("Input %d [Query 7]: %fs ", input, time_query(query7,line2,buffer));
+                  aux = time_query(query7,line2,buffer);
+                  if(aux>=10){
+                    printf("\033[0;33m");
+                    printf("Input %d [Query 7]: %fs ", input, aux);
+                    printf("\033[0m");
+                  }
+                  else printf("Input %d [Query 7]: %fs ", input, aux);
                   check_output(input, outputs);
              }
              else query7(line2,buffer);
@@ -648,7 +701,13 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
 
           case '8':
              if(checkTime==0){
-                  printf("Input %d [Query 8]: %fs ", input, time_query(query8,line2,buffer));
+                  aux = time_query(query8,line2,buffer);
+                  if(aux>=10){
+                    printf("\033[0;33m");
+                    printf("Input %d [Query 8]: %fs ", input, aux);
+                    printf("\033[0m");
+                  }
+                  else printf("Input %d [Query 8]: %fs ", input, aux);
                   check_output(input, outputs);
              }
              else query8(line2,buffer);
@@ -656,7 +715,13 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
 
           case '9':
              if(checkTime==0){
-                  printf("Input %d [Query 9]: %fs ", input, time_query(query9,line2,buffer));
+                  aux = time_query(query9,line2,buffer);
+                  if(aux>=10){
+                    printf("\033[0;33m");
+                    printf("Input %d [Query 9]: %fs ", input, aux);
+                    printf("\033[0m");
+                  }
+                  else printf("Input %d [Query 9]: %fs ", input, aux);
                   check_output(input, outputs);
              }
              else query9(line2,buffer);
@@ -669,6 +734,9 @@ void read_exe_queries(char *file, int checkTime, char *outputs){
     }
     // Closing the input file
     fclose(File1);
+    
+    if (chdir("trabalho-pratico") != 0);    // Changes to the main directory
+
 
 }
 
@@ -691,6 +759,8 @@ int read_exe_queries_interactive(char *file){
     }                                    // execute the queries with the correct arguments.
     line[i-2] = '\0';
     
+    if (chdir("Resultados/") != 0);
+
     //  This switch case chooses according to the variable query
     // which block to execute.
     switch (query)
@@ -735,7 +805,10 @@ int read_exe_queries_interactive(char *file){
            return 1;
            break;
         }
-        
+
+    if (chdir("trabalho-pratico") != 0);     // Changes to the main directory
+
+
     return 0;
   
 }

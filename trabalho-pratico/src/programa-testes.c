@@ -19,7 +19,9 @@ extern int incorrect; // Determine the number of queries that have the incorrect
 // the terminal statisctics about the programs runtime and memory use and check if the queries
 // outputs are correct or incorrect also displaying the time it took to execute them.
 int main(int argc, char* argv[]){
-    
+    int d = 0,i = 0,o = 0;
+
+
     printf("\n\n          >> PROGRAM TESTS <<");
     printf ("\n\n-----------------------------------------\n\n");
     
@@ -27,13 +29,24 @@ int main(int argc, char* argv[]){
     // needed files are locate.
     printf(">> INSERT PATH TO DATA FILES: ");
     char *data = malloc (250*sizeof(char));
-    scanf("%s",data);
+    d = scanf("%s",data);
+    if (d != 1) {
+       perror("Error reading line!");
+    }
+
     printf("\n>> INSERT PATH TO QUERY INPUTS: ");
     char *inputs = malloc (250*sizeof(char));
-    scanf("%s",inputs);
+    i = scanf("%s",inputs);
+    if (i != 1) {
+       perror("Error reading line!");
+    }
+
     printf("\n>> INSERT PATH TO QUERY OUTPUTS: ");
     char *outputs = malloc (250*sizeof(char));
-    scanf("%s",outputs);
+    o = scanf("%s",outputs);
+    if (o != 1) {
+       perror("Error reading line!");
+    }
 
     // Starting the program timer.
     clock_t start_main = clock();

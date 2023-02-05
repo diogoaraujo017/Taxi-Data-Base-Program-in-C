@@ -255,7 +255,8 @@ int interact_program(int highlight, WINDOW *win, int querie_possible){
         
         if (read_exe_queries_interactive(input_q)==0){ // This means that the .csv path files exist and are valid
 
-            chdir("Resultados/"); // Changes directories to where the output file is stored (Resultados)
+            if (chdir("Resultados/") != 0);        // Changes to the directorie results
+    
 
             FILE* File;
             File = fopen("command_output_interativo.txt","r"); // Opens the file of the respective query
@@ -289,8 +290,10 @@ int interact_program(int highlight, WINDOW *win, int querie_possible){
 
 
             remove("command_output_interativo.txt"); // Deletes the file
-            chdir("trabalho-pratico"); // Changes to the main directory
-            }
+
+            if (chdir("trabalho-pratico") != 0);     // Changes to the main directory
+                
+        }
 
 
     else{ // This means that the .csv path files doesn´t exist or it is not valid valid

@@ -181,7 +181,6 @@ int incorrect=0; // Indicates the number of queries that have the incorrect outp
 void check_output(int input, char *outputs){
 
     int buffsize =  1024;
-    chdir("Resultados/"); 
 
     char buffer [250];
     snprintf(buffer, sizeof (buffer), "command%d_output.txt",input);
@@ -229,6 +228,4 @@ void check_output(int input, char *outputs){
     printf("\033[0m");
     
     correct++;
-
-    chdir("trabalho-pratico");
 }

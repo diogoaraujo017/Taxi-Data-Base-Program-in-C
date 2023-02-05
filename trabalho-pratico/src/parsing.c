@@ -72,7 +72,9 @@ void read_store(char *dir, char file_aux){
 
     file = fopen(dir, "r");
 
-    fgets(line, 250, file);
+    if(fgets(line, 250, file) == NULL){
+        perror("Error reading line!"); 
+    }
     
     // Reading every line in the driver's file
     if (file_aux == 'd'){
